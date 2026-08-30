@@ -290,9 +290,17 @@
           <h2 class="text-2xl font-bold text-white">Galeri Mawi SMP</h2>
           <p class="text-gray-400 text-xs">Kumpulan screenshot keseruan dan momen bermain komunitas Mawi.</p>
         </div>
-        <button onclick="triggerUploadAction()" class="px-4 py-2.5 rounded-xl crimson-btn text-white text-xs font-bold flex items-center gap-2 transition active:scale-95 shadow-md">
-          <i data-lucide="upload-cloud" class="w-4 h-4"></i> Upload Screenshot
-        </button>
+        <div class="flex items-center gap-3">
+          <!-- Sorting Selector -->
+          <select id="gallerySortSelect" onchange="renderGallery()" class="bg-voidLight border border-glassBorder rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-accent">
+            <option value="newest">Terbaru</option>
+            <option value="oldest">Terlama</option>
+            <option value="popular">Terpopuler (Likes)</option>
+          </select>
+          <button onclick="triggerUploadAction()" class="px-4 py-2.5 rounded-xl crimson-btn text-white text-xs font-bold flex items-center gap-2 transition active:scale-95 shadow-md">
+            <i data-lucide="upload-cloud" class="w-4 h-4"></i> Upload Screenshot
+          </button>
+        </div>
       </div>
       <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
     </section>
@@ -394,6 +402,7 @@
   </main>
 
   <!-- MODALS -->
+  <!-- Auth Modal (Daftar & Login) dengan Pilihan Platform -->
   <div id="userAuthModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
     <div class="clean-card w-full max-w-md rounded-2xl p-6 space-y-4">
       <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
@@ -410,6 +419,13 @@
         <div><label class="block font-semibold text-gray-300 mb-1">Nama Lengkap</label><input id="regName" type="text" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
         <div><label class="block font-semibold text-gray-300 mb-1">Alamat Gmail</label><input id="regEmail" type="email" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
         <div><label class="block font-semibold text-gray-300 mb-1">Minecraft IGN</label><input id="regNick" type="text" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
+        <div>
+          <label class="block font-semibold text-gray-300 mb-1">Platform Minecraft</label>
+          <select id="regPlatform" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none focus:border-accent">
+            <option value="Java">Java Edition (PC / Laptop)</option>
+            <option value="MCPE">Bedrock / MCPE (HP / Konsol)</option>
+          </select>
+        </div>
         <div><label class="block font-semibold text-gray-300 mb-1">Password</label><input id="regPass" type="password" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
         <button type="submit" class="w-full py-3 rounded-xl crimson-btn text-white font-bold text-xs shadow-md mt-2">Daftarkan Akun</button>
       </form>
@@ -418,6 +434,30 @@
         <div><label class="block font-semibold text-gray-300 mb-1">Gmail / Username</label><input id="loginEmail" type="text" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
         <div><label class="block font-semibold text-gray-300 mb-1">Password</label><input id="loginPass" type="password" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
         <button type="submit" class="w-full py-3 rounded-xl crimson-btn text-white font-bold text-xs shadow-md mt-2">Masuk ke Akun</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Profile Edit Modal -->
+  <div id="profileEditModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="clean-card w-full max-w-md rounded-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
+        <div class="flex items-center gap-2"><i data-lucide="user-cog" class="w-5 h-5 text-accent"></i><h3 class="font-bold text-white text-base">Edit Profil Akun</h3></div>
+        <button onclick="closeProfileModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+
+      <form onsubmit="event.preventDefault(); saveProfileEdit();" class="space-y-3 text-xs">
+        <div><label class="block font-semibold text-gray-300 mb-1">Nama Lengkap</label><input id="editProfileName" type="text" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
+        <div><label class="block font-semibold text-gray-300 mb-1">Minecraft IGN</label><input id="editProfileNick" type="text" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
+        <div>
+          <label class="block font-semibold text-gray-300 mb-1">Platform Minecraft</label>
+          <select id="editProfilePlatform" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white">
+            <option value="Java">Java Edition</option>
+            <option value="MCPE">Bedrock / MCPE</option>
+          </select>
+        </div>
+        <div><label class="block font-semibold text-gray-300 mb-1">Password Baru (Opsional)</label><input id="editProfilePass" type="password" placeholder="Kosongkan jika tidak diubah" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
+        <button type="submit" class="w-full py-3 rounded-xl crimson-btn text-white font-bold text-xs shadow-md mt-2">Simpan Perubahan Profil</button>
       </form>
     </div>
   </div>
@@ -556,12 +596,11 @@
 
   <!-- SCRIPT -->
   <script>
-    // URL GOOGLE APPS SCRIPT YANG DI-HARDCODE LANGSUNG DI KODE (Ganti dengan URL /exec Anda)
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwGUuN-x1cLteszpNFI-2lxUE8vp6uhoZY28Gg27lRM7he_u9FV-io6tOhCVoDc3S7t/exec";
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbywUKYkFS7QtcGrFT7UqLS3g3WIhjOPg4C6w9MRdw9BaPFqpGXk55gSLA4dEgyWzxrdIQ/exec";
     const CS_WHATSAPP_NUMBER = "628892910155";
 
     const SEED_USERS = [
-      { name: "Owner / Admin Mawi", email: "admin@mawi.com", nick: "AdminMawi", pass: "mawi2026", isAdmin: true }
+      { name: "Owner / Admin Mawi", email: "admin@mawi.com", nick: "AdminMawi", platform: "Java", pass: "mawi2026", isAdmin: true }
     ];
 
     const SEED_VOUCHERS = [
@@ -578,16 +617,16 @@
     ];
 
     const SEED_GALLERY = [
-      { id: "G-1", username: "SteveSantai", image_drive_url: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=70", status: "APPROVED" },
-      { id: "G-2", username: "AlexTeman", image_drive_url: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=70", status: "APPROVED" }
+      { id: "G-1", username: "SteveSantai", image_drive_url: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=70", status: "APPROVED", likes: 12, timestamp: Date.now() - 50000 },
+      { id: "G-2", username: "AlexTeman", image_drive_url: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=70", status: "APPROVED", likes: 25, timestamp: Date.now() - 100000 }
     ];
 
     const AppState = {
-      brandName: localStorage.getItem('mawi_brand_name') || 'MAWI SMP',
-      logoUrl: localStorage.getItem('mawi_logo_url') || 'https://api.dicebear.com/7.x/bottts/svg?seed=MawiSMP',
-      heroText: localStorage.getItem('mawi_hero_text') || 'Server Minecraft santai untuk bermain bersama teman, mencari sahabat baru, membangun rumah impian, dan have fun tanpa ribet!',
+      brandName: 'MAWI SMP',
+      logoUrl: 'https://api.dicebear.com/7.x/bottts/svg?seed=MawiSMP',
+      heroText: 'Server Minecraft santai untuk bermain bersama teman, mencari sahabat baru, membangun rumah impian, dan have fun tanpa ribet!',
       currentUser: JSON.parse(localStorage.getItem('mawi_auth_user') || 'null'),
-      registeredUsers: JSON.parse(localStorage.getItem('mawi_registered_users') || 'null') || [...SEED_USERS],
+      registeredUsers: [...SEED_USERS],
       cart: JSON.parse(localStorage.getItem('mawi_cart') || '[]'),
       appliedVoucher: null,
       currentCategory: 'Ranks',
@@ -599,32 +638,33 @@
 
     window.addEventListener('DOMContentLoaded', async () => {
       lucide.createIcons();
-      applyBrandingUI();
-      updateUserHeaderUI();
-      updateCartBadge();
       initCaptcha();
-      
-      // Ambil data live dari Google Sheets
       await loadDataFromSheets();
     });
 
     async function loadDataFromSheets() {
-      if (GAS_WEB_APP_URL.includes("MASUKKAN_URL")) {
-        renderProducts();
-        renderGallery();
-        return;
-      }
-      try {
-        const res = await fetch(GAS_WEB_APP_URL);
-        const json = await res.json();
-        if (json.status === 'success') {
-          if (json.products && json.products.length > 0) AppState.products = json.products;
-          if (json.vouchers && json.vouchers.length > 0) AppState.vouchers = json.vouchers;
-          if (json.gallery && json.gallery.length > 0) AppState.gallery = json.gallery;
+      if (!GAS_WEB_APP_URL.includes("MASUKKAN_URL")) {
+        try {
+          const res = await fetch(GAS_WEB_APP_URL);
+          const json = await res.json();
+          if (json.status === 'success') {
+            if (json.products && json.products.length > 0) AppState.products = json.products;
+            if (json.vouchers && json.vouchers.length > 0) AppState.vouchers = json.vouchers;
+            if (json.gallery && json.gallery.length > 0) AppState.gallery = json.gallery;
+            if (json.users && json.users.length > 0) AppState.registeredUsers = json.users;
+            if (json.settings) {
+              if (json.settings.brandName) AppState.brandName = json.settings.brandName;
+              if (json.settings.logoUrl) AppState.logoUrl = json.settings.logoUrl;
+              if (json.settings.heroText) AppState.heroText = json.settings.heroText;
+            }
+          }
+        } catch (e) {
+          console.warn("Menggunakan data lokal cadangan.");
         }
-      } catch (e) {
-        console.warn("Menggunakan data lokal.");
       }
+      applyBrandingUI();
+      updateUserHeaderUI();
+      updateCartBadge();
       renderProducts();
       renderGallery();
     }
@@ -634,7 +674,7 @@
       try {
         await fetch(GAS_WEB_APP_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // Bypass CORS
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload)
         });
       } catch (e) {
@@ -752,6 +792,7 @@
       const name = document.getElementById('regName').value.trim();
       const email = document.getElementById('regEmail').value.trim().toLowerCase();
       const nick = document.getElementById('regNick').value.trim();
+      const platform = document.getElementById('regPlatform').value;
       const pass = document.getElementById('regPass').value.trim();
 
       if (!name || !email || !nick || !pass) return showToast('Semua kolom wajib diisi!', 'error');
@@ -764,16 +805,16 @@
       }
 
       const isAdmin = (email === 'admin@mawi.com' || nick.toLowerCase() === 'admin');
-      const newUser = { name, email, nick, pass, isAdmin };
+      const newUser = { name, email, nick, platform, pass, isAdmin };
       AppState.registeredUsers.push(newUser);
-      localStorage.setItem('mawi_registered_users', JSON.stringify(AppState.registeredUsers));
+      syncToSheets({ action: 'saveUser', user: newUser });
 
-      AppState.currentUser = { name, email, nick, isAdmin };
+      AppState.currentUser = { name, email, nick, platform, isAdmin };
       localStorage.setItem('mawi_auth_user', JSON.stringify(AppState.currentUser));
 
       updateUserHeaderUI();
       closeAuthModal();
-      showToast(`Selamat datang ${name}! Akun terdaftar.`);
+      showToast(`Selamat datang ${name} (${platform})! Akun terdaftar.`);
     }
 
     function handleUserLogin() {
@@ -782,11 +823,11 @@
 
       let user = AppState.registeredUsers.find(u => (u.email.toLowerCase() === emailInput || u.nick.toLowerCase() === emailInput) && u.pass === passInput);
       if (!user && (emailInput === 'admin' || emailInput === 'admin@mawi.com') && passInput === 'mawi2026') {
-        user = { name: "Owner / Admin Mawi", email: "admin@mawi.com", nick: "AdminMawi", isAdmin: true };
+        user = { name: "Owner / Admin Mawi", email: "admin@mawi.com", nick: "AdminMawi", platform: "Java", isAdmin: true };
       }
 
       if (user) {
-        AppState.currentUser = { name: user.name, email: user.email, nick: user.nick, isAdmin: !!user.isAdmin };
+        AppState.currentUser = { name: user.name, email: user.email, nick: user.nick, platform: user.platform || 'Java', isAdmin: !!user.isAdmin };
         localStorage.setItem('mawi_auth_user', JSON.stringify(AppState.currentUser));
         updateUserHeaderUI();
         closeAuthModal();
@@ -804,6 +845,46 @@
       showToast('Anda telah keluar.');
     }
 
+    function openProfileModal() {
+      if (!AppState.currentUser) return;
+      document.getElementById('editProfileName').value = AppState.currentUser.name;
+      document.getElementById('editProfileNick').value = AppState.currentUser.nick;
+      document.getElementById('editProfilePlatform').value = AppState.currentUser.platform || 'Java';
+      document.getElementById('editProfilePass').value = '';
+      document.getElementById('profileEditModal').classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closeProfileModal() {
+      document.getElementById('profileEditModal').classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function saveProfileEdit() {
+      const name = document.getElementById('editProfileName').value.trim();
+      const nick = document.getElementById('editProfileNick').value.trim();
+      const platform = document.getElementById('editProfilePlatform').value;
+      const pass = document.getElementById('editProfilePass').value.trim();
+
+      if (!name || !nick) return showToast('Nama dan IGN wajib diisi!', 'error');
+
+      AppState.currentUser.name = name;
+      AppState.currentUser.nick = nick;
+      AppState.currentUser.platform = platform;
+
+      let userRecord = AppState.registeredUsers.find(u => u.email === AppState.currentUser.email);
+      if (userRecord) {
+        userRecord.name = name;
+        userRecord.nick = nick;
+        userRecord.platform = platform;
+        if (pass) userRecord.pass = pass;
+        syncToSheets({ action: 'saveUser', user: userRecord });
+      }
+
+      localStorage.setItem('mawi_auth_user', JSON.stringify(AppState.currentUser));
+      updateUserHeaderUI();
+      closeProfileModal();
+      showToast('Profil akun berhasil diperbarui!');
+    }
+
     function updateUserHeaderUI() {
       const userArea = document.getElementById('userHeaderArea');
       const drawerInfo = document.getElementById('drawerAccountInfo');
@@ -814,17 +895,21 @@
         else adminDrawerSection.classList.add('hidden');
 
         userArea.innerHTML = `
-          <div class="flex items-center gap-2 bg-clean-panel border border-glassBorder px-3 py-1.5 rounded-full text-xs">
+          <div class="flex items-center gap-2 bg-clean-panel border border-glassBorder px-3 py-1.5 rounded-full text-xs cursor-pointer" onclick="openProfileModal()" title="Klik untuk edit profil">
             <span class="w-2 h-2 rounded-full ${AppState.currentUser.isAdmin ? 'bg-accent animate-ping' : 'bg-emerald-400'}"></span>
             <span class="text-white font-bold max-w-[85px] sm:max-w-none truncate">${AppState.currentUser.nick}</span>
+            <span class="text-[9px] bg-void px-1.5 py-0.5 rounded text-accent border border-glassBorder">${AppState.currentUser.platform || 'Java'}</span>
             ${AppState.currentUser.isAdmin ? '<span class="text-[9px] bg-burgundy px-1.5 py-0.5 rounded text-white font-bold">STAFF</span>' : ''}
-            <button onclick="handleUserLogout()" class="text-gray-400 hover:text-rose-400 ml-1"><i data-lucide="log-out" class="w-3.5 h-3.5"></i></button>
+            <button onclick="event.stopPropagation(); handleUserLogout();" class="text-gray-400 hover:text-rose-400 ml-1"><i data-lucide="log-out" class="w-3.5 h-3.5"></i></button>
           </div>
         `;
         drawerInfo.innerHTML = `
-          <div class="flex items-center justify-between">
-            <div><span class="text-white font-bold">${AppState.currentUser.name}</span><span class="text-[10px] text-gray-400 block">${AppState.currentUser.email}</span></div>
-            <button onclick="handleUserLogout()" class="px-2 py-1 bg-void border border-glassBorder text-rose-400 rounded text-[10px]">Logout</button>
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <div><span class="text-white font-bold">${AppState.currentUser.name}</span><span class="text-[10px] text-gray-400 block">${AppState.currentUser.email} (${AppState.currentUser.platform || 'Java'})</span></div>
+              <button onclick="openProfileModal(); toggleDrawer(false);" class="px-2 py-1 bg-void border border-glassBorder text-accent rounded text-[10px] font-semibold">Edit</button>
+            </div>
+            <button onclick="handleUserLogout()" class="w-full py-1.5 bg-rose-950/40 border border-rose-500/30 text-rose-300 rounded text-[10px] font-bold">Logout</button>
           </div>
         `;
       } else {
@@ -1015,7 +1100,7 @@
       let discount = AppState.appliedVoucher ? Math.floor(subtotal * (AppState.appliedVoucher.discount_percent / 100)) : 0;
       const formattedTotal = `Rp ${(subtotal - discount).toLocaleString('id-ID')}`;
 
-      const message = `Halo CS Mawi saya ingin membeli ${itemsSummary} (Total: ${formattedTotal}), dengan nick ${nick} di Mawi SMP`;
+      const message = `Halo CS Mawi saya ingin membeli ${itemsSummary} (Total: ${formattedTotal}), dengan nick ${nick} (${AppState.currentUser ? AppState.currentUser.platform : 'Java'}) di Mawi SMP`;
       window.open(`https://wa.me/${CS_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
       closeCartModal();
     }
@@ -1031,7 +1116,8 @@
       const n1 = Math.floor(Math.random() * 5) + 2;
       const n2 = Math.floor(Math.random() * 5) + 1;
       AppState.captchaAns = n1 + n2;
-      document.getElementById('galleryCaptchaQuestion').innerText = `${n1} + ${n2} = ?`;
+      const q = document.getElementById('galleryCaptchaQuestion');
+      if (q) q.innerText = `${n1} + ${n2} = ?`;
     }
 
     function triggerUploadAction() {
@@ -1048,21 +1134,55 @@
 
     function closeUploadModal() { document.getElementById('uploadModal').classList.add('opacity-0', 'pointer-events-none'); }
 
+    // --- RENDER GALERI DENGAN SORTING (Terbaru, Terlama, Terpopuler) ---
     function renderGallery() {
       const container = document.getElementById('galleryGrid');
       if (!container) return;
       container.innerHTML = '';
-      const approved = AppState.gallery.filter(g => g.status === 'APPROVED');
-      if (approved.length === 0) { container.innerHTML = `<div class="col-span-full text-center py-8 text-gray-400 text-xs">Belum ada screenshot.</div>`; return; }
-      approved.forEach(item => {
+
+      let list = AppState.gallery.filter(g => g.status === 'APPROVED');
+      const sortVal = document.getElementById('gallerySortSelect')?.value || 'newest';
+
+      if (sortVal === 'newest') {
+        list.sort((a, b) => Number(b.timestamp || 0) - Number(a.timestamp || 0));
+      } else if (sortVal === 'oldest') {
+        list.sort((a, b) => Number(a.timestamp || 0) - Number(b.timestamp || 0));
+      } else if (sortVal === 'popular') {
+        list.sort((a, b) => Number(b.likes || 0) - Number(a.likes || 0));
+      }
+
+      if (list.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-center py-8 text-gray-400 text-xs"> Belum ada screenshot yang disetujui.</div>`;
+        return;
+      }
+
+      list.forEach(item => {
         container.innerHTML += `
-          <div class="clean-card rounded-xl overflow-hidden">
-            <div class="relative aspect-video bg-voidLight"><img src="${item.image_drive_url}" class="w-full h-full object-cover">
-              <div class="absolute bottom-0 inset-x-0 bg-black/70 p-2 text-[11px] text-white font-medium">👤 ${item.username}</div>
+          <div class="clean-card rounded-xl overflow-hidden flex flex-col justify-between">
+            <div class="relative aspect-video bg-voidLight">
+              <img src="${item.image_drive_url}" alt="Screenshot" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500'">
+              <div class="absolute bottom-0 inset-x-0 bg-black/70 p-2 text-[11px] text-white font-medium flex items-center justify-between">
+                <span>👤 ${item.username}</span>
+                <button onclick="likePhoto('${item.id}')" class="flex items-center gap-1 text-accent hover:text-white transition">
+                  <i data-lucide="heart" class="w-3.5 h-3.5 fill-accent"></i>
+                  <span class="font-bold">${item.likes || 0}</span>
+                </button>
+              </div>
             </div>
           </div>
         `;
       });
+      lucide.createIcons();
+    }
+
+    function likePhoto(id) {
+      const item = AppState.gallery.find(g => g.id === id);
+      if (item) {
+        item.likes = (Number(item.likes) || 0) + 1;
+        syncToSheets({ action: 'likeGallery', id: id, likes: item.likes });
+        renderGallery();
+        showToast('Suka diberikan!');
+      }
     }
 
     function submitGalleryUpload() {
@@ -1073,9 +1193,19 @@
 
       const reader = new FileReader();
       reader.onload = function(e) {
-        AppState.gallery.push({ id: 'G-' + Date.now(), username: AppState.currentUser.nick, image_drive_url: e.target.result, status: 'PENDING' });
+        const newPhoto = {
+          id: 'G-' + Date.now(),
+          username: AppState.currentUser.nick,
+          image_drive_url: e.target.result,
+          status: 'PENDING',
+          likes: 0,
+          timestamp: Date.now()
+        };
+        AppState.gallery.push(newPhoto);
+        syncToSheets({ action: 'uploadGallery', photo: newPhoto });
         closeUploadModal();
         showToast('Screenshot terkirim! Menunggu persetujuan admin.');
+        renderGallery();
       };
       reader.readAsDataURL(fileInput.files[0]);
     }
@@ -1258,11 +1388,18 @@
 
     function approveGallery(id) {
       const item = AppState.gallery.find(g => g.id === id);
-      if (item) { item.status = 'APPROVED'; renderAdminGallery(); renderGallery(); showToast('Disetujui.'); }
+      if (item) {
+        item.status = 'APPROVED';
+        syncToSheets({ action: 'updateGalleryStatus', id: id, status: 'APPROVED' });
+        renderAdminGallery();
+        renderGallery();
+        showToast('Disetujui.');
+      }
     }
 
     function deleteGalleryItem(id) {
       AppState.gallery = AppState.gallery.filter(g => g.id !== id);
+      syncToSheets({ action: 'deleteGallery', id: id });
       renderAdminGallery();
       renderGallery();
       showToast('Dihapus.');
@@ -1273,12 +1410,13 @@
       AppState.logoUrl = document.getElementById('settingLogoUrl').value.trim() || AppState.logoUrl;
       AppState.heroText = document.getElementById('settingHeroText').value.trim() || AppState.heroText;
 
-      localStorage.setItem('mawi_brand_name', AppState.brandName);
-      localStorage.setItem('mawi_logo_url', AppState.logoUrl);
-      localStorage.setItem('mawi_hero_text', AppState.heroText);
+      syncToSheets({
+        action: 'saveSettings',
+        settings: { brandName: AppState.brandName, logoUrl: AppState.logoUrl, heroText: AppState.heroText }
+      });
 
       applyBrandingUI();
-      showToast('Pengaturan web tersimpan!');
+      showToast('Pengaturan web tersimpan & disync ke database!');
     }
   </script>
 </body>
