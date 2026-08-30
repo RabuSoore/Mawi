@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="id" class="dark">
 <head>
@@ -61,9 +61,39 @@
       from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* Preloader Styles */
+    #preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background-color: #0B080F;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+    .spinner-logo {
+      animation: spinLogo 1.2s linear infinite;
+    }
+    @keyframes spinLogo {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.1); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-burgundy selection:text-white">
+
+  <!-- PRELOADER DENGAN LOGO BERPUTAR -->
+  <div id="preloader">
+    <div class="w-16 h-16 rounded-2xl bg-burgundy/30 border border-burgundy p-2 flex items-center justify-center spinner-logo shadow-2xl mb-4">
+      <img id="preloaderLogoImg" src="https://api.dicebear.com/7.x/bottts/svg?seed=MawiSMP" alt="Logo" class="w-full h-full object-cover rounded-xl"/>
+    </div>
+    <div class="text-white font-black tracking-widest text-sm uppercase">MAWI <span class="text-accent">SMP</span></div>
+    <p class="text-gray-400 text-[11px] mt-1 tracking-wider">Menyiapkan dunia server...</p>
+  </div>
 
   <!-- TOP HEADER -->
   <header class="fixed top-0 left-0 right-0 z-40 bg-[#0B080F]/95 border-b border-glassBorder h-18 py-3">
@@ -291,7 +321,6 @@
           <p class="text-gray-400 text-xs">Kumpulan screenshot keseruan dan momen bermain komunitas Mawi.</p>
         </div>
         <div class="flex items-center gap-3">
-          <!-- Sorting Selector -->
           <select id="gallerySortSelect" onchange="renderGallery()" class="bg-voidLight border border-glassBorder rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-accent">
             <option value="newest">Terbaru</option>
             <option value="oldest">Terlama</option>
@@ -402,7 +431,6 @@
   </main>
 
   <!-- MODALS -->
-  <!-- Auth Modal (Daftar & Login) dengan Pilihan Platform -->
   <div id="userAuthModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
     <div class="clean-card w-full max-w-md rounded-2xl p-6 space-y-4">
       <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
@@ -623,7 +651,7 @@
 
     const AppState = {
       brandName: 'MAWI SMP',
-      logoUrl: 'https://cdn.phototourl.com/free/2026-08-30-af9c7098-c5a9-491f-9c28-60a5e05fb416.png',
+      logoUrl: 'https://api.dicebear.com/7.x/bottts/svg?seed=MawiSMP',
       heroText: 'Server Minecraft santai untuk bermain bersama teman, mencari sahabat baru, membangun rumah impian, dan have fun tanpa ribet!',
       currentUser: JSON.parse(localStorage.getItem('mawi_auth_user') || 'null'),
       registeredUsers: [...SEED_USERS],
@@ -640,6 +668,16 @@
       lucide.createIcons();
       initCaptcha();
       await loadDataFromSheets();
+      
+      // Hilangkan preloader setelah semua data siap
+      setTimeout(() => {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+          preloader.style.opacity = '0';
+          preloader.style.visibility = 'hidden';
+          setTimeout(() => preloader.remove(), 400);
+        }
+      }, 500);
     });
 
     async function loadDataFromSheets() {
@@ -654,7 +692,10 @@
             if (json.users && json.users.length > 0) AppState.registeredUsers = json.users;
             if (json.settings) {
               if (json.settings.brandName) AppState.brandName = json.settings.brandName;
-              if (json.settings.logoUrl) AppState.logoUrl = json.settings.logoUrl;
+              if (json.settings.logoUrl) {
+                AppState.logoUrl = json.settings.logoUrl;
+                document.getElementById('preloaderLogoImg').src = json.settings.logoUrl;
+              }
               if (json.settings.heroText) AppState.heroText = json.settings.heroText;
             }
           }
@@ -1134,7 +1175,6 @@
 
     function closeUploadModal() { document.getElementById('uploadModal').classList.add('opacity-0', 'pointer-events-none'); }
 
-    // --- RENDER GALERI DENGAN SORTING (Terbaru, Terlama, Terpopuler) ---
     function renderGallery() {
       const container = document.getElementById('galleryGrid');
       if (!container) return;
