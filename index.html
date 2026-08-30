@@ -6,14 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mawi SMP | Official Store & Komunitas Minecraft</title>
   
-  <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <script>
@@ -49,41 +46,16 @@
       overflow-x: hidden;
       -webkit-tap-highlight-color: transparent;
     }
-    
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #0B080F;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #2E233D;
-      border-radius: 3px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #8B1E3F;
-    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0B080F; }
+    ::-webkit-scrollbar-thumb { background: #2E233D; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #8B1E3F; }
 
-    .clean-panel {
-      background-color: #140F1D;
-      border: 1px solid #2E233D;
-    }
-
-    .clean-card {
-      background-color: #1A1424;
-      border: 1px solid #2E233D;
-    }
-
-    .crimson-btn {
-      background: linear-gradient(135deg, #8B1E3F 0%, #70142C 100%);
-    }
-    .crimson-btn:hover {
-      background: linear-gradient(135deg, #A8254D 0%, #8B1E3F 100%);
-    }
-
-    .fade-in {
-      animation: quickFade 0.2s ease-out forwards;
-    }
+    .clean-panel { background-color: #140F1D; border: 1px solid #2E233D; }
+    .clean-card { background-color: #1A1424; border: 1px solid #2E233D; }
+    .crimson-btn { background: linear-gradient(135deg, #8B1E3F 0%, #70142C 100%); }
+    .crimson-btn:hover { background: linear-gradient(135deg, #A8254D 0%, #8B1E3F 100%); }
+    .fade-in { animation: quickFade 0.2s ease-out forwards; }
 
     @keyframes quickFade {
       from { opacity: 0; transform: translateY(4px); }
@@ -93,12 +65,9 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-burgundy selection:text-white">
 
-  <!-- ========================================== -->
-  <!-- 1. TOP HEADER                              -->
-  <!-- ========================================== -->
+  <!-- TOP HEADER -->
   <header class="fixed top-0 left-0 right-0 z-40 bg-[#0B080F]/95 border-b border-glassBorder h-18 py-3">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between">
-      
       <div class="flex items-center gap-3 cursor-pointer" onclick="navigate('home')">
         <div class="w-10 h-10 rounded-xl bg-burgundy/30 border border-burgundy p-0.5 flex items-center justify-center shrink-0 overflow-hidden">
           <img id="headerLogoImg" src="https://api.dicebear.com/7.x/bottts/svg?seed=MawiSMP" alt="Logo" class="w-full h-full object-cover rounded-[9px]" onerror="this.src='https://api.dicebear.com/7.x/shapes/svg?seed=Mawi'"/>
@@ -113,41 +82,32 @@
 
       <div class="flex items-center gap-2 sm:gap-3">
         <div id="userHeaderArea"></div>
-
-        <button onclick="openCartModal()" class="relative p-2.5 rounded-xl bg-clean-panel border border-glassBorder hover:border-accent text-gray-200 transition" aria-label="Keranjang Belanja">
+        <button onclick="openCartModal()" class="relative p-2.5 rounded-xl bg-clean-panel border border-glassBorder hover:border-accent text-gray-200 transition" aria-label="Keranjang">
           <i data-lucide="shopping-bag" class="w-5 h-5"></i>
           <span id="headerCartCount" class="absolute -top-1 -right-1 bg-accent text-white font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center scale-0 transition-transform">0</span>
         </button>
-
-        <button onclick="toggleDrawer(true)" class="p-2.5 rounded-xl bg-clean-panel border border-glassBorder text-gray-200 hover:text-white" aria-label="Buka Menu">
+        <button onclick="toggleDrawer(true)" class="p-2.5 rounded-xl bg-clean-panel border border-glassBorder text-gray-200 hover:text-white" aria-label="Menu">
           <i data-lucide="menu" class="w-5 h-5"></i>
         </button>
       </div>
-
     </div>
   </header>
 
-  <!-- ========================================== -->
-  <!-- 2. DRAWER SIDEBAR NAVIGATION               -->
-  <!-- ========================================== -->
+  <!-- DRAWER NAVIGATION -->
   <div id="drawerOverlay" class="fixed inset-0 bg-black/70 z-50 opacity-0 pointer-events-none transition-opacity duration-200" onclick="toggleDrawer(false)">
     <div id="drawerPanel" class="fixed right-0 top-0 bottom-0 w-72 max-w-[80vw] bg-voidLight border-l border-glassBorder p-5 flex flex-col justify-between transform translate-x-full transition-transform duration-200 ease-out" onclick="event.stopPropagation()">
-      
       <div>
         <div class="flex items-center justify-between pb-4 border-b border-glassBorder">
           <div class="flex items-center gap-2">
             <i data-lucide="compass" class="w-5 h-5 text-accent"></i>
             <h2 class="text-base font-bold text-white">Menu Navigasi</h2>
           </div>
-          <button onclick="toggleDrawer(false)" class="p-1 text-gray-400 hover:text-white">
-            <i data-lucide="x" class="w-5 h-5"></i>
-          </button>
+          <button onclick="toggleDrawer(false)" class="p-1 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
 
         <nav class="mt-4 space-y-1.5 text-sm font-medium">
           <button onclick="navigate('home')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
-            <i data-lucide="home" class="w-4 h-4"></i>
-            <span>Home & Server Info</span>
+            <i data-lucide="home" class="w-4 h-4"></i><span>Home & Server Info</span>
           </button>
           <button onclick="navigate('store')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
             <i data-lucide="shopping-cart" class="w-4 h-4"></i>
@@ -157,24 +117,18 @@
             </div>
           </button>
           <button onclick="navigate('rules')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
-            <i data-lucide="book-open" class="w-4 h-4"></i>
-            <span>Aturan & Terms of Service</span>
+            <i data-lucide="book-open" class="w-4 h-4"></i><span>Aturan & TOS</span>
           </button>
           <button onclick="navigate('gallery')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
-            <i data-lucide="image" class="w-4 h-4"></i>
-            <span>Galeri Komunitas</span>
+            <i data-lucide="image" class="w-4 h-4"></i><span>Galeri Komunitas</span>
           </button>
           <button onclick="navigate('community')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
-            <i data-lucide="users" class="w-4 h-4"></i>
-            <span>Grup WhatsApp & Discord</span>
+            <i data-lucide="users" class="w-4 h-4"></i><span>Grup WhatsApp & Discord</span>
           </button>
           
           <div id="adminDrawerSection" class="pt-3 mt-3 border-t border-glassBorder hidden">
             <button onclick="navigate('admin')" class="w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-rose-300 bg-burgundy/20 border border-burgundy/40 hover:bg-burgundy/40 transition text-left text-xs font-bold">
-              <span class="flex items-center gap-2.5">
-                <i data-lucide="shield-check" class="w-4 h-4 text-accent"></i>
-                <span>Staff / Admin Panel</span>
-              </span>
+              <span class="flex items-center gap-2.5"><i data-lucide="shield-check" class="w-4 h-4 text-accent"></i><span>Staff / Admin Panel</span></span>
               <span class="text-[9px] bg-accent px-1.5 py-0.5 rounded text-white font-mono">STAFF</span>
             </button>
           </div>
@@ -182,16 +136,13 @@
       </div>
 
       <div id="drawerAccountInfo" class="pt-4 border-t border-glassBorder text-xs text-gray-400"></div>
-
     </div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- 3. MAIN ROUTER / CONTENT                   -->
-  <!-- ========================================== -->
+  <!-- MAIN CONTENT CONTAINER -->
   <main class="flex-grow pt-24 pb-12 px-4 sm:px-6 max-w-6xl mx-auto w-full">
 
-    <!-- VIEW 1: HOME -->
+    <!-- HOME VIEW -->
     <section id="section-home" class="fade-in space-y-8">
       <div class="clean-card rounded-2xl p-6 sm:p-10 text-center relative overflow-hidden">
         <div class="max-w-2xl mx-auto space-y-4">
@@ -199,24 +150,18 @@
             <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
             MINECRAFT INDONESIA JAVA & BEDROCK (MCPE)
           </div>
-
           <h1 class="text-3xl sm:text-5xl font-black text-white leading-tight tracking-tight">
-            Selamat Datang di <br/>
-            <span class="text-accent" id="heroServerTitle">MAWI SMP</span>
+            Selamat Datang di <br/><span class="text-accent" id="heroServerTitle">MAWI SMP</span>
           </h1>
-
           <p id="heroAnnouncementText" class="text-gray-300 text-xs sm:text-sm leading-relaxed">
             Server Minecraft santai untuk bermain bersama teman, mencari sahabat baru, membangun rumah impian, dan have fun tanpa ribet!
           </p>
-
           <div class="pt-3 flex flex-wrap justify-center gap-3">
             <button onclick="navigate('store')" class="px-6 py-3 rounded-xl crimson-btn text-white text-xs sm:text-sm font-bold flex items-center gap-2 transition active:scale-95 shadow-md">
-              <i data-lucide="shopping-bag" class="w-4 h-4"></i>
-              Lihat Mawi Store
+              <i data-lucide="shopping-bag" class="w-4 h-4"></i> Lihat Mawi Store
             </button>
             <button onclick="navigate('rules')" class="px-5 py-3 rounded-xl bg-clean-panel hover:bg-glassBorder text-gray-200 text-xs sm:text-sm font-semibold border border-glassBorder flex items-center gap-2 transition">
-              <i data-lucide="book-open" class="w-4 h-4"></i>
-              Aturan Bermain
+              <i data-lucide="book-open" class="w-4 h-4"></i> Aturan Bermain
             </button>
           </div>
         </div>
@@ -225,40 +170,29 @@
       <div class="clean-card rounded-2xl p-6 sm:p-8 space-y-6">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <div class="p-2.5 bg-burgundy/30 rounded-xl text-accent">
-              <i data-lucide="server" class="w-5 h-5"></i>
-            </div>
+            <div class="p-2.5 bg-burgundy/30 rounded-xl text-accent"><i data-lucide="server" class="w-5 h-5"></i></div>
             <div>
               <h3 class="text-base font-bold text-white">Alamat Server (Server IP)</h3>
               <p class="text-xs text-gray-400">Bisa dimainkan bersama dari HP (Bedrock/MCPE) & Laptop (Java)</p>
             </div>
           </div>
-          <span class="text-[11px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full">
-            Crossplay Ready
-          </span>
+          <span class="text-[11px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full">Crossplay Ready</span>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div class="p-4 rounded-xl bg-voidLight border border-glassBorder flex items-center justify-between gap-4">
             <div>
-              <div class="flex items-center gap-2">
-                <span class="text-xs font-bold uppercase text-accent">Java Edition</span>
-                <span class="text-[10px] text-gray-400">PC / Laptop</span>
-              </div>
+              <div class="flex items-center gap-2"><span class="text-xs font-bold uppercase text-accent">Java Edition</span><span class="text-[10px] text-gray-400">PC / Laptop</span></div>
               <div class="text-base font-mono font-bold text-white mt-1">mawi.my.id</div>
             </div>
             <button onclick="copyToClipboard('mawi.my.id', 'IP Java Berhasil Disalin!')" class="p-2 rounded-lg bg-burgundy hover:bg-burgundy-light text-white text-xs font-semibold flex items-center gap-1.5 transition">
-              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-              <span>Salin</span>
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i><span>Salin</span>
             </button>
           </div>
 
           <div class="p-4 rounded-xl bg-voidLight border border-glassBorder flex items-center justify-between gap-4">
             <div>
-              <div class="flex items-center gap-2">
-                <span class="text-xs font-bold uppercase text-accent">Bedrock / MCPE</span>
-                <span class="text-[10px] text-gray-400">Port: 19132</span>
-              </div>
+              <div class="flex items-center gap-2"><span class="text-xs font-bold uppercase text-accent">Bedrock / MCPE</span><span class="text-[10px] text-gray-400">Port: 19132</span></div>
               <div class="text-base font-mono font-bold text-white mt-1">mawi.my.id : 19132</div>
             </div>
             <div class="flex gap-1.5">
@@ -266,8 +200,7 @@
                 <i data-lucide="copy" class="w-3.5 h-3.5"></i>
               </button>
               <a href="minecraft://?addExternalServer=Mawi%20SMP|mawi.my.id:19132" class="p-2 rounded-lg bg-burgundy hover:bg-burgundy-light text-white text-xs font-semibold flex items-center gap-1 transition">
-                <i data-lucide="play" class="w-3.5 h-3.5"></i>
-                <span>Main</span>
+                <i data-lucide="play" class="w-3.5 h-3.5"></i><span>Main</span>
               </a>
             </div>
           </div>
@@ -275,7 +208,7 @@
       </div>
     </section>
 
-    <!-- VIEW 2: STORE -->
+    <!-- STORE VIEW -->
     <section id="section-store" class="hidden fade-in space-y-6">
       <div class="clean-card rounded-2xl p-6 border border-glassBorder flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -283,14 +216,9 @@
           <h2 class="text-2xl font-black text-white mt-0.5">Donasi & Rank Toko Mawi</h2>
           <p class="text-gray-400 text-xs mt-0.5">Dukung operasional server dan dapatkan titel keren in-game.</p>
         </div>
-
         <div class="flex items-center gap-2 bg-voidLight p-1 rounded-xl border border-glassBorder shrink-0">
-          <button id="tab-btn-ranks" onclick="filterStoreCategory('Ranks')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition bg-burgundy text-white">
-            In-Game Ranks
-          </button>
-          <button id="tab-btn-coins" onclick="filterStoreCategory('Coins')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition text-gray-400 hover:text-white">
-            Coins / Items
-          </button>
+          <button id="tab-btn-ranks" onclick="filterStoreCategory('Ranks')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition bg-burgundy text-white">In-Game Ranks</button>
+          <button id="tab-btn-coins" onclick="filterStoreCategory('Coins')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition text-gray-400 hover:text-white">Coins / Items</button>
         </div>
       </div>
 
@@ -302,18 +230,16 @@
       <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
     </section>
 
-    <!-- VIEW 3: SERVER RULES & DETAILED TOS -->
+    <!-- RULES VIEW -->
     <section id="section-rules" class="hidden fade-in space-y-6 max-w-3xl mx-auto">
       <div class="text-center space-y-1">
         <h2 class="text-2xl sm:text-3xl font-bold text-white">Aturan Server & Ketentuan (TOS)</h2>
         <p class="text-gray-400 text-xs">Panduan bermain demi kenyamanan bersama dan transparansi penggunaan dana donasi.</p>
       </div>
 
-      <!-- TRANSPARANSI DANA DONASI & STRICT TOS BANNER -->
       <div class="rounded-2xl p-6 crimson-btn border border-accent text-white space-y-3 shadow-lg">
         <div class="flex items-center gap-2 text-rose-200 font-bold uppercase tracking-wider text-xs">
-          <i data-lucide="shield-alert" class="w-4 h-4"></i>
-          KEBIJAKAN & PENGGUNAAN DANA (TOS)
+          <i data-lucide="shield-alert" class="w-4 h-4"></i> KEBIJAKAN & PENGGUNAAN DANA (TOS)
         </div>
         <h3 class="text-sm font-extrabold leading-relaxed">
           1. Semua item, rank, dan coin yang sudah dibeli TIDAK DAPAT DI-REFUND/DIKEMBALIKAN dalam bentuk apapun (Final).
@@ -326,63 +252,38 @@
         </p>
       </div>
 
-      <!-- Detail Aturan Server Lengkap -->
       <div class="space-y-3">
         <div class="clean-card rounded-xl overflow-hidden">
           <button onclick="toggleAccordion('rule-1')" class="w-full p-4 text-left font-semibold text-white flex items-center justify-between hover:bg-glass transition text-sm">
-            <span class="flex items-center gap-2.5">
-              <span class="w-5 h-5 rounded-full bg-burgundy/40 text-accent text-xs flex items-center justify-center font-bold">1</span>
-              Dilarang Menggunakan Cheat / Klien Ilegal
-            </span>
+            <span class="flex items-center gap-2.5"><span class="w-5 h-5 rounded-full bg-burgundy/40 text-accent text-xs flex items-center justify-center font-bold">1</span>Dilarang Menggunakan Cheat / Klien Ilegal</span>
             <i id="rule-1-icon" data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform"></i>
           </button>
           <div id="rule-1-content" class="hidden px-5 pb-4 text-xs text-gray-300 space-y-2 border-t border-glassBorder pt-3">
-            <p>Dilarang keras memakai X-ray, Fly, KillAura, Baritone berlebih, atau modifikasi klien apa pun yang memberikan keuntungan tidak adil. Pelanggar akan langsung di-ban permanen tanpa toleransi.</p>
+            <p>Dilarang keras memakai X-ray, Fly, KillAura, atau modifikasi klien apa pun yang memberikan keuntungan tidak adil. Pelanggar akan langsung di-ban permanen.</p>
           </div>
         </div>
-
         <div class="clean-card rounded-xl overflow-hidden">
           <button onclick="toggleAccordion('rule-2')" class="w-full p-4 text-left font-semibold text-white flex items-center justify-between hover:bg-glass transition text-sm">
-            <span class="flex items-center gap-2.5">
-              <span class="w-5 h-5 rounded-full bg-burgundy/40 text-accent text-xs flex items-center justify-center font-bold">2</span>
-              Tata Krama, SARA, dan Larangan Toxic
-            </span>
+            <span class="flex items-center gap-2.5"><span class="w-5 h-5 rounded-full bg-burgundy/40 text-accent text-xs flex items-center justify-center font-bold">2</span>Tata Krama, SARA, dan Larangan Toxic</span>
             <i id="rule-2-icon" data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform"></i>
           </button>
           <div id="rule-2-content" class="hidden px-5 pb-4 text-xs text-gray-300 space-y-2 border-t border-glassBorder pt-3">
-            <p>Hormati sesama pemain dan staf. Segala bentuk ucapan rasis, SARA, pelecehan, ancaman di dunia nyata, atau spam berlebihan di chat publik akan berujung mute atau ban.</p>
+            <p>Hormati sesama pemain dan staf. Segala bentuk ucapan rasis, SARA, pelecehan, atau spam berlebihan di chat publik akan berujung mute atau ban.</p>
           </div>
         </div>
-
         <div class="clean-card rounded-xl overflow-hidden">
           <button onclick="toggleAccordion('rule-3')" class="w-full p-4 text-left font-semibold text-white flex items-center justify-between hover:bg-glass transition text-sm">
-            <span class="flex items-center gap-2.5">
-              <span class="w-5 h-5 rounded-full bg-burgundy/40 text-accent text-xs flex items-center justify-center font-bold">3</span>
-              Griefing, Pencurian, & Klaim Wilayah
-            </span>
+            <span class="flex items-center gap-2.5"><span class="w-5 h-5 rounded-full bg-burgundy/40 text-accent text-xs flex items-center justify-center font-bold">3</span>Griefing & Pencurian Bangunan</span>
             <i id="rule-3-icon" data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform"></i>
           </button>
           <div id="rule-3-content" class="hidden px-5 pb-4 text-xs text-gray-300 space-y-2 border-t border-glassBorder pt-3">
-            <p>Dilarang mencuri atau merusak bangunan player lain di area yang sudah diklaim. Manfaatkan alat klaim wilayah Anda sebaik mungkin agar base Anda aman.</p>
-          </div>
-        </div>
-
-        <div class="clean-card rounded-xl overflow-hidden">
-          <button onclick="toggleAccordion('rule-4')" class="w-full p-4 text-left font-semibold text-white flex items-center justify-between hover:bg-glass transition text-sm">
-            <span class="flex items-center gap-2.5">
-              <span class="w-5 h-5 rounded-full bg-burgundy/40 text-accent text-xs flex items-center justify-center font-bold">4</span>
-              Eksploitasi Bug & Lag Machine
-            </span>
-            <i id="rule-4-icon" data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform"></i>
-          </button>
-          <div id="rule-4-content" class="hidden px-5 pb-4 text-xs text-gray-300 space-y-2 border-t border-glassBorder pt-3">
-            <p>Jika menemukan bug duplikasi item atau celah error server, wajib melaporkannya kepada Admin (bukan disalahgunakan). Pembuatan mesin penghasil lag berat (lag machine) akan dihancurkan.</p>
+            <p>Dilarang mencuri atau merusak bangunan player lain. Manfaatkan alat klaim wilayah (/claim) untuk mengamankan rumah Anda.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- VIEW 4: GALLERY -->
+    <!-- GALLERY VIEW -->
     <section id="section-gallery" class="hidden fade-in space-y-6">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
@@ -390,47 +291,33 @@
           <p class="text-gray-400 text-xs">Kumpulan screenshot keseruan dan momen bermain komunitas Mawi.</p>
         </div>
         <button onclick="triggerUploadAction()" class="px-4 py-2.5 rounded-xl crimson-btn text-white text-xs font-bold flex items-center gap-2 transition active:scale-95 shadow-md">
-          <i data-lucide="upload-cloud" class="w-4 h-4"></i>
-          Upload Screenshot
+          <i data-lucide="upload-cloud" class="w-4 h-4"></i> Upload Screenshot
         </button>
       </div>
-
       <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
     </section>
 
-    <!-- VIEW 5: COMMUNITY -->
+    <!-- COMMUNITY VIEW -->
     <section id="section-community" class="hidden fade-in space-y-6 max-w-2xl mx-auto text-center">
       <div class="space-y-1">
         <h2 class="text-2xl font-bold text-white">Gabung Komunitas Mawi</h2>
         <p class="text-gray-400 text-xs">Ayo ngobrol santai, ikut event, dan mabar bareng member lainnya!</p>
       </div>
-
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
         <a href="https://chat.whatsapp.com/" target="_blank" class="p-6 rounded-2xl clean-card hover:border-emerald-500/50 transition flex flex-col items-center gap-3">
-          <div class="w-12 h-12 rounded-xl bg-emerald-600/20 text-emerald-400 flex items-center justify-center">
-            <i data-lucide="message-circle" class="w-6 h-6"></i>
-          </div>
-          <div>
-            <h3 class="text-base font-bold text-white">Grup WhatsApp</h3>
-            <p class="text-xs text-gray-400 mt-0.5">Komunikasi dan mabar setiap hari.</p>
-          </div>
+          <div class="w-12 h-12 rounded-xl bg-emerald-600/20 text-emerald-400 flex items-center justify-center"><i data-lucide="message-circle" class="w-6 h-6"></i></div>
+          <div><h3 class="text-base font-bold text-white">Grup WhatsApp</h3><p class="text-xs text-gray-400 mt-0.5">Komunikasi dan mabar setiap hari.</p></div>
           <span class="text-xs font-bold text-emerald-400">Masuk Grup WA &rarr;</span>
         </a>
-
         <a href="https://discord.gg/" target="_blank" class="p-6 rounded-2xl clean-card hover:border-indigo-500/50 transition flex flex-col items-center gap-3">
-          <div class="w-12 h-12 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center">
-            <i data-lucide="gamepad-2" class="w-6 h-6"></i>
-          </div>
-          <div>
-            <h3 class="text-base font-bold text-white">Discord Server</h3>
-            <p class="text-xs text-gray-400 mt-0.5">Voice chat mabar dan info event.</p>
-          </div>
+          <div class="w-12 h-12 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center"><i data-lucide="gamepad-2" class="w-6 h-6"></i></div>
+          <div><h3 class="text-base font-bold text-white">Discord Server</h3><p class="text-xs text-gray-400 mt-0.5">Voice chat mabar dan info event.</p></div>
           <span class="text-xs font-bold text-indigo-400">Join Discord &rarr;</span>
         </a>
       </div>
     </section>
 
-    <!-- VIEW 6: ADMIN PANEL -->
+    <!-- ADMIN PANEL VIEW -->
     <section id="section-admin" class="hidden fade-in space-y-6">
       <div id="adminDashboard" class="space-y-6">
         <div class="flex items-center justify-between pb-4 border-b border-glassBorder">
@@ -450,30 +337,20 @@
           <button onclick="switchAdminTab('products')" id="adminTabBtn-products" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-burgundy text-white">Produk Toko</button>
           <button onclick="switchAdminTab('vouchers')" id="adminTabBtn-vouchers" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white">Kelola Voucher</button>
           <button onclick="switchAdminTab('gallery')" id="adminTabBtn-gallery" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white">Moderasi Galeri</button>
-          <button onclick="switchAdminTab('settings')" id="adminTabBtn-settings" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white">Pengaturan Logo & Web</button>
+          <button onclick="switchAdminTab('settings')" id="adminTabBtn-settings" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white">Pengaturan Web</button>
         </div>
 
         <div id="adminPanel-products" class="space-y-4">
           <div class="flex justify-between items-center">
-            <div>
-              <h3 class="text-sm font-bold text-white">Daftar Ranks & Items</h3>
-              <p class="text-[11px] text-gray-400">Tambah, ubah harga/fitur, atau hapus produk toko.</p>
-            </div>
+            <div><h3 class="text-sm font-bold text-white">Daftar Ranks & Items</h3><p class="text-[11px] text-gray-400">Tambah, ubah harga, atau hapus produk toko.</p></div>
             <button onclick="openProductModal()" class="px-3.5 py-1.5 rounded-lg bg-burgundy hover:bg-burgundy-light text-white text-xs font-bold flex items-center gap-1.5 shadow-md">
-              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah Produk Baru
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah Produk
             </button>
           </div>
-          
           <div class="clean-card rounded-xl overflow-x-auto">
             <table class="w-full text-left text-xs">
               <thead class="bg-voidLight text-gray-400 font-mono border-b border-glassBorder">
-                <tr>
-                  <th class="p-3">Nama Item</th>
-                  <th class="p-3">Kategori</th>
-                  <th class="p-3">Harga</th>
-                  <th class="p-3">Fitur Perks</th>
-                  <th class="p-3 text-right">Aksi</th>
-                </tr>
+                <tr><th class="p-3">Nama Item</th><th class="p-3">Kategori</th><th class="p-3">Harga</th><th class="p-3">Perks</th><th class="p-3 text-right">Aksi</th></tr>
               </thead>
               <tbody id="adminProductsTable" class="divide-y divide-glassBorder text-gray-300"></tbody>
             </table>
@@ -482,24 +359,15 @@
 
         <div id="adminPanel-vouchers" class="hidden space-y-4">
           <div class="flex justify-between items-center">
-            <div>
-              <h3 class="text-sm font-bold text-white">Kelola Kode Voucher Diskon</h3>
-              <p class="text-[11px] text-gray-400">Buat kupon promo baru atau atur persentase potongan harga.</p>
-            </div>
+            <div><h3 class="text-sm font-bold text-white">Kelola Kode Voucher Diskon</h3><p class="text-[11px] text-gray-400">Buat kupon promo baru atau atur persentase.</p></div>
             <button onclick="openVoucherModal()" class="px-3.5 py-1.5 rounded-lg bg-burgundy hover:bg-burgundy-light text-white text-xs font-bold flex items-center gap-1.5 shadow-md">
-              <i data-lucide="tag" class="w-3.5 h-3.5"></i> Buat Voucher Baru
+              <i data-lucide="tag" class="w-3.5 h-3.5"></i> Buat Voucher
             </button>
           </div>
-
           <div class="clean-card rounded-xl overflow-x-auto">
             <table class="w-full text-left text-xs">
               <thead class="bg-voidLight text-gray-400 font-mono border-b border-glassBorder">
-                <tr>
-                  <th class="p-3">Kode Voucher</th>
-                  <th class="p-3">Diskon (%)</th>
-                  <th class="p-3">Status</th>
-                  <th class="p-3 text-right">Aksi</th>
-                </tr>
+                <tr><th class="p-3">Kode Voucher</th><th class="p-3">Diskon (%)</th><th class="p-3">Status</th><th class="p-3 text-right">Aksi</th></tr>
               </thead>
               <tbody id="adminVouchersTable" class="divide-y divide-glassBorder text-gray-300"></tbody>
             </table>
@@ -514,25 +382,10 @@
         <div id="adminPanel-settings" class="hidden space-y-4 max-w-lg">
           <h3 class="text-sm font-bold text-white">Edit Logo & Teks Website</h3>
           <div class="clean-card rounded-xl p-5 space-y-3.5">
-            <div>
-              <label class="block text-xs font-semibold text-gray-300 mb-1">Nama Brand Server</label>
-              <input id="settingBrandName" type="text" placeholder="MAWI SMP" class="w-full bg-voidLight border border-glassBorder rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-accent">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-gray-300 mb-1">URL Foto Logo Server (Link Gambar)</label>
-              <input id="settingLogoUrl" type="url" placeholder="https://..." class="w-full bg-voidLight border border-glassBorder rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-accent">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-gray-300 mb-1">Teks Sambutan / Deskripsi Hero</label>
-              <textarea id="settingHeroText" rows="3" class="w-full bg-voidLight border border-glassBorder rounded-lg p-3 text-xs text-white focus:outline-none focus:border-accent"></textarea>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-gray-300 mb-1">Google Apps Script Web App URL (Opsional)</label>
-              <input id="settingGasUrl" type="url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-voidLight border border-glassBorder rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-accent font-mono">
-            </div>
-            <button onclick="saveWebSettings()" class="w-full py-2.5 rounded-lg crimson-btn text-white text-xs font-bold shadow-md">
-              Simpan & Terapkan Perubahan
-            </button>
+            <div><label class="block text-xs font-semibold text-gray-300 mb-1">Nama Brand Server</label><input id="settingBrandName" type="text" class="w-full bg-voidLight border border-glassBorder rounded-lg px-3 py-2 text-xs text-white"></div>
+            <div><label class="block text-xs font-semibold text-gray-300 mb-1">URL Foto Logo Server</label><input id="settingLogoUrl" type="url" class="w-full bg-voidLight border border-glassBorder rounded-lg px-3 py-2 text-xs text-white"></div>
+            <div><label class="block text-xs font-semibold text-gray-300 mb-1">Teks Sambutan / Deskripsi Hero</label><textarea id="settingHeroText" rows="3" class="w-full bg-voidLight border border-glassBorder rounded-lg p-3 text-xs text-white"></textarea></div>
+            <button onclick="saveWebSettings()" class="w-full py-2.5 rounded-lg crimson-btn text-white text-xs font-bold shadow-md">Simpan Perubahan</button>
           </div>
         </div>
       </div>
@@ -540,17 +393,11 @@
 
   </main>
 
-  <!-- ========================================== -->
-  <!-- 4. MODALS SYSTEM                           -->
-  <!-- ========================================== -->
-
+  <!-- MODALS -->
   <div id="userAuthModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
     <div class="clean-card w-full max-w-md rounded-2xl p-6 space-y-4">
       <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
-        <div class="flex items-center gap-2">
-          <i data-lucide="user-plus" class="w-5 h-5 text-accent"></i>
-          <h3 id="authModalTitle" class="font-bold text-white text-base">Daftar Akun Member Mawi</h3>
-        </div>
+        <div class="flex items-center gap-2"><i data-lucide="user-plus" class="w-5 h-5 text-accent"></i><h3 id="authModalTitle" class="font-bold text-white text-base">Daftar Akun Member Mawi</h3></div>
         <button onclick="closeAuthModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
 
@@ -560,39 +407,17 @@
       </div>
 
       <form id="authFormRegister" onsubmit="event.preventDefault(); handleUserRegister();" class="space-y-3 text-xs">
-        <div>
-          <label class="block font-semibold text-gray-300 mb-1">Nama Lengkap / Panggilan</label>
-          <input id="regName" type="text" placeholder="Contoh: Budi Santoso" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none focus:border-accent">
-        </div>
-        <div>
-          <label class="block font-semibold text-gray-300 mb-1">Alamat Gmail</label>
-          <input id="regEmail" type="email" placeholder="nama@gmail.com" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none focus:border-accent">
-        </div>
-        <div>
-          <label class="block font-semibold text-gray-300 mb-1">Minecraft In-Game Name (IGN)</label>
-          <input id="regNick" type="text" placeholder="Contoh: MawiPlayer99" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none focus:border-accent">
-        </div>
-        <div>
-          <label class="block font-semibold text-gray-300 mb-1">Password Akun</label>
-          <input id="regPass" type="password" placeholder="Minimal 6 karakter" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none focus:border-accent">
-        </div>
-        <button type="submit" class="w-full py-3 rounded-xl crimson-btn text-white font-bold text-xs shadow-md mt-2">
-          Daftarkan Akun
-        </button>
+        <div><label class="block font-semibold text-gray-300 mb-1">Nama Lengkap</label><input id="regName" type="text" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
+        <div><label class="block font-semibold text-gray-300 mb-1">Alamat Gmail</label><input id="regEmail" type="email" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
+        <div><label class="block font-semibold text-gray-300 mb-1">Minecraft IGN</label><input id="regNick" type="text" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
+        <div><label class="block font-semibold text-gray-300 mb-1">Password</label><input id="regPass" type="password" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
+        <button type="submit" class="w-full py-3 rounded-xl crimson-btn text-white font-bold text-xs shadow-md mt-2">Daftarkan Akun</button>
       </form>
 
       <form id="authFormLogin" onsubmit="event.preventDefault(); handleUserLogin();" class="hidden space-y-3 text-xs">
-        <div>
-          <label class="block font-semibold text-gray-300 mb-1">Alamat Gmail / Username</label>
-          <input id="loginEmail" type="text" placeholder="nama@gmail.com atau admin" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none focus:border-accent">
-        </div>
-        <div>
-          <label class="block font-semibold text-gray-300 mb-1">Password</label>
-          <input id="loginPass" type="password" placeholder="••••••••" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none focus:border-accent">
-        </div>
-        <button type="submit" class="w-full py-3 rounded-xl crimson-btn text-white font-bold text-xs shadow-md mt-2">
-          Masuk ke Akun
-        </button>
+        <div><label class="block font-semibold text-gray-300 mb-1">Gmail / Username</label><input id="loginEmail" type="text" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
+        <div><label class="block font-semibold text-gray-300 mb-1">Password</label><input id="loginPass" type="password" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
+        <button type="submit" class="w-full py-3 rounded-xl crimson-btn text-white font-bold text-xs shadow-md mt-2">Masuk ke Akun</button>
       </form>
     </div>
   </div>
@@ -603,29 +428,17 @@
         <h3 class="font-bold text-white text-base">Upload Screenshot Mawi</h3>
         <button onclick="closeUploadModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
-
       <div class="space-y-3.5 text-xs">
         <div id="uploadAccountBadge" class="p-2.5 rounded-xl bg-voidLight border border-glassBorder flex items-center justify-between">
-          <div>
-            <span class="text-[10px] text-gray-400 block">Mengupload sebagai:</span>
-            <span id="uploadAccName" class="font-bold text-white">-</span>
-          </div>
+          <div><span class="text-[10px] text-gray-400 block">Mengupload sebagai:</span><span id="uploadAccName" class="font-bold text-white">-</span></div>
           <span id="uploadAccGmail" class="text-[10px] font-mono text-accent">-</span>
         </div>
-
-        <div>
-          <label class="block font-semibold text-gray-300 mb-1">Pilih Gambar Screenshot</label>
-          <input id="uploadFileInput" type="file" accept="image/*" class="w-full text-xs text-gray-400 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-burgundy file:text-white cursor-pointer">
-        </div>
-
+        <div><label class="block font-semibold text-gray-300 mb-1">Pilih Gambar Screenshot</label><input id="uploadFileInput" type="file" accept="image/*" class="w-full text-xs text-gray-400 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-burgundy file:text-white cursor-pointer"></div>
         <div class="p-3 bg-voidLight rounded-xl border border-glassBorder flex items-center justify-between">
           <span class="text-gray-400 font-medium">Verifikasi: <strong id="galleryCaptchaQuestion" class="text-accent font-bold">4 + 3 = ?</strong></span>
-          <input id="galleryCaptchaAns" type="number" placeholder="Hasil" class="w-20 bg-void border border-glassBorder rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none">
+          <input id="galleryCaptchaAns" type="number" placeholder="Hasil" class="w-20 bg-void border border-glassBorder rounded-lg px-2.5 py-1.5 text-xs text-white">
         </div>
-
-        <button id="submitUploadBtn" onclick="submitGalleryUpload()" class="w-full py-3 rounded-xl crimson-btn text-white font-bold text-xs shadow-md">
-          Kirim Foto ke Galeri
-        </button>
+        <button onclick="submitGalleryUpload()" class="w-full py-3 rounded-xl crimson-btn text-white font-bold text-xs shadow-md">Kirim Foto ke Galeri</button>
       </div>
     </div>
   </div>
@@ -633,58 +446,34 @@
   <div id="perkModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
     <div class="clean-card w-full max-w-md rounded-2xl p-6 space-y-4">
       <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
-        <div class="flex items-center gap-2">
-          <i data-lucide="sparkles" class="w-5 h-5 text-accent"></i>
-          <h3 id="perkModalTitle" class="font-bold text-white text-base">Detail Perks & Keuntungan</h3>
-        </div>
+        <div class="flex items-center gap-2"><i data-lucide="sparkles" class="w-5 h-5 text-accent"></i><h3 id="perkModalTitle" class="font-bold text-white text-base">Detail Perks</h3></div>
         <button onclick="closePerkModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
       <ul id="perkModalList" class="space-y-2.5 text-xs text-gray-200 max-h-60 overflow-y-auto pr-1"></ul>
-      <button onclick="closePerkModal()" class="w-full py-2.5 rounded-xl bg-clean-panel border border-glassBorder text-white text-xs font-bold hover:bg-glass transition">
-        Tutup
-      </button>
+      <button onclick="closePerkModal()" class="w-full py-2.5 rounded-xl bg-clean-panel border border-glassBorder text-white text-xs font-bold">Tutup</button>
     </div>
   </div>
 
   <div id="cartModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
     <div class="clean-card w-full max-w-lg rounded-2xl p-6 space-y-4 max-h-[90vh] flex flex-col justify-between">
       <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
-        <div class="flex items-center gap-2">
-          <i data-lucide="shopping-cart" class="w-5 h-5 text-accent"></i>
-          <h3 class="font-bold text-white text-base">Keranjang Belanja</h3>
-        </div>
+        <div class="flex items-center gap-2"><i data-lucide="shopping-cart" class="w-5 h-5 text-accent"></i><h3 class="font-bold text-white text-base">Keranjang Belanja</h3></div>
         <button onclick="closeCartModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
-
       <div id="cartItemList" class="space-y-3 overflow-y-auto max-h-52 divide-y divide-glassBorder pr-1"></div>
-
       <div class="space-y-3 pt-3 border-t border-glassBorder text-xs">
         <div class="flex gap-2">
-          <input id="voucherCodeInput" type="text" placeholder="KODE VOUCHER" class="flex-grow bg-voidLight border border-glassBorder rounded-xl px-3 py-2 text-white uppercase font-mono focus:outline-none">
-          <button onclick="applyVoucher()" class="px-3.5 py-2 bg-clean-panel border border-glassBorder rounded-xl font-bold text-accent">
-            Terapkan
-          </button>
+          <input id="voucherCodeInput" type="text" placeholder="KODE VOUCHER" class="flex-grow bg-voidLight border border-glassBorder rounded-xl px-3 py-2 text-white uppercase font-mono">
+          <button onclick="applyVoucher()" class="px-3.5 py-2 bg-clean-panel border border-glassBorder rounded-xl font-bold text-accent">Terapkan</button>
         </div>
         <div id="voucherFeedback" class="text-[11px] font-medium hidden"></div>
-
         <div class="p-3.5 rounded-xl bg-voidLight space-y-1.5">
-          <div class="flex justify-between text-gray-400">
-            <span>Subtotal</span>
-            <span id="cartSubtotalText">Rp 0</span>
-          </div>
-          <div id="cartDiscountRow" class="flex justify-between text-emerald-400 hidden">
-            <span>Diskon Voucher</span>
-            <span id="cartDiscountText">- Rp 0</span>
-          </div>
-          <div class="flex justify-between text-base font-bold text-white pt-2 border-t border-glassBorder">
-            <span>Total Pembayaran</span>
-            <span id="cartTotalText" class="text-accent">Rp 0</span>
-          </div>
+          <div class="flex justify-between text-gray-400"><span>Subtotal</span><span id="cartSubtotalText">Rp 0</span></div>
+          <div id="cartDiscountRow" class="flex justify-between text-emerald-400 hidden"><span>Diskon</span><span id="cartDiscountText">- Rp 0</span></div>
+          <div class="flex justify-between text-base font-bold text-white pt-2 border-t border-glassBorder"><span>Total</span><span id="cartTotalText" class="text-accent">Rp 0</span></div>
         </div>
-
         <button onclick="processWhatsAppCheckout()" class="w-full py-3 rounded-xl crimson-btn text-white text-xs sm:text-sm font-bold shadow-md flex items-center justify-center gap-2">
-          <i data-lucide="send" class="w-4 h-4"></i>
-          Checkout ke WhatsApp Admin
+          <i data-lucide="send" class="w-4 h-4"></i> Checkout ke WhatsApp Admin
         </button>
       </div>
     </div>
@@ -696,37 +485,15 @@
         <h3 id="productCrudTitle" class="font-bold text-white text-base">Tambah Produk Baru</h3>
         <button onclick="closeProductCrudModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
-
       <input type="hidden" id="crudProductId">
-      <div>
-        <label class="block font-semibold text-gray-300 mb-1">Nama Produk / Rank</label>
-        <input id="crudProductName" type="text" placeholder="Contoh: Rank VIP+, 50k Coins" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none">
-      </div>
+      <div><label class="block font-semibold text-gray-300 mb-1">Nama Produk</label><input id="crudProductName" type="text" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
       <div class="grid grid-cols-2 gap-3">
-        <div>
-          <label class="block font-semibold text-gray-300 mb-1">Kategori</label>
-          <select id="crudProductCategory" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none">
-            <option value="Ranks">In-Game Ranks</option>
-            <option value="Coins">Coins / Items</option>
-          </select>
-        </div>
-        <div>
-          <label class="block font-semibold text-gray-300 mb-1">Harga (Rupiah)</label>
-          <input id="crudProductPrice" type="number" placeholder="25000" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none">
-        </div>
+        <div><label class="block font-semibold text-gray-300 mb-1">Kategori</label><select id="crudProductCategory" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"><option value="Ranks">In-Game Ranks</option><option value="Coins">Coins / Items</option></select></div>
+        <div><label class="block font-semibold text-gray-300 mb-1">Harga (Rp)</label><input id="crudProductPrice" type="number" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
       </div>
-      <div>
-        <label class="block font-semibold text-gray-300 mb-1">Image URL</label>
-        <input id="crudProductImage" type="url" placeholder="https://..." class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none">
-      </div>
-      <div>
-        <label class="block font-semibold text-gray-300 mb-1">Fitur Perks (Pisahkan dengan koma)</label>
-        <textarea id="crudProductFeatures" rows="3" placeholder="Prefix VIP, 2x sethome, Kit Mingguan, Perintah /hat" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none"></textarea>
-      </div>
-
-      <button onclick="saveProductData()" class="w-full py-2.5 rounded-xl crimson-btn text-white font-bold shadow-md">
-        Simpan Produk
-      </button>
+      <div><label class="block font-semibold text-gray-300 mb-1">Image URL</label><input id="crudProductImage" type="url" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
+      <div><label class="block font-semibold text-gray-300 mb-1">Fitur Perks (Pisahkan koma)</label><textarea id="crudProductFeatures" rows="3" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></textarea></div>
+      <button onclick="saveProductData()" class="w-full py-2.5 rounded-xl crimson-btn text-white font-bold shadow-md">Simpan Produk</button>
     </div>
   </div>
 
@@ -736,37 +503,19 @@
         <h3 id="voucherCrudTitle" class="font-bold text-white text-base">Tambah Voucher Baru</h3>
         <button onclick="closeVoucherModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
-
       <input type="hidden" id="crudVoucherOldCode">
-      <div>
-        <label class="block font-semibold text-gray-300 mb-1">Kode Voucher</label>
-        <input id="crudVoucherCode" type="text" placeholder="Contoh: MAWIDISKON, EVENT20" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white uppercase font-mono focus:outline-none">
-      </div>
+      <div><label class="block font-semibold text-gray-300 mb-1">Kode Voucher</label><input id="crudVoucherCode" type="text" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white uppercase font-mono"></div>
       <div class="grid grid-cols-2 gap-3">
-        <div>
-          <label class="block font-semibold text-gray-300 mb-1">Potongan Diskon (%)</label>
-          <input id="crudVoucherPercent" type="number" min="1" max="100" placeholder="15" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none">
-        </div>
-        <div>
-          <label class="block font-semibold text-gray-300 mb-1">Status Voucher</label>
-          <select id="crudVoucherStatus" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none">
-            <option value="true">Aktif</option>
-            <option value="false">Nonaktif</option>
-          </select>
-        </div>
+        <div><label class="block font-semibold text-gray-300 mb-1">Diskon (%)</label><input id="crudVoucherPercent" type="number" min="1" max="100" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
+        <div><label class="block font-semibold text-gray-300 mb-1">Status</label><select id="crudVoucherStatus" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"><option value="true">Aktif</option><option value="false">Nonaktif</option></select></div>
       </div>
-
-      <button onclick="saveVoucherData()" class="w-full py-2.5 rounded-xl crimson-btn text-white font-bold shadow-md mt-2">
-        Simpan Voucher
-      </button>
+      <button onclick="saveVoucherData()" class="w-full py-2.5 rounded-xl crimson-btn text-white font-bold shadow-md mt-2">Simpan Voucher</button>
     </div>
   </div>
 
   <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-  <!-- ========================================== -->
-  <!-- 5. FOOTER RESMI                            -->
-  <!-- ========================================== -->
+  <!-- FOOTER -->
   <footer class="border-t border-glassBorder bg-[#09060D] pt-12 pb-8 mt-16 text-xs text-gray-400">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
       <div class="space-y-3 md:col-span-2">
@@ -799,19 +548,16 @@
         </a>
       </div>
     </div>
-
     <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-6 border-t border-glassBorder/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-gray-500 text-[11px]">
       <p>&copy; 2026 <strong>Mawi SMP Community</strong>. Bukan produk resmi Mojang AB atau Microsoft.</p>
-      <div class="flex gap-4">
-        <span>Server IP: <strong class="text-gray-300 font-mono">mawi.my.id</strong></span>
-      </div>
+      <span>Server IP: <strong class="text-gray-300 font-mono">mawi.my.id</strong></span>
     </div>
   </footer>
 
-  <!-- ========================================== -->
-  <!-- 6. APPLICATION JAVASCRIPT STATE & LOGIC   -->
-  <!-- ========================================== -->
+  <!-- SCRIPT -->
   <script>
+    // URL GOOGLE APPS SCRIPT YANG DI-HARDCODE LANGSUNG DI KODE (Ganti dengan URL /exec Anda)
+    const GAS_WEB_APP_URL = "MASUKKAN_URL_WEB_APP_ANDA_DISINI";
     const CS_WHATSAPP_NUMBER = "628892910155";
 
     const SEED_USERS = [
@@ -837,7 +583,6 @@
     ];
 
     const AppState = {
-      gasApiUrl: localStorage.getItem('mawi_gas_url') || '',
       brandName: localStorage.getItem('mawi_brand_name') || 'MAWI SMP',
       logoUrl: localStorage.getItem('mawi_logo_url') || 'https://api.dicebear.com/7.x/bottts/svg?seed=MawiSMP',
       heroText: localStorage.getItem('mawi_hero_text') || 'Server Minecraft santai untuk bermain bersama teman, mencari sahabat baru, membangun rumah impian, dan have fun tanpa ribet!',
@@ -847,19 +592,55 @@
       appliedVoucher: null,
       currentCategory: 'Ranks',
       captchaAns: 0,
-      products: [],
-      vouchers: [],
-      gallery: []
+      products: [...SEED_PRODUCTS],
+      vouchers: [...SEED_VOUCHERS],
+      gallery: [...SEED_GALLERY]
     };
 
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('DOMContentLoaded', async () => {
       lucide.createIcons();
       applyBrandingUI();
       updateUserHeaderUI();
       updateCartBadge();
       initCaptcha();
-      loadInitialData();
+      
+      // Ambil data live dari Google Sheets
+      await loadDataFromSheets();
     });
+
+    async function loadDataFromSheets() {
+      if (GAS_WEB_APP_URL.includes("MASUKKAN_URL")) {
+        renderProducts();
+        renderGallery();
+        return;
+      }
+      try {
+        const res = await fetch(GAS_WEB_APP_URL);
+        const json = await res.json();
+        if (json.status === 'success') {
+          if (json.products && json.products.length > 0) AppState.products = json.products;
+          if (json.vouchers && json.vouchers.length > 0) AppState.vouchers = json.vouchers;
+          if (json.gallery && json.gallery.length > 0) AppState.gallery = json.gallery;
+        }
+      } catch (e) {
+        console.warn("Menggunakan data lokal.");
+      }
+      renderProducts();
+      renderGallery();
+    }
+
+    async function syncToSheets(payload) {
+      if (GAS_WEB_APP_URL.includes("MASUKKAN_URL")) return;
+      try {
+        await fetch(GAS_WEB_APP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // Bypass CORS
+          body: JSON.stringify(payload)
+        });
+      } catch (e) {
+        console.warn("Gagal sync ke Google Sheets:", e);
+      }
+    }
 
     function applyBrandingUI() {
       document.getElementById('headerLogoImg').src = AppState.logoUrl;
@@ -873,15 +654,14 @@
     function navigate(viewId) {
       if (viewId === 'admin') {
         if (!AppState.currentUser || !AppState.currentUser.isAdmin) {
-          showToast('Akses ditolak: Menu ini hanya untuk akun Staff / Admin!', 'error');
+          showToast('Akses ditolak: Menu ini khusus Admin!', 'error');
           return;
         }
       }
 
       toggleDrawer(false);
       ['home', 'store', 'rules', 'gallery', 'community', 'admin'].forEach(v => {
-        const el = document.getElementById(`section-${v}`);
-        if (el) el.classList.add('hidden');
+        document.getElementById(`section-${v}`).classList.add('hidden');
       });
 
       const target = document.getElementById(`section-${viewId}`);
@@ -900,7 +680,6 @@
         document.getElementById('settingBrandName').value = AppState.brandName;
         document.getElementById('settingLogoUrl').value = AppState.logoUrl;
         document.getElementById('settingHeroText').value = AppState.heroText;
-        document.getElementById('settingGasUrl').value = AppState.gasApiUrl;
       }
       lucide.createIcons();
     }
@@ -920,52 +699,24 @@
     function showToast(message, type = 'success') {
       const container = document.getElementById('toastContainer');
       const toast = document.createElement('div');
-      const bgColor = type === 'error' ? 'bg-rose-950 border-rose-600' : 'bg-burgundy border-accent';
-      
-      toast.className = `${bgColor} text-white border px-3.5 py-2.5 rounded-xl text-xs font-medium shadow-xl flex items-center gap-2 pointer-events-auto fade-in`;
+      toast.className = `${type === 'error' ? 'bg-rose-950 border-rose-600' : 'bg-burgundy border-accent'} text-white border px-3.5 py-2.5 rounded-xl text-xs font-medium shadow-xl flex items-center gap-2 pointer-events-auto fade-in`;
       toast.innerHTML = `<i data-lucide="${type === 'error' ? 'alert-circle' : 'check'}" class="w-4 h-4"></i><span>${message}</span>`;
       container.appendChild(toast);
       lucide.createIcons();
-
       setTimeout(() => {
         toast.style.opacity = '0';
-        toast.style.transition = 'opacity 0.2s ease';
         setTimeout(() => toast.remove(), 200);
       }, 3000);
     }
 
-    function copyToClipboard(text, msg = 'Tersalin ke Clipboard!') {
+    function copyToClipboard(text, msg = 'Tersalin!') {
       const input = document.createElement('input');
       input.value = text;
       document.body.appendChild(input);
       input.select();
-      try {
-        document.execCommand('copy');
-        showToast(msg);
-      } catch (e) {
-        showToast('Gagal menyalin text', 'error');
-      }
+      document.execCommand('copy');
       document.body.removeChild(input);
-    }
-
-    async function loadInitialData() {
-      AppState.products = JSON.parse(localStorage.getItem('mawi_products_custom') || 'null') || [...SEED_PRODUCTS];
-      AppState.vouchers = JSON.parse(localStorage.getItem('mawi_vouchers_custom') || 'null') || [...SEED_VOUCHERS];
-      AppState.gallery = JSON.parse(localStorage.getItem('mawi_gallery_custom') || 'null') || [...SEED_GALLERY];
-
-      if (AppState.gasApiUrl) {
-        try {
-          const res = await fetch(`${AppState.gasApiUrl}?action=getInitData`);
-          const json = await res.json();
-          if (json.status === 'success') {
-            if (json.data.products && json.data.products.length > 0) AppState.products = json.data.products;
-            if (json.data.vouchers && json.data.vouchers.length > 0) AppState.vouchers = json.data.vouchers;
-            if (json.data.gallery && json.data.gallery.length > 0) AppState.gallery = json.data.gallery;
-          }
-        } catch (e) {}
-      }
-      renderProducts();
-      renderGallery();
+      showToast(msg);
     }
 
     function openAuthModal(tab = 'register') {
@@ -973,9 +724,7 @@
       document.getElementById('userAuthModal').classList.remove('opacity-0', 'pointer-events-none');
     }
 
-    function closeAuthModal() {
-      document.getElementById('userAuthModal').classList.add('opacity-0', 'pointer-events-none');
-    }
+    function closeAuthModal() { document.getElementById('userAuthModal').classList.add('opacity-0', 'pointer-events-none'); }
 
     function toggleAuthTab(tab) {
       const regBtn = document.getElementById('authTabBtn-reg');
@@ -1005,18 +754,11 @@
       const nick = document.getElementById('regNick').value.trim();
       const pass = document.getElementById('regPass').value.trim();
 
-      if (!name || !email || !nick || !pass) {
-        showToast('Semua kolom pendaftaran wajib diisi!', 'error');
-        return;
-      }
-      if (!email.includes('@')) {
-        showToast('Format Gmail tidak valid!', 'error');
-        return;
-      }
+      if (!name || !email || !nick || !pass) return showToast('Semua kolom wajib diisi!', 'error');
 
       const exists = AppState.registeredUsers.find(u => u.email === email);
       if (exists) {
-        showToast('Email Gmail sudah terdaftar. Silakan login.', 'error');
+        showToast('Email sudah terdaftar. Silakan login.', 'error');
         toggleAuthTab('login');
         return;
       }
@@ -1039,7 +781,6 @@
       const passInput = document.getElementById('loginPass').value.trim();
 
       let user = AppState.registeredUsers.find(u => (u.email.toLowerCase() === emailInput || u.nick.toLowerCase() === emailInput) && u.pass === passInput);
-      
       if (!user && (emailInput === 'admin' || emailInput === 'admin@mawi.com') && passInput === 'mawi2026') {
         user = { name: "Owner / Admin Mawi", email: "admin@mawi.com", nick: "AdminMawi", isAdmin: true };
       }
@@ -1060,7 +801,7 @@
       localStorage.removeItem('mawi_auth_user');
       updateUserHeaderUI();
       navigate('home');
-      showToast('Anda telah keluar dari akun.');
+      showToast('Anda telah keluar.');
     }
 
     function updateUserHeaderUI() {
@@ -1069,42 +810,31 @@
       const adminDrawerSection = document.getElementById('adminDrawerSection');
 
       if (AppState.currentUser) {
-        if (AppState.currentUser.isAdmin) {
-          adminDrawerSection.classList.remove('hidden');
-        } else {
-          adminDrawerSection.classList.add('hidden');
-        }
+        if (AppState.currentUser.isAdmin) adminDrawerSection.classList.remove('hidden');
+        else adminDrawerSection.classList.add('hidden');
 
         userArea.innerHTML = `
           <div class="flex items-center gap-2 bg-clean-panel border border-glassBorder px-3 py-1.5 rounded-full text-xs">
             <span class="w-2 h-2 rounded-full ${AppState.currentUser.isAdmin ? 'bg-accent animate-ping' : 'bg-emerald-400'}"></span>
             <span class="text-white font-bold max-w-[85px] sm:max-w-none truncate">${AppState.currentUser.nick}</span>
             ${AppState.currentUser.isAdmin ? '<span class="text-[9px] bg-burgundy px-1.5 py-0.5 rounded text-white font-bold">STAFF</span>' : ''}
-            <button onclick="handleUserLogout()" class="text-gray-400 hover:text-rose-400 ml-1" title="Logout"><i data-lucide="log-out" class="w-3.5 h-3.5"></i></button>
+            <button onclick="handleUserLogout()" class="text-gray-400 hover:text-rose-400 ml-1"><i data-lucide="log-out" class="w-3.5 h-3.5"></i></button>
           </div>
         `;
         drawerInfo.innerHTML = `
           <div class="flex items-center justify-between">
-            <div>
-              <span class="text-white font-bold flex items-center gap-1.5">${AppState.currentUser.name} ${AppState.currentUser.isAdmin ? '<span class="text-[9px] text-accent font-bold">[ADMIN]</span>' : ''}</span>
-              <span class="text-[10px] text-gray-400">${AppState.currentUser.email}</span>
-            </div>
-            <button onclick="handleUserLogout()" class="px-2.5 py-1 bg-void border border-glassBorder text-rose-400 rounded-lg text-[10px] font-semibold hover:bg-rose-950">Logout</button>
+            <div><span class="text-white font-bold">${AppState.currentUser.name}</span><span class="text-[10px] text-gray-400 block">${AppState.currentUser.email}</span></div>
+            <button onclick="handleUserLogout()" class="px-2 py-1 bg-void border border-glassBorder text-rose-400 rounded text-[10px]">Logout</button>
           </div>
         `;
       } else {
         adminDrawerSection.classList.add('hidden');
         userArea.innerHTML = `
           <button onclick="openAuthModal('register')" class="flex items-center gap-1.5 bg-clean-panel hover:bg-glassBorder border border-glassBorder px-3 py-1.5 rounded-full text-xs font-semibold text-gray-200 transition">
-            <i data-lucide="user" class="w-3.5 h-3.5 text-accent"></i>
-            <span>Daftar / Masuk</span>
+            <i data-lucide="user" class="w-3.5 h-3.5 text-accent"></i><span>Daftar / Masuk</span>
           </button>
         `;
-        drawerInfo.innerHTML = `
-          <button onclick="openAuthModal('register'); toggleDrawer(false);" class="w-full py-2.5 bg-burgundy hover:bg-burgundy-light rounded-xl text-white font-bold text-xs text-center shadow-md">
-            Daftar / Masuk Akun
-          </button>
-        `;
+        drawerInfo.innerHTML = `<button onclick="openAuthModal('register'); toggleDrawer(false);" class="w-full py-2.5 bg-burgundy rounded-xl text-white font-bold text-xs shadow-md">Daftar / Masuk Akun</button>`;
       }
       lucide.createIcons();
     }
@@ -1113,7 +843,6 @@
       AppState.currentCategory = cat;
       const rankBtn = document.getElementById('tab-btn-ranks');
       const coinBtn = document.getElementById('tab-btn-coins');
-
       if (cat === 'Ranks') {
         rankBtn.className = 'px-4 py-1.5 rounded-lg text-xs font-bold transition bg-burgundy text-white';
         coinBtn.className = 'px-4 py-1.5 rounded-lg text-xs font-bold transition text-gray-400 hover:text-white';
@@ -1130,9 +859,7 @@
       container.innerHTML = '';
 
       let list = AppState.products.filter(p => p.category === AppState.currentCategory);
-      if (AppState.currentCategory === 'Ranks') {
-        list.sort((a, b) => Number(a.price) - Number(b.price));
-      }
+      if (AppState.currentCategory === 'Ranks') list.sort((a, b) => Number(a.price) - Number(b.price));
 
       if (list.length === 0) {
         container.innerHTML = `<div class="col-span-full text-center py-8 text-gray-400 text-xs">Tidak ada produk dalam kategori ini.</div>`;
@@ -1145,34 +872,25 @@
 
         const card = document.createElement('div');
         card.className = "clean-card rounded-2xl p-4 flex flex-col justify-between hover:border-burgundy transition";
-
         card.innerHTML = `
           <div>
             <div class="relative w-full h-36 rounded-xl bg-voidLight overflow-hidden mb-3 flex items-center justify-center p-3">
               <img src="${item.image_url}" alt="${item.name}" class="max-h-full object-contain" onerror="this.src='https://api.dicebear.com/7.x/shapes/svg?seed=${item.name}'">
               <span class="absolute top-2 left-2 bg-burgundy text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">${item.category}</span>
             </div>
-
             <div class="space-y-2">
               <div class="flex items-center justify-between gap-2">
                 <h3 class="text-base font-bold text-white">${item.name}</h3>
-                <button onclick="openPerkModal('${item.name}', ${JSON.stringify(featuresArray).replace(/"/g, '&quot;')})" class="px-2.5 py-1 rounded-lg bg-burgundy/25 hover:bg-burgundy border border-accent/40 text-accent hover:text-white transition flex items-center gap-1.5 text-xs font-bold shrink-0 shadow-sm">
-                  <i data-lucide="sparkles" class="w-3.5 h-3.5 text-accent"></i>
-                  <span>Lihat Fitur</span>
+                <button onclick="openPerkModal('${item.name}', ${JSON.stringify(featuresArray).replace(/"/g, '&quot;')})" class="px-2.5 py-1 rounded-lg bg-burgundy/25 hover:bg-burgundy border border-accent/40 text-accent hover:text-white transition flex items-center gap-1.5 text-xs font-bold shrink-0">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5"></i><span>Lihat Fitur</span>
                 </button>
               </div>
               <p class="text-lg font-black text-accent">${formattedPrice}</p>
             </div>
           </div>
-
           <div class="pt-4 mt-3 border-t border-glassBorder flex items-center gap-2">
-            <button onclick="addToCart('${item.id}')" class="flex-1 py-2.5 rounded-xl bg-voidLight border border-glassBorder text-gray-200 text-xs font-semibold hover:bg-glass transition flex items-center justify-center gap-1.5">
-              <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
-              <span>+ Keranjang</span>
-            </button>
-            <button onclick="buyNow('${item.id}')" class="flex-1 py-2.5 rounded-xl crimson-btn text-white text-xs font-bold transition shadow-md">
-              Beli Sekarang
-            </button>
+            <button onclick="addToCart('${item.id}')" class="flex-1 py-2.5 rounded-xl bg-voidLight border border-glassBorder text-gray-200 text-xs font-semibold hover:bg-glass transition flex items-center justify-center gap-1.5"><i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i><span>+ Keranjang</span></button>
+            <button onclick="buyNow('${item.id}')" class="flex-1 py-2.5 rounded-xl crimson-btn text-white text-xs font-bold shadow-md">Beli Sekarang</button>
           </div>
         `;
         container.appendChild(card);
@@ -1181,68 +899,43 @@
     }
 
     function openPerkModal(title, features) {
-      document.getElementById('perkModalTitle').innerText = `Perks & Keuntungan: ${title}`;
+      document.getElementById('perkModalTitle').innerText = `Perks: ${title}`;
       const listEl = document.getElementById('perkModalList');
       listEl.innerHTML = '';
-      
-      if (!features || features.length === 0) {
-        listEl.innerHTML = `<li class="py-2 text-gray-400">Tidak ada detail perks tambahan.</li>`;
-      } else {
+      if (!features || features.length === 0) listEl.innerHTML = `<li class="py-2 text-gray-400">Tidak ada detail.</li>`;
+      else {
         features.forEach(f => {
-          const li = document.createElement('li');
-          li.className = 'p-2 rounded-lg bg-voidLight border border-glassBorder flex items-start gap-2.5 text-xs text-gray-200';
-          li.innerHTML = `<i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i> <span>${f.trim()}</span>`;
-          listEl.appendChild(li);
+          listEl.innerHTML += `<li class="p-2 rounded-lg bg-voidLight border border-glassBorder flex items-start gap-2.5 text-xs text-gray-200"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i><span>${f.trim()}</span></li>`;
         });
       }
       document.getElementById('perkModal').classList.remove('opacity-0', 'pointer-events-none');
       lucide.createIcons();
     }
 
-    function closePerkModal() {
-      document.getElementById('perkModal').classList.add('opacity-0', 'pointer-events-none');
-    }
+    function closePerkModal() { document.getElementById('perkModal').classList.add('opacity-0', 'pointer-events-none'); }
 
     function addToCart(productId) {
       const item = AppState.products.find(p => p.id === productId);
       if (!item) return;
-
       const idx = AppState.cart.findIndex(c => c.id === productId);
-      if (idx > -1) {
-        AppState.cart[idx].qty += 1;
-      } else {
-        AppState.cart.push({ id: item.id, name: item.name, price: Number(item.price), qty: 1 });
-      }
-
+      if (idx > -1) AppState.cart[idx].qty += 1;
+      else AppState.cart.push({ id: item.id, name: item.name, price: Number(item.price), qty: 1 });
       localStorage.setItem('mawi_cart', JSON.stringify(AppState.cart));
       updateCartBadge();
-      showToast(`${item.name} masuk ke keranjang!`);
+      showToast(`${item.name} masuk keranjang!`);
     }
 
-    function buyNow(productId) {
-      addToCart(productId);
-      openCartModal();
-    }
+    function buyNow(productId) { addToCart(productId); openCartModal(); }
 
     function updateCartBadge() {
       const totalQty = AppState.cart.reduce((sum, item) => sum + item.qty, 0);
       const badge = document.getElementById('headerCartCount');
-      if (totalQty > 0) {
-        badge.innerText = totalQty;
-        badge.classList.remove('scale-0');
-      } else {
-        badge.classList.add('scale-0');
-      }
+      if (totalQty > 0) { badge.innerText = totalQty; badge.classList.remove('scale-0'); }
+      else badge.classList.add('scale-0');
     }
 
-    function openCartModal() {
-      renderCartItems();
-      document.getElementById('cartModal').classList.remove('opacity-0', 'pointer-events-none');
-    }
-
-    function closeCartModal() {
-      document.getElementById('cartModal').classList.add('opacity-0', 'pointer-events-none');
-    }
+    function openCartModal() { renderCartItems(); document.getElementById('cartModal').classList.remove('opacity-0', 'pointer-events-none'); }
+    function closeCartModal() { document.getElementById('cartModal').classList.add('opacity-0', 'pointer-events-none'); }
 
     function changeCartQty(index, delta) {
       AppState.cart[index].qty += delta;
@@ -1255,9 +948,8 @@
     function renderCartItems() {
       const listContainer = document.getElementById('cartItemList');
       listContainer.innerHTML = '';
-
       if (AppState.cart.length === 0) {
-        listContainer.innerHTML = `<div class="text-center py-6 text-gray-400 text-xs">Keranjang belanja Anda kosong.</div>`;
+        listContainer.innerHTML = `<div class="text-center py-6 text-gray-400 text-xs">Keranjang kosong.</div>`;
         document.getElementById('cartSubtotalText').innerText = 'Rp 0';
         document.getElementById('cartTotalText').innerText = 'Rp 0';
         document.getElementById('cartDiscountRow').classList.add('hidden');
@@ -1268,28 +960,22 @@
       AppState.cart.forEach((item, idx) => {
         const itemTotal = item.price * item.qty;
         subtotal += itemTotal;
-
-        const row = document.createElement('div');
-        row.className = 'py-2.5 flex items-center justify-between text-xs';
-        row.innerHTML = `
-          <div>
-            <span class="font-bold text-white block">${item.name}</span>
-            <span class="text-gray-400">Rp ${item.price.toLocaleString('id-ID')} x ${item.qty}</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <div class="flex items-center bg-voidLight border border-glassBorder rounded-lg">
-              <button onclick="changeCartQty(${idx}, -1)" class="w-5 h-5 flex items-center justify-center text-gray-400 hover:text-white font-bold">-</button>
-              <span class="w-5 text-center font-bold text-white">${item.qty}</span>
-              <button onclick="changeCartQty(${idx}, 1)" class="w-5 h-5 flex items-center justify-center text-gray-400 hover:text-white font-bold">+</button>
+        listContainer.innerHTML += `
+          <div class="py-2.5 flex items-center justify-between text-xs">
+            <div><span class="font-bold text-white block">${item.name}</span><span class="text-gray-400">Rp ${item.price.toLocaleString('id-ID')} x ${item.qty}</span></div>
+            <div class="flex items-center gap-2">
+              <div class="flex items-center bg-voidLight border border-glassBorder rounded-lg">
+                <button onclick="changeCartQty(${idx}, -1)" class="w-5 h-5 flex items-center justify-center font-bold">-</button>
+                <span class="w-5 text-center font-bold text-white">${item.qty}</span>
+                <button onclick="changeCartQty(${idx}, 1)" class="w-5 h-5 flex items-center justify-center font-bold">+</button>
+              </div>
+              <span class="font-bold text-accent min-w-[65px] text-right">Rp ${itemTotal.toLocaleString('id-ID')}</span>
             </div>
-            <span class="font-bold text-accent min-w-[65px] text-right">Rp ${itemTotal.toLocaleString('id-ID')}</span>
           </div>
         `;
-        listContainer.appendChild(row);
       });
 
       document.getElementById('cartSubtotalText').innerText = `Rp ${subtotal.toLocaleString('id-ID')}`;
-
       let discount = 0;
       if (AppState.appliedVoucher) {
         discount = Math.floor(subtotal * (AppState.appliedVoucher.discount_percent / 100));
@@ -1298,54 +984,38 @@
       } else {
         document.getElementById('cartDiscountRow').classList.add('hidden');
       }
-
-      const total = Math.max(0, subtotal - discount);
-      document.getElementById('cartTotalText').innerText = `Rp ${total.toLocaleString('id-ID')}`;
+      document.getElementById('cartTotalText').innerText = `Rp ${Math.max(0, subtotal - discount).toLocaleString('id-ID')}`;
     }
 
-    async function applyVoucher() {
+    function applyVoucher() {
       const code = document.getElementById('voucherCodeInput').value.trim().toUpperCase();
       const feedback = document.getElementById('voucherFeedback');
-
-      if (!code) {
-        feedback.className = 'text-[11px] font-medium text-rose-400 block';
-        feedback.innerText = 'Harap isi kode voucher!';
-        return;
-      }
-
       const matched = AppState.vouchers.find(v => v.code.toUpperCase() === code && (v.is_active === true || v.is_active === 'true'));
 
       if (matched) {
         AppState.appliedVoucher = { code: matched.code, discount_percent: Number(matched.discount_percent) };
         feedback.className = 'text-[11px] font-medium text-emerald-400 block';
-        feedback.innerText = `Voucher ${matched.code} aktif! Diskon ${matched.discount_percent}% berhasil dipotong.`;
+        feedback.innerText = `Voucher ${matched.code} aktif! Diskon ${matched.discount_percent}%.`;
         renderCartItems();
       } else {
         AppState.appliedVoucher = null;
         feedback.className = 'text-[11px] font-medium text-rose-400 block';
-        feedback.innerText = 'Kode voucher tidak valid atau sudah dinonaktifkan!';
+        feedback.innerText = 'Kode voucher tidak valid / nonaktif!';
         renderCartItems();
       }
     }
 
     function processWhatsAppCheckout() {
-      if (AppState.cart.length === 0) {
-        showToast('Keranjang Anda kosong!', 'error');
-        return;
-      }
-
-      const nick = AppState.currentUser ? AppState.currentUser.nick : prompt('Masukkan Minecraft IGN / Nickname Anda:');
-      if (!nick) {
-        showToast('Harap masukkan Nickname Minecraft Anda!', 'error');
-        return;
-      }
+      if (AppState.cart.length === 0) return showToast('Keranjang kosong!', 'error');
+      const nick = AppState.currentUser ? AppState.currentUser.nick : prompt('Masukkan Nickname Minecraft Anda:');
+      if (!nick) return;
 
       const itemsSummary = AppState.cart.map(i => `${i.name} (x${i.qty})`).join(', ');
       let subtotal = AppState.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
       let discount = AppState.appliedVoucher ? Math.floor(subtotal * (AppState.appliedVoucher.discount_percent / 100)) : 0;
       const formattedTotal = `Rp ${(subtotal - discount).toLocaleString('id-ID')}`;
 
-      const message = `Halo cs Mawi saya ingin membeli ${itemsSummary} (Total: ${formattedTotal}), dengan nick ${nick} dan saya bermain di Mawi SMP`;
+      const message = `Halo CS Mawi saya ingin membeli ${itemsSummary} (Total: ${formattedTotal}), dengan nick ${nick} di Mawi SMP`;
       window.open(`https://wa.me/${CS_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
       closeCartModal();
     }
@@ -1353,26 +1023,20 @@
     function toggleAccordion(id) {
       const content = document.getElementById(`${id}-content`);
       const icon = document.getElementById(`${id}-icon`);
-      if (content.classList.contains('hidden')) {
-        content.classList.remove('hidden');
-        icon.style.transform = 'rotate(180deg)';
-      } else {
-        content.classList.add('hidden');
-        icon.style.transform = 'rotate(0deg)';
-      }
+      if (content.classList.contains('hidden')) { content.classList.remove('hidden'); icon.style.transform = 'rotate(180deg)'; }
+      else { content.classList.add('hidden'); icon.style.transform = 'rotate(0deg)'; }
     }
 
     function initCaptcha() {
       const n1 = Math.floor(Math.random() * 5) + 2;
       const n2 = Math.floor(Math.random() * 5) + 1;
       AppState.captchaAns = n1 + n2;
-      const q = document.getElementById('galleryCaptchaQuestion');
-      if (q) q.innerText = `${n1} + ${n2} = ?`;
+      document.getElementById('galleryCaptchaQuestion').innerText = `${n1} + ${n2} = ?`;
     }
 
     function triggerUploadAction() {
       if (!AppState.currentUser) {
-        showToast('Silakan daftar atau masuk dengan akun Gmail Anda terlebih dahulu untuk upload screenshot!');
+        showToast('Silakan login dengan akun Gmail Anda terlebih dahulu!');
         openAuthModal('register');
         return;
       }
@@ -1382,78 +1046,38 @@
       document.getElementById('uploadModal').classList.remove('opacity-0', 'pointer-events-none');
     }
 
-    function closeUploadModal() {
-      document.getElementById('uploadModal').classList.add('opacity-0', 'pointer-events-none');
-    }
+    function closeUploadModal() { document.getElementById('uploadModal').classList.add('opacity-0', 'pointer-events-none'); }
 
     function renderGallery() {
       const container = document.getElementById('galleryGrid');
       if (!container) return;
       container.innerHTML = '';
-
       const approved = AppState.gallery.filter(g => g.status === 'APPROVED');
-      if (approved.length === 0) {
-        container.innerHTML = `<div class="col-span-full text-center py-8 text-gray-400 text-xs">Belum ada screenshot yang ditampilkan.</div>`;
-        return;
-      }
-
+      if (approved.length === 0) { container.innerHTML = `<div class="col-span-full text-center py-8 text-gray-400 text-xs">Belum ada screenshot.</div>`; return; }
       approved.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'clean-card rounded-xl overflow-hidden';
-        card.innerHTML = `
-          <div class="relative aspect-video bg-voidLight">
-            <img src="${item.image_drive_url}" alt="${item.username}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500'">
-            <div class="absolute bottom-0 inset-x-0 bg-black/70 p-2 text-[11px] text-white font-medium flex items-center justify-between">
-              <span>👤 ${item.username}</span>
+        container.innerHTML += `
+          <div class="clean-card rounded-xl overflow-hidden">
+            <div class="relative aspect-video bg-voidLight"><img src="${item.image_drive_url}" class="w-full h-full object-cover">
+              <div class="absolute bottom-0 inset-x-0 bg-black/70 p-2 text-[11px] text-white font-medium">👤 ${item.username}</div>
             </div>
           </div>
         `;
-        container.appendChild(card);
       });
     }
 
     function submitGalleryUpload() {
       const fileInput = document.getElementById('uploadFileInput');
       const ans = Number(document.getElementById('galleryCaptchaAns').value);
+      if (!fileInput.files.length) return showToast('Pilih file gambar!', 'error');
+      if (ans !== AppState.captchaAns) { showToast('Verifikasi captcha salah!', 'error'); initCaptcha(); return; }
 
-      if (!fileInput.files || fileInput.files.length === 0) {
-        showToast('Pilih file gambar screenshot terlebih dahulu!', 'error');
-        return;
-      }
-      if (ans !== AppState.captchaAns) {
-        showToast('Jawaban verifikasi salah!', 'error');
-        initCaptcha();
-        return;
-      }
-
-      const file = fileInput.files[0];
       const reader = new FileReader();
-      reader.onload = async function(e) {
-        const base64Data = e.target.result;
-        const newPhoto = {
-          id: 'G-' + Date.now(),
-          username: AppState.currentUser.nick || AppState.currentUser.name,
-          email: AppState.currentUser.email,
-          image_drive_url: base64Data,
-          status: 'PENDING'
-        };
-
-        if (AppState.gasApiUrl) {
-          try {
-            await fetch(AppState.gasApiUrl, {
-              method: 'POST',
-              headers: { 'Content-Type': 'text/plain' },
-              body: JSON.stringify({ action: 'uploadGallery', username: newPhoto.username, base64Image: base64Data, mimeType: file.type })
-            });
-          } catch (err) {}
-        }
-
-        AppState.gallery.push(newPhoto);
-        localStorage.setItem('mawi_gallery_custom', JSON.stringify(AppState.gallery));
+      reader.onload = function(e) {
+        AppState.gallery.push({ id: 'G-' + Date.now(), username: AppState.currentUser.nick, image_drive_url: e.target.result, status: 'PENDING' });
         closeUploadModal();
-        showToast('Screenshot berhasil dikirim! Menunggu persetujuan admin.');
+        showToast('Screenshot terkirim! Menunggu persetujuan admin.');
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(fileInput.files[0]);
     }
 
     function switchAdminTab(tab) {
@@ -1461,7 +1085,6 @@
         document.getElementById(`adminPanel-${t}`).classList.add('hidden');
         document.getElementById(`adminTabBtn-${t}`).className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white';
       });
-
       document.getElementById(`adminPanel-${tab}`).classList.remove('hidden');
       document.getElementById(`adminTabBtn-${tab}`).className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-burgundy text-white';
       lucide.createIcons();
@@ -1471,19 +1094,18 @@
       const table = document.getElementById('adminProductsTable');
       table.innerHTML = '';
       AppState.products.forEach(p => {
-        const tr = document.createElement('tr');
-        tr.className = 'hover:bg-glass transition';
-        tr.innerHTML = `
-          <td class="p-3 font-bold text-white">${p.name}</td>
-          <td class="p-3"><span class="px-2 py-0.5 rounded bg-void text-accent border border-glassBorder text-[10px]">${p.category}</span></td>
-          <td class="p-3 font-mono">Rp ${Number(p.price).toLocaleString('id-ID')}</td>
-          <td class="p-3 text-gray-400 max-w-xs truncate">${Array.isArray(p.features) ? p.features.join(', ') : p.features}</td>
-          <td class="p-3 text-right space-x-1.5">
-            <button onclick="editProduct('${p.id}')" class="px-2.5 py-1 bg-voidLight border border-glassBorder rounded-lg text-gray-300 hover:text-white">Edit</button>
-            <button onclick="deleteProduct('${p.id}')" class="px-2.5 py-1 bg-rose-900/40 text-rose-300 border border-rose-500/30 rounded-lg hover:bg-rose-900">Hapus</button>
-          </td>
+        table.innerHTML += `
+          <tr class="hover:bg-glass transition">
+            <td class="p-3 font-bold text-white">${p.name}</td>
+            <td class="p-3"><span class="px-2 py-0.5 rounded bg-void text-accent border border-glassBorder text-[10px]">${p.category}</span></td>
+            <td class="p-3 font-mono">Rp ${Number(p.price).toLocaleString('id-ID')}</td>
+            <td class="p-3 text-gray-400 max-w-xs truncate">${Array.isArray(p.features) ? p.features.join(', ') : p.features}</td>
+            <td class="p-3 text-right space-x-1.5">
+              <button onclick="editProduct('${p.id}')" class="px-2.5 py-1 bg-voidLight border border-glassBorder rounded-lg text-gray-300">Edit</button>
+              <button onclick="deleteProduct('${p.id}')" class="px-2.5 py-1 bg-rose-900/40 text-rose-300 border border-rose-500/30 rounded-lg">Hapus</button>
+            </td>
+          </tr>
         `;
-        table.appendChild(tr);
       });
     }
 
@@ -1497,14 +1119,12 @@
       document.getElementById('productCrudModal').classList.remove('opacity-0', 'pointer-events-none');
     }
 
-    function closeProductCrudModal() {
-      document.getElementById('productCrudModal').classList.add('opacity-0', 'pointer-events-none');
-    }
+    function closeProductCrudModal() { document.getElementById('productCrudModal').classList.add('opacity-0', 'pointer-events-none'); }
 
     function editProduct(id) {
       const p = AppState.products.find(x => x.id === id);
       if (!p) return;
-      document.getElementById('productCrudTitle').innerText = 'Edit Produk: ' + p.name;
+      document.getElementById('productCrudTitle').innerText = 'Edit: ' + p.name;
       document.getElementById('crudProductId').value = p.id;
       document.getElementById('crudProductName').value = p.name;
       document.getElementById('crudProductCategory').value = p.category;
@@ -1522,31 +1142,24 @@
       const image_url = document.getElementById('crudProductImage').value.trim() || 'https://api.dicebear.com/7.x/shapes/svg?seed=' + name;
       const features = document.getElementById('crudProductFeatures').value.split(',').map(s => s.trim()).filter(Boolean);
 
-      if (!name || isNaN(price)) {
-        showToast('Nama dan harga produk wajib diisi!', 'error');
-        return;
-      }
+      if (!name || isNaN(price)) return showToast('Nama & harga wajib diisi!', 'error');
 
       const productObj = { id, name, category, price, image_url, features };
-      const existingIdx = AppState.products.findIndex(p => p.id === id);
+      const idx = AppState.products.findIndex(p => p.id === id);
+      if (idx > -1) AppState.products[idx] = productObj;
+      else AppState.products.push(productObj);
 
-      if (existingIdx > -1) {
-        AppState.products[existingIdx] = productObj;
-      } else {
-        AppState.products.push(productObj);
-      }
-
-      localStorage.setItem('mawi_products_custom', JSON.stringify(AppState.products));
+      syncToSheets({ action: 'saveProduct', product: productObj });
       closeProductCrudModal();
       renderAdminProducts();
       renderProducts();
-      showToast('Data produk berhasil disimpan!');
+      showToast('Produk berhasil disimpan & disync!');
     }
 
     function deleteProduct(id) {
-      if (!confirm('Yakin ingin menghapus produk ini?')) return;
+      if (!confirm('Hapus produk ini?')) return;
       AppState.products = AppState.products.filter(p => p.id !== id);
-      localStorage.setItem('mawi_products_custom', JSON.stringify(AppState.products));
+      syncToSheets({ action: 'deleteProduct', id: id });
       renderAdminProducts();
       renderProducts();
       showToast('Produk dihapus.');
@@ -1555,25 +1168,21 @@
     function renderAdminVouchers() {
       const table = document.getElementById('adminVouchersTable');
       table.innerHTML = '';
-      if (AppState.vouchers.length === 0) {
-        table.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-gray-400">Belum ada voucher.</td></tr>`;
-        return;
-      }
+      if (AppState.vouchers.length === 0) { table.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-gray-400">Belum ada voucher.</td></tr>`; return; }
 
       AppState.vouchers.forEach(v => {
         const isActive = v.is_active === true || v.is_active === 'true';
-        const tr = document.createElement('tr');
-        tr.className = 'hover:bg-glass transition';
-        tr.innerHTML = `
-          <td class="p-3 font-mono font-bold text-accent">${v.code}</td>
-          <td class="p-3 font-bold">${v.discount_percent}%</td>
-          <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${isActive ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30' : 'bg-rose-500/10 text-rose-400 border border-rose-500/30'}">${isActive ? 'AKTIF' : 'NONAKTIF'}</span></td>
-          <td class="p-3 text-right space-x-1.5">
-            <button onclick="editVoucher('${v.code}')" class="px-2.5 py-1 bg-voidLight border border-glassBorder rounded-lg text-gray-300 hover:text-white">Edit</button>
-            <button onclick="deleteVoucher('${v.code}')" class="px-2.5 py-1 bg-rose-900/40 text-rose-300 border border-rose-500/30 rounded-lg hover:bg-rose-900">Hapus</button>
-          </td>
+        table.innerHTML += `
+          <tr class="hover:bg-glass transition">
+            <td class="p-3 font-mono font-bold text-accent">${v.code}</td>
+            <td class="p-3 font-bold">${v.discount_percent}%</td>
+            <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${isActive ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}">${isActive ? 'AKTIF' : 'NONAKTIF'}</span></td>
+            <td class="p-3 text-right space-x-1.5">
+              <button onclick="editVoucher('${v.code}')" class="px-2.5 py-1 bg-voidLight border border-glassBorder rounded-lg text-gray-300">Edit</button>
+              <button onclick="deleteVoucher('${v.code}')" class="px-2.5 py-1 bg-rose-900/40 text-rose-300 border border-rose-500/30 rounded-lg">Hapus</button>
+            </td>
+          </tr>
         `;
-        table.appendChild(tr);
       });
     }
 
@@ -1586,14 +1195,12 @@
       document.getElementById('voucherCrudModal').classList.remove('opacity-0', 'pointer-events-none');
     }
 
-    function closeVoucherModal() {
-      document.getElementById('voucherCrudModal').classList.add('opacity-0', 'pointer-events-none');
-    }
+    function closeVoucherModal() { document.getElementById('voucherCrudModal').classList.add('opacity-0', 'pointer-events-none'); }
 
     function editVoucher(code) {
       const v = AppState.vouchers.find(x => x.code.toUpperCase() === code.toUpperCase());
       if (!v) return;
-      document.getElementById('voucherCrudTitle').innerText = 'Edit Voucher: ' + v.code;
+      document.getElementById('voucherCrudTitle').innerText = 'Edit: ' + v.code;
       document.getElementById('crudVoucherOldCode').value = v.code;
       document.getElementById('crudVoucherCode').value = v.code;
       document.getElementById('crudVoucherPercent').value = v.discount_percent;
@@ -1607,91 +1214,71 @@
       const percent = Number(document.getElementById('crudVoucherPercent').value);
       const isActive = document.getElementById('crudVoucherStatus').value === 'true';
 
-      if (!code || isNaN(percent) || percent <= 0 || percent > 100) {
-        showToast('Isi kode voucher dan diskon 1-100% dengan benar!', 'error');
-        return;
-      }
+      if (!code || isNaN(percent) || percent <= 0) return showToast('Isi kode & diskon dengan benar!', 'error');
 
-      const voucherObj = { code, discount_percent: percent, is_active: isActive };
+      const vObj = { code, discount_percent: percent, is_active: isActive };
       if (oldCode) {
         const idx = AppState.vouchers.findIndex(v => v.code.toUpperCase() === oldCode);
-        if (idx > -1) AppState.vouchers[idx] = voucherObj;
-      } else {
-        AppState.vouchers.push(voucherObj);
-      }
+        if (idx > -1) AppState.vouchers[idx] = vObj;
+      } else AppState.vouchers.push(vObj);
 
-      localStorage.setItem('mawi_vouchers_custom', JSON.stringify(AppState.vouchers));
+      syncToSheets({ action: 'saveVoucher', voucher: vObj, oldCode: oldCode });
       closeVoucherModal();
       renderAdminVouchers();
-      showToast('Data voucher berhasil disimpan!');
+      showToast('Voucher tersimpan!');
     }
 
     function deleteVoucher(code) {
       if (!confirm(`Hapus voucher ${code}?`)) return;
       AppState.vouchers = AppState.vouchers.filter(v => v.code.toUpperCase() !== code.toUpperCase());
-      localStorage.setItem('mawi_vouchers_custom', JSON.stringify(AppState.vouchers));
+      syncToSheets({ action: 'deleteVoucher', code: code });
       renderAdminVouchers();
-      showToast('Voucher dihapus.');
+      showToast('Voucher terhapus.');
     }
 
     function renderAdminGallery() {
       const grid = document.getElementById('adminGalleryGrid');
       grid.innerHTML = '';
       AppState.gallery.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'p-2.5 rounded-xl bg-voidLight border border-glassBorder space-y-2';
-        card.innerHTML = `
-          <img src="${item.image_drive_url}" class="w-full h-24 object-cover rounded-lg">
-          <div class="flex justify-between items-center text-xs">
-            <span class="font-bold text-white">${item.username}</span>
-            <span class="text-[10px] px-1.5 py-0.5 rounded bg-glass ${item.status === 'APPROVED' ? 'text-emerald-400' : 'text-amber-400'}">${item.status}</span>
-          </div>
-          <div class="flex gap-1">
-            <button onclick="approveGallery('${item.id}')" class="flex-1 py-1 rounded bg-emerald-700 text-white text-[10px] font-bold">Setujui</button>
-            <button onclick="deleteGalleryItem('${item.id}')" class="flex-1 py-1 rounded bg-rose-900 text-rose-200 text-[10px] font-bold">Hapus</button>
+        grid.innerHTML += `
+          <div class="p-2.5 rounded-xl bg-voidLight border border-glassBorder space-y-2">
+            <img src="${item.image_drive_url}" class="w-full h-24 object-cover rounded-lg">
+            <div class="flex justify-between items-center text-xs">
+              <span class="font-bold text-white">${item.username}</span>
+              <span class="text-[10px] px-1.5 py-0.5 rounded ${item.status === 'APPROVED' ? 'text-emerald-400 bg-emerald-500/10' : 'text-amber-400 bg-amber-500/10'}">${item.status}</span>
+            </div>
+            <div class="flex gap-1">
+              <button onclick="approveGallery('${item.id}')" class="flex-1 py-1 rounded bg-emerald-700 text-white text-[10px] font-bold">Setujui</button>
+              <button onclick="deleteGalleryItem('${item.id}')" class="flex-1 py-1 rounded bg-rose-900 text-rose-200 text-[10px] font-bold">Hapus</button>
+            </div>
           </div>
         `;
-        grid.appendChild(card);
       });
     }
 
     function approveGallery(id) {
       const item = AppState.gallery.find(g => g.id === id);
-      if (item) {
-        item.status = 'APPROVED';
-        localStorage.setItem('mawi_gallery_custom', JSON.stringify(AppState.gallery));
-        renderAdminGallery();
-        renderGallery();
-        showToast('Foto disetujui.');
-      }
+      if (item) { item.status = 'APPROVED'; renderAdminGallery(); renderGallery(); showToast('Disetujui.'); }
     }
 
     function deleteGalleryItem(id) {
       AppState.gallery = AppState.gallery.filter(g => g.id !== id);
-      localStorage.setItem('mawi_gallery_custom', JSON.stringify(AppState.gallery));
       renderAdminGallery();
       renderGallery();
-      showToast('Foto dihapus.');
+      showToast('Dihapus.');
     }
 
     function saveWebSettings() {
-      const brand = document.getElementById('settingBrandName').value.trim() || 'MAWI SMP';
-      const logo = document.getElementById('settingLogoUrl').value.trim() || AppState.logoUrl;
-      const hero = document.getElementById('settingHeroText').value.trim() || AppState.heroText;
-      const gas = document.getElementById('settingGasUrl').value.trim();
+      AppState.brandName = document.getElementById('settingBrandName').value.trim() || 'MAWI SMP';
+      AppState.logoUrl = document.getElementById('settingLogoUrl').value.trim() || AppState.logoUrl;
+      AppState.heroText = document.getElementById('settingHeroText').value.trim() || AppState.heroText;
 
-      AppState.brandName = brand;
-      AppState.logoUrl = logo;
-      AppState.heroText = hero;
-      AppState.gasApiUrl = gas;
-
-      localStorage.setItem('mawi_brand_name', brand);
-      localStorage.setItem('mawi_logo_url', logo);
-      localStorage.setItem('mawi_hero_text', hero);
-      localStorage.setItem('mawi_gas_url', gas);
+      localStorage.setItem('mawi_brand_name', AppState.brandName);
+      localStorage.setItem('mawi_logo_url', AppState.logoUrl);
+      localStorage.setItem('mawi_hero_text', AppState.heroText);
 
       applyBrandingUI();
-      showToast('Pengaturan website berhasil disimpan!');
+      showToast('Pengaturan web tersimpan!');
     }
   </script>
 </body>
