@@ -1,40 +1,39 @@
-```html
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MawiSMP - Official Server & Webstore</title>
+  <title>Mawi SMP | Official Store & Komunitas Minecraft</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Google Fonts: Poppins & Montserrat -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Lucide Icons -->
+  <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            mawi: {
-              dark: '#540804',
-              deep: '#81171B',
-              accent: '#AD2E24',
-              soft: '#C75146',
-              highlight: '#EA8C55',
-              surface: '#2B0402',
-              card: '#3D0704'
-            }
+            void: '#0B080F',
+            voidLight: '#140F1D',
+            glass: '#1A1424',
+            glassBorder: '#2E233D',
+            burgundy: {
+              DEFAULT: '#8B1E3F',
+              dark: '#70142C',
+              light: '#A8254D'
+            },
+            accent: '#D1386A'
           },
           fontFamily: {
-            sans: ['Poppins', 'sans-serif'],
-            heading: ['Montserrat', 'sans-serif']
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
           }
         }
       }
@@ -43,1357 +42,1656 @@
 
   <style>
     body {
-      background-color: #170202;
-      color: #F7FAFC;
+      background-color: #0B080F;
+      color: #E2E8F0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
     }
-    .custom-gradient {
-      background: linear-gradient(135deg, #540804 0%, #81171B 50%, #AD2E24 100%);
-    }
-    .hero-pattern {
-      background-color: #1a0302;
-      background-image: radial-gradient(#AD2E24 0.75px, transparent 0.75px), radial-gradient(#AD2E24 0.75px, #170202 0.75px);
-      background-size: 30px 30px;
-      background-position: 0 0, 15px 15px;
-    }
-    .glass-nav {
-      background: rgba(43, 4, 2, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(234, 140, 85, 0.2);
-    }
-    .glass-card {
-      background: rgba(61, 7, 4, 0.75);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(173, 46, 36, 0.35);
-    }
-    .glass-card:hover {
-      border-color: #EA8C55;
-      box-shadow: 0 10px 25px -5px rgba(234, 140, 85, 0.2);
-    }
-    /* Custom Scrollbar */
+    
     ::-webkit-scrollbar {
-      width: 8px;
+      width: 6px;
     }
     ::-webkit-scrollbar-track {
-      background: #2B0402;
+      background: #0B080F;
     }
     ::-webkit-scrollbar-thumb {
-      background: #81171B;
-      border-radius: 4px;
+      background: #2E233D;
+      border-radius: 3px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #EA8C55;
+      background: #8B1E3F;
+    }
+
+    .clean-panel {
+      background-color: #140F1D;
+      border: 1px solid #2E233D;
+    }
+
+    .clean-card {
+      background-color: #1A1424;
+      border: 1px solid #2E233D;
+    }
+
+    .crimson-btn {
+      background: linear-gradient(135deg, #8B1E3F 0%, #70142C 100%);
+    }
+    .crimson-btn:hover {
+      background: linear-gradient(135deg, #A8254D 0%, #8B1E3F 100%);
+    }
+
+    .fade-in {
+      animation: quickFade 0.2s ease-out forwards;
+    }
+
+    @keyframes quickFade {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-mawi-highlight selection:text-mawi-dark font-sans">
+<body class="min-h-screen flex flex-col justify-between selection:bg-burgundy selection:text-white">
 
-  <!-- ================= NOTIFIKASI TOAST ================= -->
-  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
-
-  <!-- ================= TOPBAR & NICKNAME BAR ================= -->
-  <div class="bg-mawi-dark border-b border-mawi-accent/30 py-2 px-4 text-xs">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-      <div class="flex items-center gap-2 text-mawi-highlight font-medium">
-        <span class="flex h-2 w-2 relative">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-        </span>
-        <span>Server Status: <strong class="text-white">ONLINE</strong> (Java & Bedrock)</span>
-      </div>
-
-      <!-- Player Nickname Box -->
-      <div class="flex items-center gap-2">
-        <label for="player-nick-input" class="text-gray-300 font-medium hidden sm:inline">Minecraft Nick:</label>
-        <div class="relative flex items-center">
-          <i data-lucide="user" class="w-3.5 h-3.5 absolute left-2.5 text-mawi-highlight"></i>
-          <input 
-            type="text" 
-            id="player-nick-input" 
-            placeholder="Ketik Nickname..." 
-            class="pl-8 pr-24 py-1 rounded bg-black/40 border border-mawi-accent/50 text-white text-xs focus:outline-none focus:border-mawi-highlight transition-colors w-48 sm:w-56"
-          >
-          <button 
-            id="btn-save-nick" 
-            onclick="savePlayerNickname()" 
-            class="absolute right-1 px-2 py-0.5 bg-mawi-accent hover:bg-mawi-soft text-white font-semibold rounded text-[10px] transition-colors"
-          >
-            Simpan
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= NAVBAR ================= -->
-  <header class="sticky top-0 z-40 glass-nav transition-all">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-20">
-        
-        <!-- Logo -->
-        <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-mawi-accent to-mawi-highlight flex items-center justify-center p-0.5 shadow-lg shadow-mawi-dark/50">
-            <!-- Placeholder Logo Server -->
-            <img 
-              id="server-logo-img"
-              src="https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=128&auto=format&fit=crop&q=80" 
-              alt="MawiSMP Logo" 
-              class="w-full h-full object-cover rounded-[10px]"
-              onerror="this.src='https://placehold.co/100x100/540804/EA8C55?text=MAWI'"
-            >
-          </div>
-          <div>
-            <span class="text-2xl font-black font-heading tracking-wider text-white">MAWI<span class="text-mawi-highlight">SMP</span></span>
-            <p class="text-[10px] text-gray-400 tracking-widest uppercase">Crossplay Minecraft Server</p>
-          </div>
-        </div>
-
-        <!-- Desktop Navigation -->
-        <nav class="hidden md:flex items-center gap-1 lg:gap-2">
-          <button onclick="navigateTo('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-lg font-medium text-sm transition-all text-mawi-highlight bg-white/5 flex items-center gap-2">
-            <i data-lucide="home" class="w-4 h-4"></i> Home
-          </button>
-          <button onclick="navigateTo('store')" id="nav-store" class="nav-btn px-4 py-2 rounded-lg font-medium text-sm transition-all text-gray-300 hover:text-white hover:bg-white/5 flex items-center gap-2">
-            <i data-lucide="shopping-bag" class="w-4 h-4"></i> Store
-          </button>
-          <button onclick="navigateTo('links')" id="nav-links" class="nav-btn px-4 py-2 rounded-lg font-medium text-sm transition-all text-gray-300 hover:text-white hover:bg-white/5 flex items-center gap-2">
-            <i data-lucide="link" class="w-4 h-4"></i> Komunitas
-          </button>
-          <button onclick="navigateTo('rules')" id="nav-rules" class="nav-btn px-4 py-2 rounded-lg font-medium text-sm transition-all text-gray-300 hover:text-white hover:bg-white/5 flex items-center gap-2">
-            <i data-lucide="shield-alert" class="w-4 h-4"></i> Rules
-          </button>
-          <button onclick="navigateTo('admin')" id="nav-admin" class="nav-btn px-4 py-2 rounded-lg font-medium text-sm transition-all text-gray-300 hover:text-white hover:bg-white/5 flex items-center gap-2">
-            <i data-lucide="lock" class="w-4 h-4"></i> Panel Admin
-          </button>
-        </nav>
-
-        <!-- Mobile Menu Button -->
-        <div class="flex items-center md:hidden">
-          <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="p-2 rounded-lg bg-mawi-card text-gray-300 hover:text-white border border-mawi-accent/40">
-            <i data-lucide="menu" class="w-6 h-6"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Mobile Dropdown -->
-    <div id="mobile-menu" class="hidden md:hidden border-t border-mawi-accent/30 bg-mawi-surface px-4 py-3 space-y-2">
-      <button onclick="navigateTo('home'); toggleMobileMenu()" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left text-sm font-medium text-white hover:bg-mawi-accent/30">
-        <i data-lucide="home" class="w-4 h-4 text-mawi-highlight"></i> Home
-      </button>
-      <button onclick="navigateTo('store'); toggleMobileMenu()" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left text-sm font-medium text-white hover:bg-mawi-accent/30">
-        <i data-lucide="shopping-bag" class="w-4 h-4 text-mawi-highlight"></i> Store
-      </button>
-      <button onclick="navigateTo('links'); toggleMobileMenu()" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left text-sm font-medium text-white hover:bg-mawi-accent/30">
-        <i data-lucide="link" class="w-4 h-4 text-mawi-highlight"></i> Komunitas & Links
-      </button>
-      <button onclick="navigateTo('rules'); toggleMobileMenu()" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left text-sm font-medium text-white hover:bg-mawi-accent/30">
-        <i data-lucide="shield-alert" class="w-4 h-4 text-mawi-highlight"></i> Peraturan
-      </button>
-      <button onclick="navigateTo('admin'); toggleMobileMenu()" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left text-sm font-medium text-white hover:bg-mawi-accent/30">
-        <i data-lucide="lock" class="w-4 h-4 text-mawi-highlight"></i> Panel Admin
-      </button>
-    </div>
-  </header>
-
-  <!-- ================= MAIN CONTENT AREA (SPA) ================= -->
-  <main class="flex-grow">
-    
-    <!-- 1. HALAMAN HOME -->
-    <section id="page-home" class="page-view hero-pattern min-h-[calc(100vh-120px)] py-12 px-4 sm:px-6 lg:px-8">
-      <div class="max-w-6xl mx-auto space-y-16">
-        
-        <!-- Hero Banner -->
-        <div class="text-center space-y-6 pt-6">
-          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-mawi-accent/20 border border-mawi-highlight/30 text-mawi-highlight text-xs sm:text-sm font-semibold tracking-wide">
-            <i data-lucide="sparkles" class="w-4 h-4"></i> Official Minecraft Survival Multiplayer Server
-          </div>
-          <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black font-heading tracking-tight leading-none text-white">
-            PETUALANGAN TANPA BATAS DI <span class="bg-gradient-to-r from-mawi-soft via-mawi-highlight to-amber-300 bg-clip-text text-transparent">MAWISMP</span>
-          </h1>
-          <p class="max-w-2xl mx-auto text-gray-300 text-sm sm:text-lg font-light">
-            Server survival modern dengan fitur ekonomi seimbang, dungeon seru, claim proteksi aman, dan performa tinggi tanpa lag untuk Java & MCPE (Bedrock)!
-          </p>
-          <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
-            <button onclick="navigateTo('store')" class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-mawi-accent to-mawi-highlight hover:from-mawi-soft hover:to-amber-500 font-bold text-white shadow-lg shadow-mawi-accent/30 transition transform hover:-translate-y-0.5 flex items-center gap-2">
-              <i data-lucide="shopping-cart" class="w-5 h-5"></i> Buka Web Store
-            </button>
-            <button onclick="navigateTo('links')" class="px-8 py-3.5 rounded-xl glass-card text-white hover:bg-mawi-dark/80 font-semibold border border-mawi-accent/50 transition flex items-center gap-2">
-              <i data-lucide="message-square" class="w-5 h-5 text-mawi-highlight"></i> Komunitas Discord
-            </button>
-          </div>
-        </div>
-
-        <!-- Server IP & Connection Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          
-          <!-- Java Edition Card -->
-          <div class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group">
-            <div class="absolute -right-6 -top-6 w-24 h-24 bg-mawi-accent/10 rounded-full blur-2xl group-hover:bg-mawi-highlight/20 transition-all"></div>
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                  <div class="p-3 bg-mawi-dark rounded-xl border border-mawi-accent/40 text-mawi-highlight">
-                    <i data-lucide="monitor" class="w-6 h-6"></i>
-                  </div>
-                  <div>
-                    <h3 class="font-bold font-heading text-lg sm:text-xl text-white">Java Edition</h3>
-                    <p class="text-xs text-gray-400">PC & Laptop (All Versions)</p>
-                  </div>
-                </div>
-                <span class="text-xs font-semibold px-2.5 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full">Port Default</span>
-              </div>
-              <p class="text-xs text-gray-300">Gunakan server IP berikut di multiplayer menu game Minecraft PC kamu:</p>
-            </div>
-
-            <div class="mt-6 pt-4 border-t border-mawi-accent/30 flex items-center justify-between gap-2">
-              <div class="bg-black/50 px-4 py-2.5 rounded-xl border border-mawi-accent/40 flex-grow font-mono text-sm sm:text-base text-mawi-highlight font-bold truncate">
-                Mawi.my.id
-              </div>
-              <button onclick="copyToClipboard('Mawi.my.id', 'IP Java Server')" class="px-4 py-2.5 bg-mawi-accent hover:bg-mawi-soft text-white font-medium rounded-xl text-sm transition flex items-center gap-1.5 shrink-0 shadow-md">
-                <i data-lucide="copy" class="w-4 h-4"></i> <span>Salin IP</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Bedrock / MCPE Card -->
-          <div class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group">
-            <div class="absolute -right-6 -top-6 w-24 h-24 bg-mawi-highlight/10 rounded-full blur-2xl group-hover:bg-mawi-soft/20 transition-all"></div>
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                  <div class="p-3 bg-mawi-dark rounded-xl border border-mawi-accent/40 text-mawi-highlight">
-                    <i data-lucide="smartphone" class="w-6 h-6"></i>
-                  </div>
-                  <div>
-                    <h3 class="font-bold font-heading text-lg sm:text-xl text-white">Bedrock / MCPE</h3>
-                    <p class="text-xs text-gray-400">Android, iOS, Win10 & Console</p>
-                  </div>
-                </div>
-                <span class="text-xs font-semibold px-2.5 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-full">Wajib Port</span>
-              </div>
-              <p class="text-xs text-gray-300">Masukkan IP dan Port secara lengkap pada tab Servers Minecraft PE:</p>
-            </div>
-
-            <div class="mt-6 pt-4 border-t border-mawi-accent/30 space-y-2">
-              <div class="flex items-center justify-between gap-2">
-                <div class="bg-black/50 px-3 py-1.5 rounded-lg border border-mawi-accent/40 flex-grow font-mono text-xs sm:text-sm text-gray-200">
-                  <span class="text-gray-400 text-[10px] block">IP Server:</span>
-                  <span class="font-bold text-mawi-highlight">Mawi.my.id</span>
-                </div>
-                <button onclick="copyToClipboard('Mawi.my.id', 'IP Bedrock')" class="px-3 py-2 bg-mawi-dark hover:bg-mawi-accent text-white rounded-lg text-xs transition flex items-center gap-1 border border-mawi-accent/40">
-                  <i data-lucide="copy" class="w-3.5 h-3.5"></i> Salin IP
-                </button>
-              </div>
-              <div class="flex items-center justify-between gap-2">
-                <div class="bg-black/50 px-3 py-1.5 rounded-lg border border-mawi-accent/40 flex-grow font-mono text-xs sm:text-sm text-gray-200">
-                  <span class="text-gray-400 text-[10px] block">Port:</span>
-                  <span class="font-bold text-amber-300">19132</span>
-                </div>
-                <button onclick="copyToClipboard('19132', 'Port Bedrock')" class="px-3 py-2 bg-mawi-dark hover:bg-mawi-accent text-white rounded-lg text-xs transition flex items-center gap-1 border border-mawi-accent/40">
-                  <i data-lucide="copy" class="w-3.5 h-3.5"></i> Salin Port
-                </button>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Highlights Features Overview -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8">
-          <div class="glass-card p-6 rounded-xl text-center space-y-2">
-            <div class="w-12 h-12 mx-auto bg-mawi-dark border border-mawi-accent/40 rounded-full flex items-center justify-center text-mawi-highlight">
-              <i data-lucide="shield-check" class="w-6 h-6"></i>
-            </div>
-            <h4 class="font-bold text-white text-base">Land Claim Aman</h4>
-            <p class="text-xs text-gray-400">Proteksi bangunan dan chest kamu dari griefing dengan sistem claim yang mudah.</p>
-          </div>
-          <div class="glass-card p-6 rounded-xl text-center space-y-2">
-            <div class="w-12 h-12 mx-auto bg-mawi-dark border border-mawi-accent/40 rounded-full flex items-center justify-center text-mawi-highlight">
-              <i data-lucide="coins" class="w-6 h-6"></i>
-            </div>
-            <h4 class="font-bold text-white text-base">Economy & Shop</h4>
-            <p class="text-xs text-gray-400">Jual beli item dengan player lain, ikuti lelang pasar, dan bangun kekayaan server.</p>
-          </div>
-          <div class="glass-card p-6 rounded-xl text-center space-y-2">
-            <div class="w-12 h-12 mx-auto bg-mawi-dark border border-mawi-accent/40 rounded-full flex items-center justify-center text-mawi-highlight">
-              <i data-lucide="swords" class="w-6 h-6"></i>
-            </div>
-            <h4 class="font-bold text-white text-base">Custom Dungeon & Boss</h4>
-            <p class="text-xs text-gray-400">Tantang boss monster epik setiap akhir pekan dan dapatkan reward item langka.</p>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- 2. HALAMAN STORE (TOKO) -->
-    <section id="page-store" class="page-view hidden py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
+  <!-- ========================================== -->
+  <!-- 1. TOP HEADER                              -->
+  <!-- ========================================== -->
+  <header class="fixed top-0 left-0 right-0 z-40 bg-[#0B080F]/95 border-b border-glassBorder h-18 py-3">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between">
       
-      <!-- Store Header & Filter -->
-      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-mawi-accent/30 pb-6">
-        <div>
-          <h2 class="text-3xl font-black font-heading text-white flex items-center gap-3">
-            <i data-lucide="shopping-bag" class="text-mawi-highlight"></i> MAWISMP WEBSTORE
-          </h2>
-          <p class="text-xs sm:text-sm text-gray-300 mt-1">
-            Dukung server MawiSMP dan dapatkan Rank eksklusif serta Coin instan!
-          </p>
+      <div class="flex items-center gap-3 cursor-pointer" onclick="navigate('home')">
+        <div class="w-10 h-10 rounded-xl bg-burgundy/30 border border-burgundy p-0.5 flex items-center justify-center shrink-0 overflow-hidden">
+          <img id="headerLogoImg" src="https://api.dicebear.com/7.x/bottts/svg?seed=MawiSMP" alt="Logo" class="w-full h-full object-cover rounded-[9px]" onerror="this.src='https://api.dicebear.com/7.x/shapes/svg?seed=Mawi'"/>
         </div>
-
-        <!-- Filter Kategori Tabs -->
-        <div class="flex items-center gap-2 bg-mawi-surface p-1.5 rounded-xl border border-mawi-accent/40">
-          <button onclick="filterStoreCategory('ALL')" id="tab-cat-ALL" class="store-tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold bg-mawi-accent text-white transition">
-            Semua
-          </button>
-          <button onclick="filterStoreCategory('RANK')" id="tab-cat-RANK" class="store-tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition">
-            👑 Rank VIP
-          </button>
-          <button onclick="filterStoreCategory('COIN')" id="tab-cat-COIN" class="store-tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition">
-            💰 Server Coin
-          </button>
+        <div>
+          <span id="headerBrandTitle" class="text-lg sm:text-xl font-black tracking-wider text-white uppercase flex items-center gap-1">
+            MAWI <span class="text-accent">SMP</span>
+          </span>
+          <span class="text-[10px] text-gray-400 block tracking-wider font-medium">Server Main Santai & Have Fun</span>
         </div>
       </div>
 
-      <!-- Player Nick Reminder -->
-      <div class="bg-gradient-to-r from-mawi-dark via-mawi-deep to-mawi-dark border border-mawi-highlight/30 p-4 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-        <div class="flex items-center gap-3">
-          <div class="p-2 bg-mawi-highlight/20 rounded-lg text-mawi-highlight">
-            <i data-lucide="user-check" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <span class="text-gray-300">Berbelanja untuk Nickname:</span>
-            <span id="store-current-nick" class="font-bold text-mawi-highlight ml-1 text-sm">Belum Diset</span>
-          </div>
-        </div>
-        <button onclick="focusNicknameInput()" class="text-xs text-amber-300 underline hover:text-white">
-          Ubah Nickname
+      <div class="flex items-center gap-2 sm:gap-3">
+        <div id="userHeaderArea"></div>
+
+        <button onclick="openCartModal()" class="relative p-2.5 rounded-xl bg-clean-panel border border-glassBorder hover:border-accent text-gray-200 transition" aria-label="Keranjang Belanja">
+          <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+          <span id="headerCartCount" class="absolute -top-1 -right-1 bg-accent text-white font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center scale-0 transition-transform">0</span>
+        </button>
+
+        <button onclick="toggleDrawer(true)" class="p-2.5 rounded-xl bg-clean-panel border border-glassBorder text-gray-200 hover:text-white" aria-label="Buka Menu">
+          <i data-lucide="menu" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <!-- Products Grid -->
-      <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <!-- Products will be injected via JavaScript -->
-        <div class="col-span-full py-16 text-center text-gray-400 flex flex-col items-center justify-center">
-          <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-mawi-highlight mb-2"></i>
-          <p>Memuat katalog produk server...</p>
-        </div>
-      </div>
-    </section>
+    </div>
+  </header>
 
-    <!-- 3. HALAMAN KOMUNITAS & LINKS -->
-    <section id="page-links" class="page-view hidden py-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto space-y-8">
-      <div class="text-center space-y-2">
-        <h2 class="text-3xl font-black font-heading text-white">HUBUNGAN & KOMUNITAS</h2>
-        <p class="text-sm text-gray-300">Bergabunglah dengan komunitas MawiSMP di berbagai platform media sosial resmi kami.</p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <!-- Discord -->
-        <a href="https://discord.gg/" target="_blank" class="glass-card p-6 rounded-2xl flex items-center gap-4 group hover:bg-[#5865F2]/10 transition border border-mawi-accent/30">
-          <div class="w-14 h-14 bg-[#5865F2]/20 border border-[#5865F2]/40 rounded-xl flex items-center justify-center text-[#5865F2] group-hover:scale-110 transition">
-            <i data-lucide="message-square" class="w-7 h-7"></i>
-          </div>
-          <div>
-            <h3 class="font-bold text-white text-lg">Discord Server</h3>
-            <p class="text-xs text-gray-400">Ngobrol bareng player, open ticket & voice chat.</p>
-            <span class="text-xs text-mawi-highlight font-medium mt-1 inline-flex items-center gap-1">Join Server &rarr;</span>
-          </div>
-        </a>
-
-        <!-- WhatsApp CS -->
-        <a href="https://wa.me/628892910155" target="_blank" class="glass-card p-6 rounded-2xl flex items-center gap-4 group hover:bg-emerald-500/10 transition border border-mawi-accent/30">
-          <div class="w-14 h-14 bg-emerald-500/20 border border-emerald-500/40 rounded-xl flex items-center justify-center text-emerald-400 group-hover:scale-110 transition">
-            <i data-lucide="phone-call" class="w-7 h-7"></i>
-          </div>
-          <div>
-            <h3 class="font-bold text-white text-lg">Customer Support WA</h3>
-            <p class="text-xs text-gray-400">Bantuan store, kendala login & pertanyaan.</p>
-            <span class="text-xs text-emerald-400 font-medium mt-1 inline-flex items-center gap-1">Hubungi CS &rarr;</span>
-          </div>
-        </a>
-
-        <!-- TikTok -->
-        <a href="https://tiktok.com/" target="_blank" class="glass-card p-6 rounded-2xl flex items-center gap-4 group hover:bg-pink-500/10 transition border border-mawi-accent/30">
-          <div class="w-14 h-14 bg-pink-500/20 border border-pink-500/40 rounded-xl flex items-center justify-center text-pink-400 group-hover:scale-110 transition">
-            <i data-lucide="video" class="w-7 h-7"></i>
-          </div>
-          <div>
-            <h3 class="font-bold text-white text-lg">TikTok MawiSMP</h3>
-            <p class="text-xs text-gray-400">Cuplikan keseruan, update event & giveaway.</p>
-            <span class="text-xs text-pink-400 font-medium mt-1 inline-flex items-center gap-1">Follow TikTok &rarr;</span>
-          </div>
-        </a>
-
-        <!-- Instagram -->
-        <a href="https://instagram.com/" target="_blank" class="glass-card p-6 rounded-2xl flex items-center gap-4 group hover:bg-purple-500/10 transition border border-mawi-accent/30">
-          <div class="w-14 h-14 bg-purple-500/20 border border-purple-500/40 rounded-xl flex items-center justify-center text-purple-400 group-hover:scale-110 transition">
-            <i data-lucide="camera" class="w-7 h-7"></i>
-          </div>
-          <div>
-            <h3 class="font-bold text-white text-lg">Instagram Official</h3>
-            <p class="text-xs text-gray-400">Info pengumuman dan dokumentasi event server.</p>
-            <span class="text-xs text-purple-400 font-medium mt-1 inline-flex items-center gap-1">Follow IG &rarr;</span>
-          </div>
-        </a>
-      </div>
-    </section>
-
-    <!-- 4. HALAMAN RULES -->
-    <section id="page-rules" class="page-view hidden py-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto space-y-8">
-      <div class="text-center space-y-2">
-        <h2 class="text-3xl font-black font-heading text-white">PERATURAN SERVER MAWISMP</h2>
-        <p class="text-sm text-gray-300">Patuhilah peraturan di bawah ini untuk menjaga kenyamanan bermain bersama di server.</p>
-      </div>
-
-      <div class="space-y-4">
-        
-        <div class="glass-card p-5 rounded-xl flex items-start gap-4">
-          <span class="w-8 h-8 rounded-full bg-mawi-accent text-white flex items-center justify-center font-bold text-sm shrink-0">1</span>
-          <div>
-            <h4 class="font-bold text-white text-base">Dilarang Menggunakan Cheat / Ilegal Client (Hacks)</h4>
-            <p class="text-xs text-gray-300 mt-1">Penggunaan X-Ray, Fly, KillAura, Auto-Clicker, Baritone, Speed, atau modifikasi klien yang memberi keuntungan curang akan langsung dikenakan <strong>Permanent Ban</strong>.</p>
-          </div>
-        </div>
-
-        <div class="glass-card p-5 rounded-xl flex items-start gap-4">
-          <span class="w-8 h-8 rounded-full bg-mawi-accent text-white flex items-center justify-center font-bold text-sm shrink-0">2</span>
-          <div>
-            <h4 class="font-bold text-white text-base">Dilarang Griefing & Stealing di Wilayah Claim</h4>
-            <p class="text-xs text-gray-300 mt-1">Merusak bangunan milik orang lain, menjebak pemain dengan perangkap lava di luar zona PvP, atau mencuri barang milik pemain lain adalah pelanggaran berat.</p>
-          </div>
-        </div>
-
-        <div class="glass-card p-5 rounded-xl flex items-start gap-4">
-          <span class="w-8 h-8 rounded-full bg-mawi-accent text-white flex items-center justify-center font-bold text-sm shrink-0">3</span>
-          <div>
-            <h4 class="font-bold text-white text-base">Jaga Sopan Santun & Dilarang SARA / Toxic Berlebihan</h4>
-            <p class="text-xs text-gray-300 mt-1">Hormati sesama pemain dan staf. Dilarang melakukan ujaran kebencian, diskriminasi SARA, pornografi, maupun spam di kolom chat publik server.</p>
-          </div>
-        </div>
-
-        <div class="glass-card p-5 rounded-xl flex items-start gap-4">
-          <span class="w-8 h-8 rounded-full bg-mawi-accent text-white flex items-center justify-center font-bold text-sm shrink-0">4</span>
-          <div>
-            <h4 class="font-bold text-white text-base">Dilarang Eksploitasi Bug / Duplikasi Item (Dupe)</h4>
-            <p class="text-xs text-gray-300 mt-1">Jika menemukan celah bug atau glitch sistem, segera laporkan ke Admin/Staff. Memanfaatkan bug dupe akan berakibat reset akun dan banned permanent.</p>
-          </div>
-        </div>
-
-        <div class="glass-card p-5 rounded-xl flex items-start gap-4">
-          <span class="w-8 h-8 rounded-full bg-mawi-accent text-white flex items-center justify-center font-bold text-sm shrink-0">5</span>
-          <div>
-            <h4 class="font-bold text-white text-base">Dilarang Promosi Server Lain (Advertising)</h4>
-            <p class="text-xs text-gray-300 mt-1">Menyebarkan IP atau link server Minecraft lain di chat atau private message akan dikenakan IP-Mute dan Banned.</p>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- 5. DASHBOARD ADMIN -->
-    <section id="page-admin" class="page-view hidden py-10 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-8">
+  <!-- ========================================== -->
+  <!-- 2. DRAWER SIDEBAR NAVIGATION               -->
+  <!-- ========================================== -->
+  <div id="drawerOverlay" class="fixed inset-0 bg-black/70 z-50 opacity-0 pointer-events-none transition-opacity duration-200" onclick="toggleDrawer(false)">
+    <div id="drawerPanel" class="fixed right-0 top-0 bottom-0 w-72 max-w-[80vw] bg-voidLight border-l border-glassBorder p-5 flex flex-col justify-between transform translate-x-full transition-transform duration-200 ease-out" onclick="event.stopPropagation()">
       
-      <!-- Login Admin Card (Shown if not logged in) -->
-      <div id="admin-login-box" class="max-w-md mx-auto glass-card p-8 rounded-2xl space-y-6 shadow-2xl border border-mawi-accent/50">
-        <div class="text-center space-y-2">
-          <div class="w-14 h-14 bg-mawi-dark border border-mawi-highlight/40 rounded-2xl mx-auto flex items-center justify-center text-mawi-highlight">
-            <i data-lucide="lock" class="w-7 h-7"></i>
+      <div>
+        <div class="flex items-center justify-between pb-4 border-b border-glassBorder">
+          <div class="flex items-center gap-2">
+            <i data-lucide="compass" class="w-5 h-5 text-accent"></i>
+            <h2 class="text-base font-bold text-white">Menu Navigasi</h2>
           </div>
-          <h2 class="text-2xl font-bold font-heading text-white">Admin Login</h2>
-          <p class="text-xs text-gray-300">Masuk untuk mengelola produk toko dan voucher diskon server MawiSMP.</p>
+          <button onclick="toggleDrawer(false)" class="p-1 text-gray-400 hover:text-white">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
         </div>
 
-        <form onsubmit="handleAdminLogin(event)" class="space-y-4">
-          <div>
-            <label class="block text-xs font-semibold text-gray-300 mb-1">Username Admin</label>
-            <input type="text" id="admin-user" required placeholder="admin" class="w-full px-4 py-2.5 rounded-xl bg-black/50 border border-mawi-accent/40 text-white text-sm focus:outline-none focus:border-mawi-highlight">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-300 mb-1">Password</label>
-            <input type="password" id="admin-pass" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-xl bg-black/50 border border-mawi-accent/40 text-white text-sm focus:outline-none focus:border-mawi-highlight">
-          </div>
-          <button type="submit" id="btn-admin-submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-mawi-accent to-mawi-highlight text-white font-bold text-sm hover:opacity-95 transition shadow-lg flex items-center justify-center gap-2">
-            <i data-lucide="log-in" class="w-4 h-4"></i> Masuk Dashboard
+        <nav class="mt-4 space-y-1.5 text-sm font-medium">
+          <button onclick="navigate('home')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
+            <i data-lucide="home" class="w-4 h-4"></i>
+            <span>Home & Server Info</span>
           </button>
-        </form>
-        <p class="text-[11px] text-center text-gray-400">Default fallback lokal: <code>admin</code> / <code>mawi123</code> (Bisa dikoneksikan ke Sheet Google Apps Script).</p>
+          <button onclick="navigate('store')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
+            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+            <div class="flex items-center justify-between w-full">
+              <span>Mawi Store</span>
+              <span class="text-[10px] bg-burgundy px-2 py-0.5 rounded-full text-white font-bold">Ranks</span>
+            </div>
+          </button>
+          <button onclick="navigate('rules')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
+            <i data-lucide="book-open" class="w-4 h-4"></i>
+            <span>Aturan & Terms of Service</span>
+          </button>
+          <button onclick="navigate('gallery')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
+            <i data-lucide="image" class="w-4 h-4"></i>
+            <span>Galeri Komunitas</span>
+          </button>
+          <button onclick="navigate('community')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
+            <i data-lucide="users" class="w-4 h-4"></i>
+            <span>Grup WhatsApp & Discord</span>
+          </button>
+          
+          <div id="adminDrawerSection" class="pt-3 mt-3 border-t border-glassBorder hidden">
+            <button onclick="navigate('admin')" class="w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-rose-300 bg-burgundy/20 border border-burgundy/40 hover:bg-burgundy/40 transition text-left text-xs font-bold">
+              <span class="flex items-center gap-2.5">
+                <i data-lucide="shield-check" class="w-4 h-4 text-accent"></i>
+                <span>Staff / Admin Panel</span>
+              </span>
+              <span class="text-[9px] bg-accent px-1.5 py-0.5 rounded text-white font-mono">STAFF</span>
+            </button>
+          </div>
+        </nav>
       </div>
 
-      <!-- Admin Management Panel (Shown after login) -->
-      <div id="admin-dashboard-panel" class="hidden space-y-8">
-        
-        <!-- Header Panel -->
-        <div class="flex flex-wrap items-center justify-between gap-4 glass-card p-6 rounded-2xl">
-          <div>
-            <span class="text-xs text-mawi-highlight font-semibold uppercase tracking-wider">Dashboard Kontrol</span>
-            <h2 class="text-2xl font-bold text-white font-heading">Manajemen Web Store MawiSMP</h2>
+      <div id="drawerAccountInfo" class="pt-4 border-t border-glassBorder text-xs text-gray-400"></div>
+
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 3. MAIN ROUTER / CONTENT                   -->
+  <!-- ========================================== -->
+  <main class="flex-grow pt-24 pb-12 px-4 sm:px-6 max-w-6xl mx-auto w-full">
+
+    <!-- VIEW 1: HOME -->
+    <section id="section-home" class="fade-in space-y-8">
+      <div class="clean-card rounded-2xl p-6 sm:p-10 text-center relative overflow-hidden">
+        <div class="max-w-2xl mx-auto space-y-4">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-burgundy/30 border border-accent/30 text-accent text-xs font-bold">
+            <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+            MINECRAFT INDONESIA JAVA & BEDROCK (MCPE)
           </div>
+
+          <h1 class="text-3xl sm:text-5xl font-black text-white leading-tight tracking-tight">
+            Selamat Datang di <br/>
+            <span class="text-accent" id="heroServerTitle">MAWI SMP</span>
+          </h1>
+
+          <p id="heroAnnouncementText" class="text-gray-300 text-xs sm:text-sm leading-relaxed">
+            Server Minecraft santai untuk bermain bersama teman, mencari sahabat baru, membangun rumah impian, dan have fun tanpa ribet!
+          </p>
+
+          <div class="pt-3 flex flex-wrap justify-center gap-3">
+            <button onclick="navigate('store')" class="px-6 py-3 rounded-xl crimson-btn text-white text-xs sm:text-sm font-bold flex items-center gap-2 transition active:scale-95 shadow-md">
+              <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+              Lihat Mawi Store
+            </button>
+            <button onclick="navigate('rules')" class="px-5 py-3 rounded-xl bg-clean-panel hover:bg-glassBorder text-gray-200 text-xs sm:text-sm font-semibold border border-glassBorder flex items-center gap-2 transition">
+              <i data-lucide="book-open" class="w-4 h-4"></i>
+              Aturan Bermain
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="clean-card rounded-2xl p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <button onclick="refreshStoreData()" class="px-4 py-2 rounded-xl bg-mawi-surface hover:bg-mawi-card text-white text-xs border border-mawi-accent/40 flex items-center gap-2">
-              <i data-lucide="refresh-cw" class="w-4 h-4"></i> Sync Data
-            </button>
-            <button onclick="handleAdminLogout()" class="px-4 py-2 rounded-xl bg-rose-900/40 hover:bg-rose-900/60 text-rose-300 text-xs border border-rose-500/40 flex items-center gap-2">
-              <i data-lucide="log-out" class="w-4 h-4"></i> Keluar
-            </button>
-          </div>
-        </div>
-
-        <!-- Google Apps Script Config Alert -->
-        <div class="p-4 rounded-xl bg-amber-950/40 border border-amber-600/40 text-xs text-amber-200 flex items-start gap-3">
-          <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5"></i>
-          <div>
-            <p class="font-bold">Konfigurasi API Google Sheets (Code.gs):</p>
-            <p class="text-amber-300/80 mt-1">Pastikan Anda telah memasukkan URL Web App Google Apps Script di variabel JavaScript <code>GAS_API_URL</code>. Saat ini data menggunakan mock backend & sinkronisasi otomatis.</p>
-          </div>
-        </div>
-
-        <!-- Section 1: CRUD Produk -->
-        <div class="glass-card p-6 sm:p-8 rounded-2xl space-y-6">
-          <div class="flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                <i data-lucide="package-plus" class="text-mawi-highlight"></i> Daftar & Tambah Produk
-              </h3>
-              <p class="text-xs text-gray-400">Tambah item Rank VIP atau Coin Server baru ke etalase toko.</p>
+            <div class="p-2.5 bg-burgundy/30 rounded-xl text-accent">
+              <i data-lucide="server" class="w-5 h-5"></i>
             </div>
-            <button onclick="openProductModal()" class="px-4 py-2.5 rounded-xl bg-mawi-accent hover:bg-mawi-soft text-white text-xs font-bold transition flex items-center gap-2">
-              <i data-lucide="plus-circle" class="w-4 h-4"></i> Tambah Produk Baru
+            <div>
+              <h3 class="text-base font-bold text-white">Alamat Server (Server IP)</h3>
+              <p class="text-xs text-gray-400">Bisa dimainkan bersama dari HP (Bedrock/MCPE) & Laptop (Java)</p>
+            </div>
+          </div>
+          <span class="text-[11px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full">
+            Crossplay Ready
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="p-4 rounded-xl bg-voidLight border border-glassBorder flex items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold uppercase text-accent">Java Edition</span>
+                <span class="text-[10px] text-gray-400">PC / Laptop</span>
+              </div>
+              <div class="text-base font-mono font-bold text-white mt-1">mawi.my.id</div>
+            </div>
+            <button onclick="copyToClipboard('mawi.my.id', 'IP Java Berhasil Disalin!')" class="p-2 rounded-lg bg-burgundy hover:bg-burgundy-light text-white text-xs font-semibold flex items-center gap-1.5 transition">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              <span>Salin</span>
             </button>
           </div>
 
-          <!-- Table Produk -->
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs text-gray-300">
-              <thead class="bg-black/40 text-gray-400 uppercase text-[10px] tracking-wider border-b border-mawi-accent/30">
+          <div class="p-4 rounded-xl bg-voidLight border border-glassBorder flex items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold uppercase text-accent">Bedrock / MCPE</span>
+                <span class="text-[10px] text-gray-400">Port: 19132</span>
+              </div>
+              <div class="text-base font-mono font-bold text-white mt-1">mawi.my.id : 19132</div>
+            </div>
+            <div class="flex gap-1.5">
+              <button onclick="copyToClipboard('mawi.my.id:19132', 'IP & Port Bedrock Disalin!')" class="p-2 rounded-lg bg-clean-panel border border-glassBorder text-gray-300 hover:text-white text-xs font-medium">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              </button>
+              <a href="minecraft://?addExternalServer=Mawi%20SMP|mawi.my.id:19132" class="p-2 rounded-lg bg-burgundy hover:bg-burgundy-light text-white text-xs font-semibold flex items-center gap-1 transition">
+                <i data-lucide="play" class="w-3.5 h-3.5"></i>
+                <span>Main</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: STORE -->
+    <section id="section-store" class="hidden fade-in space-y-6">
+      <div class="clean-card rounded-2xl p-6 border border-glassBorder flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold text-accent uppercase tracking-wider">Official Webstore</span>
+          <h2 class="text-2xl font-black text-white mt-0.5">Donasi & Rank Toko Mawi</h2>
+          <p class="text-gray-400 text-xs mt-0.5">Dukung operasional server dan dapatkan titel keren in-game.</p>
+        </div>
+
+        <div class="flex items-center gap-2 bg-voidLight p-1 rounded-xl border border-glassBorder shrink-0">
+          <button id="tab-btn-ranks" onclick="filterStoreCategory('Ranks')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition bg-burgundy text-white">
+            In-Game Ranks
+          </button>
+          <button id="tab-btn-coins" onclick="filterStoreCategory('Coins')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition text-gray-400 hover:text-white">
+            Coins / Items
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 flex items-center gap-3 text-amber-200 text-xs">
+        <i data-lucide="info" class="w-4 h-4 shrink-0 text-amber-400"></i>
+        <span>Pastikan Nickname dan Platform Anda sudah sesuai sebelum melakukan checkout.</span>
+      </div>
+
+      <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    </section>
+
+    <!-- VIEW 3: SERVER RULES & DETAILED TOS -->
+    <section id="section-rules" class="hidden fade-in space-y-6 max-w-3xl mx-auto">
+      <div class="text-center space-y-1">
+        <h2 class="text-2xl sm:text-3xl font-bold text-white">Aturan Server & Ketentuan (TOS)</h2>
+        <p class="text-gray-400 text-xs">Panduan bermain demi kenyamanan bersama dan transparansi penggunaan dana donasi.</p>
+      </div>
+
+      <!-- TRANSPARANSI DANA DONASI & STRICT TOS BANNER -->
+      <div class="rounded-2xl p-6 crimson-btn border border-accent text-white space-y-3 shadow-lg">
+        <div class="flex items-center gap-2 text-rose-200 font-bold uppercase tracking-wider text-xs">
+          <i data-lucide="shield-alert" class="w-4 h-4"></i>
+          KEBIJAKAN & PENGGUNAAN DANA (TOS)
+        </div>
+        <h3 class="text-sm font-extrabold leading-relaxed">
+          1. Semua item, rank, dan coin yang sudah dibeli TIDAK DAPAT DI-REFUND/DIKEMBALIKAN dalam bentuk apapun (Final).
+        </h3>
+        <h3 class="text-sm font-extrabold leading-relaxed">
+          2. Seluruh uang hasil donasi dari toko ini 100% dialokasikan untuk <span class="underline decoration-accent font-black">membayar biaya hosting server bulanan</span> dan <span class="underline decoration-accent font-black">menggaji developer serta staff</span> yang merawat server.
+        </h3>
+        <p class="text-xs text-rose-100/90 leading-relaxed pt-1 border-t border-rose-500/30">
+          Dengan membeli produk di Mawi Store, Anda dianggap telah membaca, memahami, dan menyetujui seluruh ketentuan di atas.
+        </p>
+      </div>
+
+      <!-- Detail Aturan Server Lengkap -->
+      <div class="space-y-3">
+        <div class="clean-card rounded-xl overflow-hidden">
+          <button onclick="toggleAccordion('rule-1')" class="w-full p-4 text-left font-semibold text-white flex items-center justify-between hover:bg-glass transition text-sm">
+            <span class="flex items-center gap-2.5">
+              <span class="w-5 h-5 rounded-full bg-burgundy/40 text-accent text-xs flex items-center justify-center font-bold">1</span>
+              Dilarang Menggunakan Cheat / Klien Ilegal
+            </span>
+            <i id="rule-1-icon" data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform"></i>
+          </button>
+          <div id="rule-1-content" class="hidden px-5 pb-4 text-xs text-gray-300 space-y-2 border-t border-glassBorder pt-3">
+            <p>Dilarang keras memakai X-ray, Fly, KillAura, Baritone berlebih, atau modifikasi klien apa pun yang memberikan keuntungan tidak adil. Pelanggar akan langsung di-ban permanen tanpa toleransi.</p>
+          </div>
+        </div>
+
+        <div class="clean-card rounded-xl overflow-hidden">
+          <button onclick="toggleAccordion('rule-2')" class="w-full p-4 text-left font-semibold text-white flex items-center justify-between hover:bg-glass transition text-sm">
+            <span class="flex items-center gap-2.5">
+              <span class="w-5 h-5 rounded-full bg-burgundy/40 text-accent text-xs flex items-center justify-center font-bold">2</span>
+              Tata Krama, SARA, dan Larangan Toxic
+            </span>
+            <i id="rule-2-icon" data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform"></i>
+          </button>
+          <div id="rule-2-content" class="hidden px-5 pb-4 text-xs text-gray-300 space-y-2 border-t border-glassBorder pt-3">
+            <p>Hormati sesama pemain dan staf. Segala bentuk ucapan rasis, SARA, pelecehan, ancaman di dunia nyata, atau spam berlebihan di chat publik akan berujung mute atau ban.</p>
+          </div>
+        </div>
+
+        <div class="clean-card rounded-xl overflow-hidden">
+          <button onclick="toggleAccordion('rule-3')" class="w-full p-4 text-left font-semibold text-white flex items-center justify-between hover:bg-glass transition text-sm">
+            <span class="flex items-center gap-2.5">
+              <span class="w-5 h-5 rounded-full bg-burgundy/40 text-accent text-xs flex items-center justify-center font-bold">3</span>
+              Griefing, Pencurian, & Klaim Wilayah
+            </span>
+            <i id="rule-3-icon" data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform"></i>
+          </button>
+          <div id="rule-3-content" class="hidden px-5 pb-4 text-xs text-gray-300 space-y-2 border-t border-glassBorder pt-3">
+            <p>Dilarang mencuri atau merusak bangunan player lain di area yang sudah diklaim. Manfaatkan alat klaim wilayah Anda sebaik mungkin agar base Anda aman.</p>
+          </div>
+        </div>
+
+        <div class="clean-card rounded-xl overflow-hidden">
+          <button onclick="toggleAccordion('rule-4')" class="w-full p-4 text-left font-semibold text-white flex items-center justify-between hover:bg-glass transition text-sm">
+            <span class="flex items-center gap-2.5">
+              <span class="w-5 h-5 rounded-full bg-burgundy/40 text-accent text-xs flex items-center justify-center font-bold">4</span>
+              Eksploitasi Bug & Lag Machine
+            </span>
+            <i id="rule-4-icon" data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform"></i>
+          </button>
+          <div id="rule-4-content" class="hidden px-5 pb-4 text-xs text-gray-300 space-y-2 border-t border-glassBorder pt-3">
+            <p>Jika menemukan bug duplikasi item atau celah error server, wajib melaporkannya kepada Admin (bukan disalahgunakan). Pembuatan mesin penghasil lag berat (lag machine) akan dihancurkan.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: GALLERY -->
+    <section id="section-gallery" class="hidden fade-in space-y-6">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div>
+          <h2 class="text-2xl font-bold text-white">Galeri Mawi SMP</h2>
+          <p class="text-gray-400 text-xs">Kumpulan screenshot keseruan dan momen bermain komunitas Mawi.</p>
+        </div>
+        <button onclick="triggerUploadAction()" class="px-4 py-2.5 rounded-xl crimson-btn text-white text-xs font-bold flex items-center gap-2 transition active:scale-95 shadow-md">
+          <i data-lucide="upload-cloud" class="w-4 h-4"></i>
+          Upload Screenshot
+        </button>
+      </div>
+
+      <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+    </section>
+
+    <!-- VIEW 5: COMMUNITY -->
+    <section id="section-community" class="hidden fade-in space-y-6 max-w-2xl mx-auto text-center">
+      <div class="space-y-1">
+        <h2 class="text-2xl font-bold text-white">Gabung Komunitas Mawi</h2>
+        <p class="text-gray-400 text-xs">Ayo ngobrol santai, ikut event, dan mabar bareng member lainnya!</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+        <a href="https://chat.whatsapp.com/" target="_blank" class="p-6 rounded-2xl clean-card hover:border-emerald-500/50 transition flex flex-col items-center gap-3">
+          <div class="w-12 h-12 rounded-xl bg-emerald-600/20 text-emerald-400 flex items-center justify-center">
+            <i data-lucide="message-circle" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-white">Grup WhatsApp</h3>
+            <p class="text-xs text-gray-400 mt-0.5">Komunikasi dan mabar setiap hari.</p>
+          </div>
+          <span class="text-xs font-bold text-emerald-400">Masuk Grup WA &rarr;</span>
+        </a>
+
+        <a href="https://discord.gg/" target="_blank" class="p-6 rounded-2xl clean-card hover:border-indigo-500/50 transition flex flex-col items-center gap-3">
+          <div class="w-12 h-12 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center">
+            <i data-lucide="gamepad-2" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-white">Discord Server</h3>
+            <p class="text-xs text-gray-400 mt-0.5">Voice chat mabar dan info event.</p>
+          </div>
+          <span class="text-xs font-bold text-indigo-400">Join Discord &rarr;</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- VIEW 6: ADMIN PANEL -->
+    <section id="section-admin" class="hidden fade-in space-y-6">
+      <div id="adminDashboard" class="space-y-6">
+        <div class="flex items-center justify-between pb-4 border-b border-glassBorder">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="text-[11px] text-emerald-400 font-mono font-bold">AKUN TERVERIFIKASI: STAFF ADMIN</span>
+            </div>
+            <h2 class="text-xl font-bold text-white mt-1">Dashboard Pengelola Mawi SMP</h2>
+          </div>
+          <button onclick="handleUserLogout()" class="px-3.5 py-1.5 rounded-lg bg-clean-panel text-rose-400 border border-rose-500/30 text-xs font-semibold flex items-center gap-1.5 hover:bg-rose-900/30 transition">
+            <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Logout
+          </button>
+        </div>
+
+        <div class="flex gap-2 border-b border-glassBorder pb-3 overflow-x-auto">
+          <button onclick="switchAdminTab('products')" id="adminTabBtn-products" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-burgundy text-white">Produk Toko</button>
+          <button onclick="switchAdminTab('vouchers')" id="adminTabBtn-vouchers" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white">Kelola Voucher</button>
+          <button onclick="switchAdminTab('gallery')" id="adminTabBtn-gallery" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white">Moderasi Galeri</button>
+          <button onclick="switchAdminTab('settings')" id="adminTabBtn-settings" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white">Pengaturan Logo & Web</button>
+        </div>
+
+        <div id="adminPanel-products" class="space-y-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <h3 class="text-sm font-bold text-white">Daftar Ranks & Items</h3>
+              <p class="text-[11px] text-gray-400">Tambah, ubah harga/fitur, atau hapus produk toko.</p>
+            </div>
+            <button onclick="openProductModal()" class="px-3.5 py-1.5 rounded-lg bg-burgundy hover:bg-burgundy-light text-white text-xs font-bold flex items-center gap-1.5 shadow-md">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah Produk Baru
+            </button>
+          </div>
+          
+          <div class="clean-card rounded-xl overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-voidLight text-gray-400 font-mono border-b border-glassBorder">
                 <tr>
-                  <th class="p-3">Foto</th>
                   <th class="p-3">Nama Item</th>
                   <th class="p-3">Kategori</th>
-                  <th class="p-3">Harga (Rp)</th>
-                  <th class="p-3">Deskripsi</th>
+                  <th class="p-3">Harga</th>
+                  <th class="p-3">Fitur Perks</th>
                   <th class="p-3 text-right">Aksi</th>
                 </tr>
               </thead>
-              <tbody id="admin-products-table-body" class="divide-y divide-mawi-accent/20">
-                <!-- Rows via JS -->
-              </tbody>
+              <tbody id="adminProductsTable" class="divide-y divide-glassBorder text-gray-300"></tbody>
             </table>
           </div>
         </div>
 
-        <!-- Section 2: Kelola Voucher Diskon -->
-        <div class="glass-card p-6 sm:p-8 rounded-2xl space-y-6">
-          <div>
-            <h3 class="text-xl font-bold text-white flex items-center gap-2">
-              <i data-lucide="ticket-percent" class="text-amber-400"></i> Kelola Kode Voucher Diskon
-            </h3>
-            <p class="text-xs text-gray-400">Buat kupon potongan harga dalam persentase (%) atau nominal rupiah tetap (Rp).</p>
+        <div id="adminPanel-vouchers" class="hidden space-y-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <h3 class="text-sm font-bold text-white">Kelola Kode Voucher Diskon</h3>
+              <p class="text-[11px] text-gray-400">Buat kupon promo baru atau atur persentase potongan harga.</p>
+            </div>
+            <button onclick="openVoucherModal()" class="px-3.5 py-1.5 rounded-lg bg-burgundy hover:bg-burgundy-light text-white text-xs font-bold flex items-center gap-1.5 shadow-md">
+              <i data-lucide="tag" class="w-3.5 h-3.5"></i> Buat Voucher Baru
+            </button>
           </div>
 
-          <!-- Form Tambah Voucher -->
-          <form onsubmit="handleAddVoucher(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-3 bg-black/30 p-4 rounded-xl border border-mawi-accent/30">
-            <div>
-              <label class="block text-[11px] text-gray-400 mb-1">Kode Voucher</label>
-              <input type="text" id="voucher-code-input" required placeholder="Contoh: MAWIPROMO" class="w-full px-3 py-2 rounded-lg bg-black/60 border border-mawi-accent/40 text-white text-xs uppercase font-mono focus:outline-none">
-            </div>
-            <div>
-              <label class="block text-[11px] text-gray-400 mb-1">Tipe Diskon</label>
-              <select id="voucher-type-input" class="w-full px-3 py-2 rounded-lg bg-black/60 border border-mawi-accent/40 text-white text-xs focus:outline-none">
-                <option value="PERCENT">Persentase (%)</option>
-                <option value="NOMINAL">Nominal (Rp)</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-[11px] text-gray-400 mb-1">Nilai Diskon</label>
-              <input type="number" id="voucher-value-input" required placeholder="10 atau 5000" min="1" class="w-full px-3 py-2 rounded-lg bg-black/60 border border-mawi-accent/40 text-white text-xs focus:outline-none">
-            </div>
-            <div class="flex items-end">
-              <button type="submit" class="w-full py-2 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg text-xs transition flex items-center justify-center gap-1.5">
-                <i data-lucide="plus" class="w-4 h-4"></i> Buat Voucher
-              </button>
-            </div>
-          </form>
-
-          <!-- Voucher List Table -->
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs text-gray-300">
-              <thead class="bg-black/40 text-gray-400 uppercase text-[10px] tracking-wider border-b border-mawi-accent/30">
+          <div class="clean-card rounded-xl overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-voidLight text-gray-400 font-mono border-b border-glassBorder">
                 <tr>
                   <th class="p-3">Kode Voucher</th>
-                  <th class="p-3">Tipe</th>
-                  <th class="p-3">Besaran Potongan</th>
+                  <th class="p-3">Diskon (%)</th>
+                  <th class="p-3">Status</th>
                   <th class="p-3 text-right">Aksi</th>
                 </tr>
               </thead>
-              <tbody id="admin-vouchers-table-body" class="divide-y divide-mawi-accent/20">
-                <!-- Rows via JS -->
-              </tbody>
+              <tbody id="adminVouchersTable" class="divide-y divide-glassBorder text-gray-300"></tbody>
             </table>
           </div>
         </div>
 
+        <div id="adminPanel-gallery" class="hidden space-y-4">
+          <h3 class="text-sm font-bold text-white">Moderasi Foto Screenshot</h3>
+          <div id="adminGalleryGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-3"></div>
+        </div>
+
+        <div id="adminPanel-settings" class="hidden space-y-4 max-w-lg">
+          <h3 class="text-sm font-bold text-white">Edit Logo & Teks Website</h3>
+          <div class="clean-card rounded-xl p-5 space-y-3.5">
+            <div>
+              <label class="block text-xs font-semibold text-gray-300 mb-1">Nama Brand Server</label>
+              <input id="settingBrandName" type="text" placeholder="MAWI SMP" class="w-full bg-voidLight border border-glassBorder rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-accent">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-300 mb-1">URL Foto Logo Server (Link Gambar)</label>
+              <input id="settingLogoUrl" type="url" placeholder="https://..." class="w-full bg-voidLight border border-glassBorder rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-accent">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-300 mb-1">Teks Sambutan / Deskripsi Hero</label>
+              <textarea id="settingHeroText" rows="3" class="w-full bg-voidLight border border-glassBorder rounded-lg p-3 text-xs text-white focus:outline-none focus:border-accent"></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-300 mb-1">Google Apps Script Web App URL (Opsional)</label>
+              <input id="settingGasUrl" type="url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-voidLight border border-glassBorder rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-accent font-mono">
+            </div>
+            <button onclick="saveWebSettings()" class="w-full py-2.5 rounded-lg crimson-btn text-white text-xs font-bold shadow-md">
+              Simpan & Terapkan Perubahan
+            </button>
+          </div>
+        </div>
       </div>
     </section>
 
   </main>
 
-  <!-- ================= FOOTER ================= -->
-  <footer class="bg-mawi-surface border-t border-mawi-accent/30 py-8 px-4 text-center text-xs text-gray-400 space-y-3">
-    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-2">
-        <span class="font-bold text-white tracking-wider">MAWISMP</span>
-        <span>&bull;</span>
-        <span>&copy; 2026 Mawi Network. All Rights Reserved.</span>
-      </div>
-      <div class="flex items-center gap-4 text-gray-400">
-        <a href="https://wa.me/628892910155" target="_blank" class="hover:text-mawi-highlight transition">CS WhatsApp: 08892910155</a>
-        <span>&bull;</span>
-        <span class="text-emerald-400 font-mono">Server IP: Mawi.my.id</span>
-      </div>
-    </div>
-    <p class="text-[10px] text-gray-500">Not an official Minecraft product. We are not approved by or associated with Mojang or Microsoft.</p>
-  </footer>
+  <!-- ========================================== -->
+  <!-- 4. MODALS SYSTEM                           -->
+  <!-- ========================================== -->
 
-  <!-- ================= MODAL DETAIL & CHECKOUT PRODUK ================= -->
-  <div id="product-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="glass-card rounded-2xl max-w-lg w-full overflow-hidden border border-mawi-highlight/40 shadow-2xl animate-in fade-in zoom-in duration-200">
-      
-      <!-- Modal Header -->
-      <div class="relative h-48 bg-gradient-to-t from-black to-transparent overflow-hidden">
-        <img id="modal-product-img" src="" alt="Product Cover" class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-gradient-to-t from-mawi-surface via-mawi-surface/50 to-transparent"></div>
-        <button onclick="closeProductModal()" class="absolute top-3 right-3 p-2 bg-black/60 rounded-full text-gray-300 hover:text-white border border-white/10 transition">
-          <i data-lucide="x" class="w-5 h-5"></i>
+  <div id="userAuthModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="clean-card w-full max-w-md rounded-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
+        <div class="flex items-center gap-2">
+          <i data-lucide="user-plus" class="w-5 h-5 text-accent"></i>
+          <h3 id="authModalTitle" class="font-bold text-white text-base">Daftar Akun Member Mawi</h3>
+        </div>
+        <button onclick="closeAuthModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+
+      <div class="flex bg-voidLight p-1 rounded-xl border border-glassBorder text-xs font-bold">
+        <button id="authTabBtn-reg" onclick="toggleAuthTab('register')" class="flex-1 py-2 rounded-lg bg-burgundy text-white">Daftar Baru</button>
+        <button id="authTabBtn-login" onclick="toggleAuthTab('login')" class="flex-1 py-2 rounded-lg text-gray-400 hover:text-white">Sudah Punya Akun</button>
+      </div>
+
+      <form id="authFormRegister" onsubmit="event.preventDefault(); handleUserRegister();" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold text-gray-300 mb-1">Nama Lengkap / Panggilan</label>
+          <input id="regName" type="text" placeholder="Contoh: Budi Santoso" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none focus:border-accent">
+        </div>
+        <div>
+          <label class="block font-semibold text-gray-300 mb-1">Alamat Gmail</label>
+          <input id="regEmail" type="email" placeholder="nama@gmail.com" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none focus:border-accent">
+        </div>
+        <div>
+          <label class="block font-semibold text-gray-300 mb-1">Minecraft In-Game Name (IGN)</label>
+          <input id="regNick" type="text" placeholder="Contoh: MawiPlayer99" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none focus:border-accent">
+        </div>
+        <div>
+          <label class="block font-semibold text-gray-300 mb-1">Password Akun</label>
+          <input id="regPass" type="password" placeholder="Minimal 6 karakter" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none focus:border-accent">
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl crimson-btn text-white font-bold text-xs shadow-md mt-2">
+          Daftarkan Akun
         </button>
-        <div class="absolute bottom-3 left-4 right-4">
-          <span id="modal-product-badge" class="px-2.5 py-0.5 text-[10px] font-bold uppercase rounded-full bg-mawi-accent text-white inline-block mb-1">Rank</span>
-          <h3 id="modal-product-title" class="text-2xl font-black font-heading text-white">VIP Rank</h3>
-        </div>
-      </div>
+      </form>
 
-      <!-- Modal Body -->
-      <div class="p-6 space-y-5 bg-mawi-surface">
-        
+      <form id="authFormLogin" onsubmit="event.preventDefault(); handleUserLogin();" class="hidden space-y-3 text-xs">
         <div>
-          <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Benefit & Deskripsi Item</h4>
-          <div id="modal-product-desc" class="text-xs sm:text-sm text-gray-200 leading-relaxed max-h-36 overflow-y-auto pr-2 space-y-1">
-            <!-- Desc List -->
-          </div>
+          <label class="block font-semibold text-gray-300 mb-1">Alamat Gmail / Username</label>
+          <input id="loginEmail" type="text" placeholder="nama@gmail.com atau admin" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none focus:border-accent">
         </div>
-
-        <!-- Voucher Input Section -->
-        <div class="p-3.5 bg-black/40 rounded-xl border border-mawi-accent/40 space-y-2">
-          <label class="block text-xs font-medium text-gray-300 flex items-center gap-1.5">
-            <i data-lucide="tag" class="w-3.5 h-3.5 text-mawi-highlight"></i> Kode Promo / Voucher Diskon
-          </label>
-          <div class="flex gap-2">
-            <input type="text" id="modal-voucher-input" placeholder="Masukkan kode promo..." class="flex-grow px-3 py-1.5 rounded-lg bg-black/60 border border-mawi-accent/50 text-white text-xs uppercase font-mono focus:outline-none">
-            <button onclick="applyVoucherDiscount()" class="px-4 py-1.5 bg-mawi-accent hover:bg-mawi-soft text-white font-bold text-xs rounded-lg transition">
-              Terapkan
-            </button>
-          </div>
-          <p id="voucher-status-msg" class="text-[11px] hidden"></p>
+        <div>
+          <label class="block font-semibold text-gray-300 mb-1">Password</label>
+          <input id="loginPass" type="password" placeholder="••••••••" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none focus:border-accent">
         </div>
-
-        <!-- Total Price & Checkout -->
-        <div class="pt-2 border-t border-mawi-accent/30 flex items-center justify-between">
-          <div>
-            <span class="text-[11px] text-gray-400 block">Total Pembayaran:</span>
-            <div class="flex items-baseline gap-2">
-              <span id="modal-original-price" class="text-xs text-gray-400 line-through hidden">Rp 50.000</span>
-              <span id="modal-final-price" class="text-xl font-black text-amber-400 font-heading">Rp 50.000</span>
-            </div>
-          </div>
-          <button onclick="checkoutToWhatsApp()" class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-sm rounded-xl shadow-lg shadow-emerald-900/40 transition transform active:scale-95 flex items-center gap-2">
-            <i data-lucide="message-circle" class="w-5 h-5"></i> Beli Sekarang
-          </button>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= MODAL TAMBAH / EDIT PRODUK (ADMIN) ================= -->
-  <div id="admin-product-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="glass-card rounded-2xl max-w-lg w-full p-6 space-y-4 border border-mawi-accent/50 shadow-2xl">
-      <div class="flex items-center justify-between border-b border-mawi-accent/30 pb-3">
-        <h3 id="admin-modal-title" class="text-lg font-bold text-white">Tambah Produk Baru</h3>
-        <button onclick="closeAdminProductModal()" class="text-gray-400 hover:text-white">
-          <i data-lucide="x" class="w-5 h-5"></i>
+        <button type="submit" class="w-full py-3 rounded-xl crimson-btn text-white font-bold text-xs shadow-md mt-2">
+          Masuk ke Akun
         </button>
-      </div>
-
-      <form onsubmit="handleSaveProductForm(event)" class="space-y-3 text-xs">
-        <input type="hidden" id="prod-form-id">
-        <div>
-          <label class="block text-gray-300 mb-1">Nama Produk / Rank</label>
-          <input type="text" id="prod-form-name" required placeholder="Contoh: Rank VIP Sultan" class="w-full px-3 py-2 rounded-lg bg-black/50 border border-mawi-accent/40 text-white focus:outline-none">
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-gray-300 mb-1">Kategori</label>
-            <select id="prod-form-category" class="w-full px-3 py-2 rounded-lg bg-black/50 border border-mawi-accent/40 text-white focus:outline-none">
-              <option value="RANK">RANK VIP</option>
-              <option value="COIN">COIN SERVER</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-gray-300 mb-1">Harga (Rupiah)</label>
-            <input type="number" id="prod-form-price" required min="1000" placeholder="25000" class="w-full px-3 py-2 rounded-lg bg-black/50 border border-mawi-accent/40 text-white focus:outline-none">
-          </div>
-        </div>
-        <div>
-          <label class="block text-gray-300 mb-1">URL Foto / Gambar Produk</label>
-          <input type="url" id="prod-form-image" placeholder="https://..." class="w-full px-3 py-2 rounded-lg bg-black/50 border border-mawi-accent/40 text-white focus:outline-none">
-        </div>
-        <div>
-          <label class="block text-gray-300 mb-1">Deskripsi & Benefit (Pisahkan dengan baris baru / Enter)</label>
-          <textarea id="prod-form-desc" rows="4" placeholder="+ Akses /fly di claim&#10;+ Prefix [VIP] di Chat&#10;+ 5x SetHome" class="w-full px-3 py-2 rounded-lg bg-black/50 border border-mawi-accent/40 text-white focus:outline-none"></textarea>
-        </div>
-        <div class="pt-3 flex justify-end gap-2">
-          <button type="button" onclick="closeAdminProductModal()" class="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300">Batal</button>
-          <button type="submit" class="px-5 py-2 rounded-lg bg-mawi-accent hover:bg-mawi-soft text-white font-bold">Simpan Produk</button>
-        </div>
       </form>
     </div>
   </div>
 
-  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <div id="uploadModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="clean-card w-full max-w-md rounded-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
+        <h3 class="font-bold text-white text-base">Upload Screenshot Mawi</h3>
+        <button onclick="closeUploadModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+
+      <div class="space-y-3.5 text-xs">
+        <div id="uploadAccountBadge" class="p-2.5 rounded-xl bg-voidLight border border-glassBorder flex items-center justify-between">
+          <div>
+            <span class="text-[10px] text-gray-400 block">Mengupload sebagai:</span>
+            <span id="uploadAccName" class="font-bold text-white">-</span>
+          </div>
+          <span id="uploadAccGmail" class="text-[10px] font-mono text-accent">-</span>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-gray-300 mb-1">Pilih Gambar Screenshot</label>
+          <input id="uploadFileInput" type="file" accept="image/*" class="w-full text-xs text-gray-400 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-burgundy file:text-white cursor-pointer">
+        </div>
+
+        <div class="p-3 bg-voidLight rounded-xl border border-glassBorder flex items-center justify-between">
+          <span class="text-gray-400 font-medium">Verifikasi: <strong id="galleryCaptchaQuestion" class="text-accent font-bold">4 + 3 = ?</strong></span>
+          <input id="galleryCaptchaAns" type="number" placeholder="Hasil" class="w-20 bg-void border border-glassBorder rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none">
+        </div>
+
+        <button id="submitUploadBtn" onclick="submitGalleryUpload()" class="w-full py-3 rounded-xl crimson-btn text-white font-bold text-xs shadow-md">
+          Kirim Foto ke Galeri
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="perkModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="clean-card w-full max-w-md rounded-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
+        <div class="flex items-center gap-2">
+          <i data-lucide="sparkles" class="w-5 h-5 text-accent"></i>
+          <h3 id="perkModalTitle" class="font-bold text-white text-base">Detail Perks & Keuntungan</h3>
+        </div>
+        <button onclick="closePerkModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <ul id="perkModalList" class="space-y-2.5 text-xs text-gray-200 max-h-60 overflow-y-auto pr-1"></ul>
+      <button onclick="closePerkModal()" class="w-full py-2.5 rounded-xl bg-clean-panel border border-glassBorder text-white text-xs font-bold hover:bg-glass transition">
+        Tutup
+      </button>
+    </div>
+  </div>
+
+  <div id="cartModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="clean-card w-full max-w-lg rounded-2xl p-6 space-y-4 max-h-[90vh] flex flex-col justify-between">
+      <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
+        <div class="flex items-center gap-2">
+          <i data-lucide="shopping-cart" class="w-5 h-5 text-accent"></i>
+          <h3 class="font-bold text-white text-base">Keranjang Belanja</h3>
+        </div>
+        <button onclick="closeCartModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+
+      <div id="cartItemList" class="space-y-3 overflow-y-auto max-h-52 divide-y divide-glassBorder pr-1"></div>
+
+      <div class="space-y-3 pt-3 border-t border-glassBorder text-xs">
+        <div class="flex gap-2">
+          <input id="voucherCodeInput" type="text" placeholder="KODE VOUCHER" class="flex-grow bg-voidLight border border-glassBorder rounded-xl px-3 py-2 text-white uppercase font-mono focus:outline-none">
+          <button onclick="applyVoucher()" class="px-3.5 py-2 bg-clean-panel border border-glassBorder rounded-xl font-bold text-accent">
+            Terapkan
+          </button>
+        </div>
+        <div id="voucherFeedback" class="text-[11px] font-medium hidden"></div>
+
+        <div class="p-3.5 rounded-xl bg-voidLight space-y-1.5">
+          <div class="flex justify-between text-gray-400">
+            <span>Subtotal</span>
+            <span id="cartSubtotalText">Rp 0</span>
+          </div>
+          <div id="cartDiscountRow" class="flex justify-between text-emerald-400 hidden">
+            <span>Diskon Voucher</span>
+            <span id="cartDiscountText">- Rp 0</span>
+          </div>
+          <div class="flex justify-between text-base font-bold text-white pt-2 border-t border-glassBorder">
+            <span>Total Pembayaran</span>
+            <span id="cartTotalText" class="text-accent">Rp 0</span>
+          </div>
+        </div>
+
+        <button onclick="processWhatsAppCheckout()" class="w-full py-3 rounded-xl crimson-btn text-white text-xs sm:text-sm font-bold shadow-md flex items-center justify-center gap-2">
+          <i data-lucide="send" class="w-4 h-4"></i>
+          Checkout ke WhatsApp Admin
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="productCrudModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="clean-card w-full max-w-lg rounded-2xl p-6 space-y-3.5 max-h-[90vh] overflow-y-auto text-xs">
+      <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
+        <h3 id="productCrudTitle" class="font-bold text-white text-base">Tambah Produk Baru</h3>
+        <button onclick="closeProductCrudModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+
+      <input type="hidden" id="crudProductId">
+      <div>
+        <label class="block font-semibold text-gray-300 mb-1">Nama Produk / Rank</label>
+        <input id="crudProductName" type="text" placeholder="Contoh: Rank VIP+, 50k Coins" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none">
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block font-semibold text-gray-300 mb-1">Kategori</label>
+          <select id="crudProductCategory" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none">
+            <option value="Ranks">In-Game Ranks</option>
+            <option value="Coins">Coins / Items</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-semibold text-gray-300 mb-1">Harga (Rupiah)</label>
+          <input id="crudProductPrice" type="number" placeholder="25000" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none">
+        </div>
+      </div>
+      <div>
+        <label class="block font-semibold text-gray-300 mb-1">Image URL</label>
+        <input id="crudProductImage" type="url" placeholder="https://..." class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none">
+      </div>
+      <div>
+        <label class="block font-semibold text-gray-300 mb-1">Fitur Perks (Pisahkan dengan koma)</label>
+        <textarea id="crudProductFeatures" rows="3" placeholder="Prefix VIP, 2x sethome, Kit Mingguan, Perintah /hat" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none"></textarea>
+      </div>
+
+      <button onclick="saveProductData()" class="w-full py-2.5 rounded-xl crimson-btn text-white font-bold shadow-md">
+        Simpan Produk
+      </button>
+    </div>
+  </div>
+
+  <div id="voucherCrudModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="clean-card w-full max-w-md rounded-2xl p-6 space-y-3.5 text-xs">
+      <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
+        <h3 id="voucherCrudTitle" class="font-bold text-white text-base">Tambah Voucher Baru</h3>
+        <button onclick="closeVoucherModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+
+      <input type="hidden" id="crudVoucherOldCode">
+      <div>
+        <label class="block font-semibold text-gray-300 mb-1">Kode Voucher</label>
+        <input id="crudVoucherCode" type="text" placeholder="Contoh: MAWIDISKON, EVENT20" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white uppercase font-mono focus:outline-none">
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block font-semibold text-gray-300 mb-1">Potongan Diskon (%)</label>
+          <input id="crudVoucherPercent" type="number" min="1" max="100" placeholder="15" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none">
+        </div>
+        <div>
+          <label class="block font-semibold text-gray-300 mb-1">Status Voucher</label>
+          <select id="crudVoucherStatus" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none">
+            <option value="true">Aktif</option>
+            <option value="false">Nonaktif</option>
+          </select>
+        </div>
+      </div>
+
+      <button onclick="saveVoucherData()" class="w-full py-2.5 rounded-xl crimson-btn text-white font-bold shadow-md mt-2">
+        Simpan Voucher
+      </button>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ========================================== -->
+  <!-- 5. FOOTER RESMI                            -->
+  <!-- ========================================== -->
+  <footer class="border-t border-glassBorder bg-[#09060D] pt-12 pb-8 mt-16 text-xs text-gray-400">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+      <div class="space-y-3 md:col-span-2">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-burgundy/30 border border-burgundy p-0.5 overflow-hidden">
+            <img id="footerLogoImg" src="https://api.dicebear.com/7.x/bottts/svg?seed=MawiSMP" alt="Logo" class="w-full h-full object-cover rounded-md"/>
+          </div>
+          <span id="footerBrandTitle" class="text-base font-black text-white tracking-wider">MAWI SMP</span>
+        </div>
+        <p class="text-gray-400 leading-relaxed max-w-sm">
+          Server Minecraft Indonesia tempat berkumpul, mencari sahabat baru, mabar santai, dan have fun bersama. Mendukung Java Edition & Bedrock (MCPE).
+        </p>
+      </div>
+
+      <div class="space-y-2">
+        <h4 class="font-bold text-white uppercase tracking-wider text-[11px]">Tautan Cepat</h4>
+        <ul class="space-y-1.5">
+          <li><a href="javascript:navigate('home')" class="hover:text-accent transition">Home & Info</a></li>
+          <li><a href="javascript:navigate('store')" class="hover:text-accent transition">Mawi Store</a></li>
+          <li><a href="javascript:navigate('rules')" class="hover:text-accent transition">Aturan & TOS</a></li>
+          <li><a href="javascript:navigate('gallery')" class="hover:text-accent transition">Galeri Komunitas</a></li>
+        </ul>
+      </div>
+
+      <div class="space-y-2">
+        <h4 class="font-bold text-white uppercase tracking-wider text-[11px]">Bantuan & CS</h4>
+        <p class="text-gray-400">Punya pertanyaan seputar donasi rank atau kendala server?</p>
+        <a href="https://wa.me/628892910155" target="_blank" class="inline-flex items-center gap-1.5 text-accent font-bold hover:underline pt-1">
+          <i data-lucide="phone" class="w-3.5 h-3.5"></i> WhatsApp: 08892910155
+        </a>
+      </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-6 border-t border-glassBorder/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-gray-500 text-[11px]">
+      <p>&copy; 2026 <strong>Mawi SMP Community</strong>. Bukan produk resmi Mojang AB atau Microsoft.</p>
+      <div class="flex gap-4">
+        <span>Server IP: <strong class="text-gray-300 font-mono">mawi.my.id</strong></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- 6. APPLICATION JAVASCRIPT STATE & LOGIC   -->
+  <!-- ========================================== -->
   <script>
-    /**
-     * KONFIGURASI BACKEND & API
-     * Ganti GAS_API_URL dengan URL Web App Google Apps Script Anda setelah di-deploy.
-     */
-    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbziffmsavgNA_xjO4z9uCmNb5pV0bTiOskrlTHBjzxvQp9zW-PEDO74xdsFjdRNX5El/exec"; // Contoh: "https://script.google.com/macros/s/AKfycbx.../exec"
     const CS_WHATSAPP_NUMBER = "628892910155";
 
-    // STATE LOKAL APLIKASI
-    let products = [
-      {
-        id: "prod-1",
-        name: "Rank VIP (1 Bulan)",
-        category: "RANK",
-        price: 25000,
-        image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=500&auto=format&fit=crop&q=80",
-        desc: "• Prefix [VIP] eksklusif berwarna Cyan di chat\n• Akses command /feed dan /near\n• Limit 5x /sethome\n• Mendapatkan 1x VIP Kit mingguan"
-      },
-      {
-        id: "prod-2",
-        name: "Rank MVP (Permanen)",
-        category: "RANK",
-        price: 65000,
-        image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500&auto=format&fit=crop&q=80",
-        desc: "• Prefix [MVP] Emas Mengkilap\n• Akses command /fly di area claim sendiri\n• Limit 15x /sethome\n• Akses Virtual Crafting Table (/wb) & Enderchest (/ec)\n• Prioritas join slot server penuh"
-      },
-      {
-        id: "prod-3",
-        name: "Rank SULTAN (Permanen)",
-        category: "RANK",
-        price: 150000,
-        image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80",
-        desc: "• Prefix kustom [SULTAN] dengan efek gradient RGB\n• Akses /fly di semua world non-PvP\n• Unlimited /sethome\n• Keep Inventory saat mati di alam Overworld\n• Bonus 50.000 Server Coin langsung!"
-      },
-      {
-        id: "prod-4",
-        name: "Paket 10.000 Mawi Coin",
-        category: "COIN",
-        price: 10000,
-        image: "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=500&auto=format&fit=crop&q=80",
-        desc: "• 10.000 Koin Mata Uang In-Game\n• Gunakan untuk belanja di /shop atau lelang /ah\n• Proses kirim kilat instan"
-      },
-      {
-        id: "prod-5",
-        name: "Paket 50.000 Mawi Coin",
-        category: "COIN",
-        price: 45000,
-        image: "https://images.unsplash.com/photo-1622979135225-d2ba269bc1df?w=500&auto=format&fit=crop&q=80",
-        desc: "• 50.000 Koin Server (Hemat Rp 5.000)\n• Cocok untuk ekspansi pembelian Land Claim besar dan transaksi antar pemain"
-      },
-      {
-        id: "prod-6",
-        name: "Paket 120.000 Mawi Coin",
-        category: "COIN",
-        price: 100000,
-        image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500&auto=format&fit=crop&q=80",
-        desc: "• 120.000 Koin Server (Bonus Ekstra 20.000 Coin)\n• Bonus 1x Mystery Mythic Gacha Crate Key"
-      }
+    const SEED_USERS = [
+      { name: "Owner / Admin Mawi", email: "admin@mawi.com", nick: "AdminMawi", pass: "mawi2026", isAdmin: true }
     ];
 
-    let vouchers = [
-      { code: "MAWIBARU", type: "PERCENT", value: 10 },
-      { code: "HEMAT5K", type: "NOMINAL", value: 5000 }
+    const SEED_VOUCHERS = [
+      { code: "MAWIHEMAT", discount_percent: 15, is_active: true },
+      { code: "MAWIBARU", discount_percent: 10, is_active: true }
     ];
 
-    let activeCategory = 'ALL';
-    let currentModalProduct = null;
-    let appliedVoucher = null;
-    let isAdminLoggedIn = false;
+    const SEED_PRODUCTS = [
+      { id: "RANK-01", name: "VIP Rank", category: "Ranks", price: 25000, image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=VIPRank", features: ["Prefix VIP Hijau di Chat", "Akses 2x /sethome", "Perintah /hat", "Akses Kit VIP Mingguan"] },
+      { id: "RANK-02", name: "MVP Rank", category: "Ranks", price: 50000, image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=MVPRank", features: ["Prefix MVP Biru Cyan", "Akses 5x /sethome", "Akses /feed", "Kit MVP & 500 Klaim Blok"] },
+      { id: "RANK-03", name: "Sultan Rank", category: "Ranks", price: 100000, image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=SultanRank", features: ["Prefix SULTAN Emas Berkilau", "Akses /fly santai", "10x /sethome & /heal", "Prioritas Slot Masuk"] },
+      { id: "COIN-01", name: "10,000 Mawi Coins", category: "Coins", price: 10000, image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=Coins10k", features: ["10.000 Koin Ekonomi Server", "Bisa digunakan untuk belanja di /shop in-game"] },
+      { id: "COIN-02", name: "50,000 Mawi Coins", category: "Coins", price: 45000, image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=Coins50k", features: ["50.000 Koin Ekonomi Server + Bonus 500 Klaim Blok"] }
+    ];
 
-    // ================= INISIALISASI & LIFECYCLE =================
+    const SEED_GALLERY = [
+      { id: "G-1", username: "SteveSantai", image_drive_url: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=70", status: "APPROVED" },
+      { id: "G-2", username: "AlexTeman", image_drive_url: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=70", status: "APPROVED" }
+    ];
+
+    const AppState = {
+      gasApiUrl: localStorage.getItem('mawi_gas_url') || '',
+      brandName: localStorage.getItem('mawi_brand_name') || 'MAWI SMP',
+      logoUrl: localStorage.getItem('mawi_logo_url') || 'https://api.dicebear.com/7.x/bottts/svg?seed=MawiSMP',
+      heroText: localStorage.getItem('mawi_hero_text') || 'Server Minecraft santai untuk bermain bersama teman, mencari sahabat baru, membangun rumah impian, dan have fun tanpa ribet!',
+      currentUser: JSON.parse(localStorage.getItem('mawi_auth_user') || 'null'),
+      registeredUsers: JSON.parse(localStorage.getItem('mawi_registered_users') || 'null') || [...SEED_USERS],
+      cart: JSON.parse(localStorage.getItem('mawi_cart') || '[]'),
+      appliedVoucher: null,
+      currentCategory: 'Ranks',
+      captchaAns: 0,
+      products: [],
+      vouchers: [],
+      gallery: []
+    };
+
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
-      loadStoredNickname();
-      renderStoreProducts();
-      renderAdminTables();
-      
-      // Sync dari Google Apps Script jika URL disediakan
-      if (GAS_API_URL) {
-        fetchDataFromGAS();
-      }
+      applyBrandingUI();
+      updateUserHeaderUI();
+      updateCartBadge();
+      initCaptcha();
+      loadInitialData();
     });
 
-    // ================= TOAST NOTIFICATION =================
-    function showToast(title, message = "", type = "success") {
-      const container = document.getElementById('toast-container');
+    function applyBrandingUI() {
+      document.getElementById('headerLogoImg').src = AppState.logoUrl;
+      document.getElementById('footerLogoImg').src = AppState.logoUrl;
+      document.getElementById('headerBrandTitle').innerHTML = `${AppState.brandName.split(' ')[0]} <span class="text-accent">${AppState.brandName.split(' ').slice(1).join(' ') || ''}</span>`;
+      document.getElementById('footerBrandTitle').innerText = AppState.brandName;
+      document.getElementById('heroServerTitle').innerText = AppState.brandName;
+      document.getElementById('heroAnnouncementText').innerText = AppState.heroText;
+    }
+
+    function navigate(viewId) {
+      if (viewId === 'admin') {
+        if (!AppState.currentUser || !AppState.currentUser.isAdmin) {
+          showToast('Akses ditolak: Menu ini hanya untuk akun Staff / Admin!', 'error');
+          return;
+        }
+      }
+
+      toggleDrawer(false);
+      ['home', 'store', 'rules', 'gallery', 'community', 'admin'].forEach(v => {
+        const el = document.getElementById(`section-${v}`);
+        if (el) el.classList.add('hidden');
+      });
+
+      const target = document.getElementById(`section-${viewId}`);
+      if (target) {
+        target.classList.remove('hidden');
+        target.classList.add('fade-in');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      if (viewId === 'store') renderProducts();
+      if (viewId === 'gallery') renderGallery();
+      if (viewId === 'admin') {
+        renderAdminProducts();
+        renderAdminVouchers();
+        renderAdminGallery();
+        document.getElementById('settingBrandName').value = AppState.brandName;
+        document.getElementById('settingLogoUrl').value = AppState.logoUrl;
+        document.getElementById('settingHeroText').value = AppState.heroText;
+        document.getElementById('settingGasUrl').value = AppState.gasApiUrl;
+      }
+      lucide.createIcons();
+    }
+
+    function toggleDrawer(open) {
+      const overlay = document.getElementById('drawerOverlay');
+      const panel = document.getElementById('drawerPanel');
+      if (open) {
+        overlay.classList.remove('opacity-0', 'pointer-events-none');
+        panel.classList.remove('translate-x-full');
+      } else {
+        overlay.classList.add('opacity-0', 'pointer-events-none');
+        panel.classList.add('translate-x-full');
+      }
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
       const toast = document.createElement('div');
+      const bgColor = type === 'error' ? 'bg-rose-950 border-rose-600' : 'bg-burgundy border-accent';
       
-      const colors = {
-        success: 'border-emerald-500/50 bg-mawi-dark text-white',
-        info: 'border-mawi-highlight/50 bg-mawi-dark text-white',
-        error: 'border-rose-500/50 bg-rose-950 text-white'
-      };
-
-      toast.className = `pointer-events-auto p-4 rounded-xl border shadow-2xl flex items-start gap-3 transform transition-all duration-300 translate-y-4 opacity-0 max-w-sm ${colors[type] || colors.info}`;
-      toast.innerHTML = `
-        <div class="p-1 text-mawi-highlight">
-          <i data-lucide="${type === 'success' ? 'check-circle-2' : type === 'error' ? 'alert-circle' : 'info'}" class="w-5 h-5"></i>
-        </div>
-        <div class="flex-grow text-xs">
-          <p class="font-bold text-sm text-white">${title}</p>
-          ${message ? `<p class="text-gray-300 mt-0.5">${message}</p>` : ''}
-        </div>
-      `;
-
+      toast.className = `${bgColor} text-white border px-3.5 py-2.5 rounded-xl text-xs font-medium shadow-xl flex items-center gap-2 pointer-events-auto fade-in`;
+      toast.innerHTML = `<i data-lucide="${type === 'error' ? 'alert-circle' : 'check'}" class="w-4 h-4"></i><span>${message}</span>`;
       container.appendChild(toast);
       lucide.createIcons();
 
-      // Animasi masuk
       setTimeout(() => {
-        toast.classList.remove('translate-y-4', 'opacity-0');
-      }, 10);
-
-      // Auto dismiss
-      setTimeout(() => {
-        toast.classList.add('opacity-0', 'translate-x-4');
-        setTimeout(() => toast.remove(), 300);
-      }, 3500);
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.2s ease';
+        setTimeout(() => toast.remove(), 200);
+      }, 3000);
     }
 
-    // ================= COPY TO CLIPBOARD =================
-    function copyToClipboard(text, label = "Teks") {
-      const tempInput = document.createElement('input');
-      tempInput.value = text;
-      document.body.appendChild(tempInput);
-      tempInput.select();
+    function copyToClipboard(text, msg = 'Tersalin ke Clipboard!') {
+      const input = document.createElement('input');
+      input.value = text;
+      document.body.appendChild(input);
+      input.select();
       try {
         document.execCommand('copy');
-        showToast("Berhasil Disalin!", `${label} (${text}) tersimpan di clipboard.`, "success");
-      } catch (err) {
-        showToast("Gagal Menyalin", "Silakan salin manual teks tersebut.", "error");
+        showToast(msg);
+      } catch (e) {
+        showToast('Gagal menyalin text', 'error');
       }
-      document.body.removeChild(tempInput);
+      document.body.removeChild(input);
     }
 
-    // ================= SISTEM NICKNAME (LOCALSTORAGE) =================
-    function loadStoredNickname() {
-      const savedNick = localStorage.getItem('mawismp_player_nick') || '';
-      const input = document.getElementById('player-nick-input');
-      const storeNickDisplay = document.getElementById('store-current-nick');
-      
-      if (input) input.value = savedNick;
-      if (storeNickDisplay) {
-        storeNickDisplay.textContent = savedNick ? savedNick : 'Belum Diset (Wajib saat checkout)';
+    async function loadInitialData() {
+      AppState.products = JSON.parse(localStorage.getItem('mawi_products_custom') || 'null') || [...SEED_PRODUCTS];
+      AppState.vouchers = JSON.parse(localStorage.getItem('mawi_vouchers_custom') || 'null') || [...SEED_VOUCHERS];
+      AppState.gallery = JSON.parse(localStorage.getItem('mawi_gallery_custom') || 'null') || [...SEED_GALLERY];
+
+      if (AppState.gasApiUrl) {
+        try {
+          const res = await fetch(`${AppState.gasApiUrl}?action=getInitData`);
+          const json = await res.json();
+          if (json.status === 'success') {
+            if (json.data.products && json.data.products.length > 0) AppState.products = json.data.products;
+            if (json.data.vouchers && json.data.vouchers.length > 0) AppState.vouchers = json.data.vouchers;
+            if (json.data.gallery && json.data.gallery.length > 0) AppState.gallery = json.data.gallery;
+          }
+        } catch (e) {}
+      }
+      renderProducts();
+      renderGallery();
+    }
+
+    function openAuthModal(tab = 'register') {
+      toggleAuthTab(tab);
+      document.getElementById('userAuthModal').classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closeAuthModal() {
+      document.getElementById('userAuthModal').classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function toggleAuthTab(tab) {
+      const regBtn = document.getElementById('authTabBtn-reg');
+      const logBtn = document.getElementById('authTabBtn-login');
+      const regForm = document.getElementById('authFormRegister');
+      const logForm = document.getElementById('authFormLogin');
+      const title = document.getElementById('authModalTitle');
+
+      if (tab === 'register') {
+        regBtn.className = 'flex-1 py-2 rounded-lg bg-burgundy text-white';
+        logBtn.className = 'flex-1 py-2 rounded-lg text-gray-400 hover:text-white';
+        regForm.classList.remove('hidden');
+        logForm.classList.add('hidden');
+        title.innerText = 'Daftar Akun Member Mawi';
+      } else {
+        logBtn.className = 'flex-1 py-2 rounded-lg bg-burgundy text-white';
+        regBtn.className = 'flex-1 py-2 rounded-lg text-gray-400 hover:text-white';
+        logForm.classList.remove('hidden');
+        regForm.classList.add('hidden');
+        title.innerText = 'Masuk ke Akun Anda';
       }
     }
 
-    function savePlayerNickname() {
-      const input = document.getElementById('player-nick-input');
-      const val = input.value.trim();
-      if (!val) {
-        showToast("Nickname Kosong", "Masukkan nickname Minecraft Anda terlebih dahulu.", "error");
+    function handleUserRegister() {
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim().toLowerCase();
+      const nick = document.getElementById('regNick').value.trim();
+      const pass = document.getElementById('regPass').value.trim();
+
+      if (!name || !email || !nick || !pass) {
+        showToast('Semua kolom pendaftaran wajib diisi!', 'error');
         return;
       }
-      localStorage.setItem('mawismp_player_nick', val);
-      loadStoredNickname();
-      showToast("Nickname Tersimpan", `Nickname aktif: ${val}`, "success");
+      if (!email.includes('@')) {
+        showToast('Format Gmail tidak valid!', 'error');
+        return;
+      }
+
+      const exists = AppState.registeredUsers.find(u => u.email === email);
+      if (exists) {
+        showToast('Email Gmail sudah terdaftar. Silakan login.', 'error');
+        toggleAuthTab('login');
+        return;
+      }
+
+      const isAdmin = (email === 'admin@mawi.com' || nick.toLowerCase() === 'admin');
+      const newUser = { name, email, nick, pass, isAdmin };
+      AppState.registeredUsers.push(newUser);
+      localStorage.setItem('mawi_registered_users', JSON.stringify(AppState.registeredUsers));
+
+      AppState.currentUser = { name, email, nick, isAdmin };
+      localStorage.setItem('mawi_auth_user', JSON.stringify(AppState.currentUser));
+
+      updateUserHeaderUI();
+      closeAuthModal();
+      showToast(`Selamat datang ${name}! Akun terdaftar.`);
     }
 
-    function focusNicknameInput() {
-      const input = document.getElementById('player-nick-input');
-      if (input) {
-        input.focus();
-        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    function handleUserLogin() {
+      const emailInput = document.getElementById('loginEmail').value.trim().toLowerCase();
+      const passInput = document.getElementById('loginPass').value.trim();
+
+      let user = AppState.registeredUsers.find(u => (u.email.toLowerCase() === emailInput || u.nick.toLowerCase() === emailInput) && u.pass === passInput);
+      
+      if (!user && (emailInput === 'admin' || emailInput === 'admin@mawi.com') && passInput === 'mawi2026') {
+        user = { name: "Owner / Admin Mawi", email: "admin@mawi.com", nick: "AdminMawi", isAdmin: true };
+      }
+
+      if (user) {
+        AppState.currentUser = { name: user.name, email: user.email, nick: user.nick, isAdmin: !!user.isAdmin };
+        localStorage.setItem('mawi_auth_user', JSON.stringify(AppState.currentUser));
+        updateUserHeaderUI();
+        closeAuthModal();
+        showToast(`Login berhasil sebagai ${user.isAdmin ? 'ADMIN' : 'Member'}!`);
+      } else {
+        showToast('Gmail/Username atau Password salah!', 'error');
       }
     }
 
-    // ================= SPA TAB ROUTING =================
-    function navigateTo(pageId) {
-      document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
-      const targetPage = document.getElementById(`page-${pageId}`);
-      if (targetPage) {
-        targetPage.classList.remove('hidden');
-      }
+    function handleUserLogout() {
+      AppState.currentUser = null;
+      localStorage.removeItem('mawi_auth_user');
+      updateUserHeaderUI();
+      navigate('home');
+      showToast('Anda telah keluar dari akun.');
+    }
 
-      // Update Nav Button Styles
-      document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.remove('text-mawi-highlight', 'bg-white/5');
-        btn.classList.add('text-gray-300');
-      });
-      const activeBtn = document.getElementById(`nav-${pageId}`);
-      if (activeBtn) {
-        activeBtn.classList.remove('text-gray-300');
-        activeBtn.classList.add('text-mawi-highlight', 'bg-white/5');
-      }
+    function updateUserHeaderUI() {
+      const userArea = document.getElementById('userHeaderArea');
+      const drawerInfo = document.getElementById('drawerAccountInfo');
+      const adminDrawerSection = document.getElementById('adminDrawerSection');
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (AppState.currentUser) {
+        if (AppState.currentUser.isAdmin) {
+          adminDrawerSection.classList.remove('hidden');
+        } else {
+          adminDrawerSection.classList.add('hidden');
+        }
+
+        userArea.innerHTML = `
+          <div class="flex items-center gap-2 bg-clean-panel border border-glassBorder px-3 py-1.5 rounded-full text-xs">
+            <span class="w-2 h-2 rounded-full ${AppState.currentUser.isAdmin ? 'bg-accent animate-ping' : 'bg-emerald-400'}"></span>
+            <span class="text-white font-bold max-w-[85px] sm:max-w-none truncate">${AppState.currentUser.nick}</span>
+            ${AppState.currentUser.isAdmin ? '<span class="text-[9px] bg-burgundy px-1.5 py-0.5 rounded text-white font-bold">STAFF</span>' : ''}
+            <button onclick="handleUserLogout()" class="text-gray-400 hover:text-rose-400 ml-1" title="Logout"><i data-lucide="log-out" class="w-3.5 h-3.5"></i></button>
+          </div>
+        `;
+        drawerInfo.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-white font-bold flex items-center gap-1.5">${AppState.currentUser.name} ${AppState.currentUser.isAdmin ? '<span class="text-[9px] text-accent font-bold">[ADMIN]</span>' : ''}</span>
+              <span class="text-[10px] text-gray-400">${AppState.currentUser.email}</span>
+            </div>
+            <button onclick="handleUserLogout()" class="px-2.5 py-1 bg-void border border-glassBorder text-rose-400 rounded-lg text-[10px] font-semibold hover:bg-rose-950">Logout</button>
+          </div>
+        `;
+      } else {
+        adminDrawerSection.classList.add('hidden');
+        userArea.innerHTML = `
+          <button onclick="openAuthModal('register')" class="flex items-center gap-1.5 bg-clean-panel hover:bg-glassBorder border border-glassBorder px-3 py-1.5 rounded-full text-xs font-semibold text-gray-200 transition">
+            <i data-lucide="user" class="w-3.5 h-3.5 text-accent"></i>
+            <span>Daftar / Masuk</span>
+          </button>
+        `;
+        drawerInfo.innerHTML = `
+          <button onclick="openAuthModal('register'); toggleDrawer(false);" class="w-full py-2.5 bg-burgundy hover:bg-burgundy-light rounded-xl text-white font-bold text-xs text-center shadow-md">
+            Daftar / Masuk Akun
+          </button>
+        `;
+      }
       lucide.createIcons();
-    }
-
-    function toggleMobileMenu() {
-      const m = document.getElementById('mobile-menu');
-      m.classList.toggle('hidden');
-    }
-
-    // ================= STORE FRONTEND LOGIC =================
-    function formatRupiah(num) {
-      return 'Rp ' + Number(num).toLocaleString('id-ID');
     }
 
     function filterStoreCategory(cat) {
-      activeCategory = cat;
-      document.querySelectorAll('.store-tab-btn').forEach(btn => {
-        btn.classList.remove('bg-mawi-accent', 'text-white');
-        btn.classList.add('text-gray-400');
-      });
-      const currentTab = document.getElementById(`tab-cat-${cat}`);
-      if (currentTab) {
-        currentTab.classList.add('bg-mawi-accent', 'text-white');
-        currentTab.classList.remove('text-gray-400');
+      AppState.currentCategory = cat;
+      const rankBtn = document.getElementById('tab-btn-ranks');
+      const coinBtn = document.getElementById('tab-btn-coins');
+
+      if (cat === 'Ranks') {
+        rankBtn.className = 'px-4 py-1.5 rounded-lg text-xs font-bold transition bg-burgundy text-white';
+        coinBtn.className = 'px-4 py-1.5 rounded-lg text-xs font-bold transition text-gray-400 hover:text-white';
+      } else {
+        coinBtn.className = 'px-4 py-1.5 rounded-lg text-xs font-bold transition bg-burgundy text-white';
+        rankBtn.className = 'px-4 py-1.5 rounded-lg text-xs font-bold transition text-gray-400 hover:text-white';
       }
-      renderStoreProducts();
+      renderProducts();
     }
 
-    function renderStoreProducts() {
-      const container = document.getElementById('products-grid');
+    function renderProducts() {
+      const container = document.getElementById('productsGrid');
       if (!container) return;
+      container.innerHTML = '';
 
-      const filtered = activeCategory === 'ALL' 
-        ? products 
-        : products.filter(p => p.category === activeCategory);
+      let list = AppState.products.filter(p => p.category === AppState.currentCategory);
+      if (AppState.currentCategory === 'Ranks') {
+        list.sort((a, b) => Number(a.price) - Number(b.price));
+      }
 
-      if (filtered.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-full py-16 text-center text-gray-400">
-            <i data-lucide="package-x" class="w-12 h-12 mx-auto mb-2 text-mawi-soft"></i>
-            <p class="text-sm font-semibold">Tidak ada produk dalam kategori ini.</p>
+      if (list.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-center py-8 text-gray-400 text-xs">Tidak ada produk dalam kategori ini.</div>`;
+        return;
+      }
+
+      list.forEach(item => {
+        const formattedPrice = `Rp ${Number(item.price).toLocaleString('id-ID')}`;
+        const featuresArray = Array.isArray(item.features) ? item.features : (item.features ? item.features.split(',') : []);
+
+        const card = document.createElement('div');
+        card.className = "clean-card rounded-2xl p-4 flex flex-col justify-between hover:border-burgundy transition";
+
+        card.innerHTML = `
+          <div>
+            <div class="relative w-full h-36 rounded-xl bg-voidLight overflow-hidden mb-3 flex items-center justify-center p-3">
+              <img src="${item.image_url}" alt="${item.name}" class="max-h-full object-contain" onerror="this.src='https://api.dicebear.com/7.x/shapes/svg?seed=${item.name}'">
+              <span class="absolute top-2 left-2 bg-burgundy text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">${item.category}</span>
+            </div>
+
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <h3 class="text-base font-bold text-white">${item.name}</h3>
+                <button onclick="openPerkModal('${item.name}', ${JSON.stringify(featuresArray).replace(/"/g, '&quot;')})" class="px-2.5 py-1 rounded-lg bg-burgundy/25 hover:bg-burgundy border border-accent/40 text-accent hover:text-white transition flex items-center gap-1.5 text-xs font-bold shrink-0 shadow-sm">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5 text-accent"></i>
+                  <span>Lihat Fitur</span>
+                </button>
+              </div>
+              <p class="text-lg font-black text-accent">${formattedPrice}</p>
+            </div>
+          </div>
+
+          <div class="pt-4 mt-3 border-t border-glassBorder flex items-center gap-2">
+            <button onclick="addToCart('${item.id}')" class="flex-1 py-2.5 rounded-xl bg-voidLight border border-glassBorder text-gray-200 text-xs font-semibold hover:bg-glass transition flex items-center justify-center gap-1.5">
+              <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+              <span>+ Keranjang</span>
+            </button>
+            <button onclick="buyNow('${item.id}')" class="flex-1 py-2.5 rounded-xl crimson-btn text-white text-xs font-bold transition shadow-md">
+              Beli Sekarang
+            </button>
           </div>
         `;
-        lucide.createIcons();
+        container.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    function openPerkModal(title, features) {
+      document.getElementById('perkModalTitle').innerText = `Perks & Keuntungan: ${title}`;
+      const listEl = document.getElementById('perkModalList');
+      listEl.innerHTML = '';
+      
+      if (!features || features.length === 0) {
+        listEl.innerHTML = `<li class="py-2 text-gray-400">Tidak ada detail perks tambahan.</li>`;
+      } else {
+        features.forEach(f => {
+          const li = document.createElement('li');
+          li.className = 'p-2 rounded-lg bg-voidLight border border-glassBorder flex items-start gap-2.5 text-xs text-gray-200';
+          li.innerHTML = `<i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i> <span>${f.trim()}</span>`;
+          listEl.appendChild(li);
+        });
+      }
+      document.getElementById('perkModal').classList.remove('opacity-0', 'pointer-events-none');
+      lucide.createIcons();
+    }
+
+    function closePerkModal() {
+      document.getElementById('perkModal').classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function addToCart(productId) {
+      const item = AppState.products.find(p => p.id === productId);
+      if (!item) return;
+
+      const idx = AppState.cart.findIndex(c => c.id === productId);
+      if (idx > -1) {
+        AppState.cart[idx].qty += 1;
+      } else {
+        AppState.cart.push({ id: item.id, name: item.name, price: Number(item.price), qty: 1 });
+      }
+
+      localStorage.setItem('mawi_cart', JSON.stringify(AppState.cart));
+      updateCartBadge();
+      showToast(`${item.name} masuk ke keranjang!`);
+    }
+
+    function buyNow(productId) {
+      addToCart(productId);
+      openCartModal();
+    }
+
+    function updateCartBadge() {
+      const totalQty = AppState.cart.reduce((sum, item) => sum + item.qty, 0);
+      const badge = document.getElementById('headerCartCount');
+      if (totalQty > 0) {
+        badge.innerText = totalQty;
+        badge.classList.remove('scale-0');
+      } else {
+        badge.classList.add('scale-0');
+      }
+    }
+
+    function openCartModal() {
+      renderCartItems();
+      document.getElementById('cartModal').classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closeCartModal() {
+      document.getElementById('cartModal').classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function changeCartQty(index, delta) {
+      AppState.cart[index].qty += delta;
+      if (AppState.cart[index].qty <= 0) AppState.cart.splice(index, 1);
+      localStorage.setItem('mawi_cart', JSON.stringify(AppState.cart));
+      updateCartBadge();
+      renderCartItems();
+    }
+
+    function renderCartItems() {
+      const listContainer = document.getElementById('cartItemList');
+      listContainer.innerHTML = '';
+
+      if (AppState.cart.length === 0) {
+        listContainer.innerHTML = `<div class="text-center py-6 text-gray-400 text-xs">Keranjang belanja Anda kosong.</div>`;
+        document.getElementById('cartSubtotalText').innerText = 'Rp 0';
+        document.getElementById('cartTotalText').innerText = 'Rp 0';
+        document.getElementById('cartDiscountRow').classList.add('hidden');
         return;
       }
 
-      container.innerHTML = filtered.map(p => `
-        <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between group cursor-pointer transition transform hover:-translate-y-1" onclick="openProductModal('${p.id}')">
-          <div class="relative h-44 overflow-hidden bg-black/40">
-            <img src="${p.image || 'https://placehold.co/400x250/540804/EA8C55?text=Mawi+Store'}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/400x250/540804/EA8C55?text=Mawi+Store'">
-            <span class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase ${p.category === 'RANK' ? 'bg-amber-500 text-black' : 'bg-emerald-500 text-black'} shadow-md">
-              ${p.category}
-            </span>
+      let subtotal = 0;
+      AppState.cart.forEach((item, idx) => {
+        const itemTotal = item.price * item.qty;
+        subtotal += itemTotal;
+
+        const row = document.createElement('div');
+        row.className = 'py-2.5 flex items-center justify-between text-xs';
+        row.innerHTML = `
+          <div>
+            <span class="font-bold text-white block">${item.name}</span>
+            <span class="text-gray-400">Rp ${item.price.toLocaleString('id-ID')} x ${item.qty}</span>
           </div>
-          
-          <div class="p-5 flex flex-col flex-grow justify-between space-y-4">
-            <div>
-              <h3 class="font-bold font-heading text-lg text-white group-hover:text-mawi-highlight transition">${p.name}</h3>
-              <p class="text-xs text-gray-400 line-clamp-2 mt-1.5 whitespace-pre-line">${p.desc}</p>
+          <div class="flex items-center gap-2">
+            <div class="flex items-center bg-voidLight border border-glassBorder rounded-lg">
+              <button onclick="changeCartQty(${idx}, -1)" class="w-5 h-5 flex items-center justify-center text-gray-400 hover:text-white font-bold">-</button>
+              <span class="w-5 text-center font-bold text-white">${item.qty}</span>
+              <button onclick="changeCartQty(${idx}, 1)" class="w-5 h-5 flex items-center justify-center text-gray-400 hover:text-white font-bold">+</button>
             </div>
-
-            <div class="pt-3 border-t border-mawi-accent/30 flex items-center justify-between">
-              <div>
-                <span class="text-[10px] text-gray-400 block">Harga:</span>
-                <span class="text-base font-black text-amber-400 font-heading">${formatRupiah(p.price)}</span>
-              </div>
-              <button class="px-3.5 py-1.5 rounded-lg bg-mawi-accent group-hover:bg-mawi-soft text-white text-xs font-semibold flex items-center gap-1.5 shadow transition">
-                <i data-lucide="eye" class="w-3.5 h-3.5"></i> Detail
-              </button>
-            </div>
+            <span class="font-bold text-accent min-w-[65px] text-right">Rp ${itemTotal.toLocaleString('id-ID')}</span>
           </div>
-        </div>
-      `).join('');
+        `;
+        listContainer.appendChild(row);
+      });
 
-      lucide.createIcons();
+      document.getElementById('cartSubtotalText').innerText = `Rp ${subtotal.toLocaleString('id-ID')}`;
+
+      let discount = 0;
+      if (AppState.appliedVoucher) {
+        discount = Math.floor(subtotal * (AppState.appliedVoucher.discount_percent / 100));
+        document.getElementById('cartDiscountRow').classList.remove('hidden');
+        document.getElementById('cartDiscountText').innerText = `- Rp ${discount.toLocaleString('id-ID')} (${AppState.appliedVoucher.discount_percent}%)`;
+      } else {
+        document.getElementById('cartDiscountRow').classList.add('hidden');
+      }
+
+      const total = Math.max(0, subtotal - discount);
+      document.getElementById('cartTotalText').innerText = `Rp ${total.toLocaleString('id-ID')}`;
     }
 
-    // ================= MODAL DETAIL PRODUK & VOUCHER =================
-    function openProductModal(productId) {
-      const prod = products.find(p => p.id === productId);
-      if (!prod) return;
-
-      currentModalProduct = prod;
-      appliedVoucher = null;
-
-      document.getElementById('modal-product-img').src = prod.image || 'https://placehold.co/500x300/540804/EA8C55?text=MAWI';
-      document.getElementById('modal-product-badge').textContent = prod.category;
-      document.getElementById('modal-product-title').textContent = prod.name;
-      
-      const descBox = document.getElementById('modal-product-desc');
-      const lines = prod.desc.split('\n');
-      descBox.innerHTML = lines.map(l => `<div class="flex items-start gap-2"><span class="text-mawi-highlight">•</span><span>${l.replace(/^[-•*]\s*/, '')}</span></div>`).join('');
-
-      document.getElementById('modal-voucher-input').value = '';
-      const statusMsg = document.getElementById('voucher-status-msg');
-      statusMsg.className = "text-[11px] hidden";
-      statusMsg.textContent = "";
-
-      updateModalPriceDisplay();
-
-      document.getElementById('product-modal').classList.remove('hidden');
-      lucide.createIcons();
-    }
-
-    function closeProductModal() {
-      document.getElementById('product-modal').classList.add('hidden');
-      currentModalProduct = null;
-      appliedVoucher = null;
-    }
-
-    function applyVoucherDiscount() {
-      const input = document.getElementById('modal-voucher-input');
-      const code = input.value.trim().toUpperCase();
-      const statusMsg = document.getElementById('voucher-status-msg');
+    async function applyVoucher() {
+      const code = document.getElementById('voucherCodeInput').value.trim().toUpperCase();
+      const feedback = document.getElementById('voucherFeedback');
 
       if (!code) {
-        statusMsg.textContent = "Ketikkan kode voucher terlebih dahulu.";
-        statusMsg.className = "text-[11px] text-rose-400 block";
+        feedback.className = 'text-[11px] font-medium text-rose-400 block';
+        feedback.innerText = 'Harap isi kode voucher!';
         return;
       }
 
-      const match = vouchers.find(v => v.code.toUpperCase() === code);
-      if (!match) {
-        statusMsg.textContent = "Kode voucher tidak valid atau sudah kedaluwarsa.";
-        statusMsg.className = "text-[11px] text-rose-400 block";
-        appliedVoucher = null;
+      const matched = AppState.vouchers.find(v => v.code.toUpperCase() === code && (v.is_active === true || v.is_active === 'true'));
+
+      if (matched) {
+        AppState.appliedVoucher = { code: matched.code, discount_percent: Number(matched.discount_percent) };
+        feedback.className = 'text-[11px] font-medium text-emerald-400 block';
+        feedback.innerText = `Voucher ${matched.code} aktif! Diskon ${matched.discount_percent}% berhasil dipotong.`;
+        renderCartItems();
       } else {
-        appliedVoucher = match;
-        const discText = match.type === 'PERCENT' ? `${match.value}%` : formatRupiah(match.value);
-        statusMsg.textContent = `Voucher berhasil diterapkan! Hemat ${discText}.`;
-        statusMsg.className = "text-[11px] text-emerald-400 font-semibold block";
-        showToast("Voucher Diterapkan!", `Potongan ${discText} berhasil dihitung.`, "success");
+        AppState.appliedVoucher = null;
+        feedback.className = 'text-[11px] font-medium text-rose-400 block';
+        feedback.innerText = 'Kode voucher tidak valid atau sudah dinonaktifkan!';
+        renderCartItems();
       }
-      updateModalPriceDisplay();
     }
 
-    function calculateFinalPrice() {
-      if (!currentModalProduct) return 0;
-      let finalPrice = Number(currentModalProduct.price);
+    function processWhatsAppCheckout() {
+      if (AppState.cart.length === 0) {
+        showToast('Keranjang Anda kosong!', 'error');
+        return;
+      }
 
-      if (appliedVoucher) {
-        if (appliedVoucher.type === 'PERCENT') {
-          const pot = (finalPrice * appliedVoucher.value) / 100;
-          finalPrice = Math.max(0, finalPrice - pot);
-        } else if (appliedVoucher.type === 'NOMINAL') {
-          finalPrice = Math.max(0, finalPrice - appliedVoucher.value);
+      const nick = AppState.currentUser ? AppState.currentUser.nick : prompt('Masukkan Minecraft IGN / Nickname Anda:');
+      if (!nick) {
+        showToast('Harap masukkan Nickname Minecraft Anda!', 'error');
+        return;
+      }
+
+      const itemsSummary = AppState.cart.map(i => `${i.name} (x${i.qty})`).join(', ');
+      let subtotal = AppState.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      let discount = AppState.appliedVoucher ? Math.floor(subtotal * (AppState.appliedVoucher.discount_percent / 100)) : 0;
+      const formattedTotal = `Rp ${(subtotal - discount).toLocaleString('id-ID')}`;
+
+      const message = `Halo cs Mawi saya ingin membeli ${itemsSummary} (Total: ${formattedTotal}), dengan nick ${nick} dan saya bermain di Mawi SMP`;
+      window.open(`https://wa.me/${CS_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+      closeCartModal();
+    }
+
+    function toggleAccordion(id) {
+      const content = document.getElementById(`${id}-content`);
+      const icon = document.getElementById(`${id}-icon`);
+      if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        icon.style.transform = 'rotate(180deg)';
+      } else {
+        content.classList.add('hidden');
+        icon.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    function initCaptcha() {
+      const n1 = Math.floor(Math.random() * 5) + 2;
+      const n2 = Math.floor(Math.random() * 5) + 1;
+      AppState.captchaAns = n1 + n2;
+      const q = document.getElementById('galleryCaptchaQuestion');
+      if (q) q.innerText = `${n1} + ${n2} = ?`;
+    }
+
+    function triggerUploadAction() {
+      if (!AppState.currentUser) {
+        showToast('Silakan daftar atau masuk dengan akun Gmail Anda terlebih dahulu untuk upload screenshot!');
+        openAuthModal('register');
+        return;
+      }
+      document.getElementById('uploadAccName').innerText = AppState.currentUser.name;
+      document.getElementById('uploadAccGmail').innerText = AppState.currentUser.email;
+      initCaptcha();
+      document.getElementById('uploadModal').classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closeUploadModal() {
+      document.getElementById('uploadModal').classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function renderGallery() {
+      const container = document.getElementById('galleryGrid');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const approved = AppState.gallery.filter(g => g.status === 'APPROVED');
+      if (approved.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-center py-8 text-gray-400 text-xs">Belum ada screenshot yang ditampilkan.</div>`;
+        return;
+      }
+
+      approved.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'clean-card rounded-xl overflow-hidden';
+        card.innerHTML = `
+          <div class="relative aspect-video bg-voidLight">
+            <img src="${item.image_drive_url}" alt="${item.username}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500'">
+            <div class="absolute bottom-0 inset-x-0 bg-black/70 p-2 text-[11px] text-white font-medium flex items-center justify-between">
+              <span>👤 ${item.username}</span>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function submitGalleryUpload() {
+      const fileInput = document.getElementById('uploadFileInput');
+      const ans = Number(document.getElementById('galleryCaptchaAns').value);
+
+      if (!fileInput.files || fileInput.files.length === 0) {
+        showToast('Pilih file gambar screenshot terlebih dahulu!', 'error');
+        return;
+      }
+      if (ans !== AppState.captchaAns) {
+        showToast('Jawaban verifikasi salah!', 'error');
+        initCaptcha();
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        const base64Data = e.target.result;
+        const newPhoto = {
+          id: 'G-' + Date.now(),
+          username: AppState.currentUser.nick || AppState.currentUser.name,
+          email: AppState.currentUser.email,
+          image_drive_url: base64Data,
+          status: 'PENDING'
+        };
+
+        if (AppState.gasApiUrl) {
+          try {
+            await fetch(AppState.gasApiUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain' },
+              body: JSON.stringify({ action: 'uploadGallery', username: newPhoto.username, base64Image: base64Data, mimeType: file.type })
+            });
+          } catch (err) {}
         }
-      }
-      return finalPrice;
+
+        AppState.gallery.push(newPhoto);
+        localStorage.setItem('mawi_gallery_custom', JSON.stringify(AppState.gallery));
+        closeUploadModal();
+        showToast('Screenshot berhasil dikirim! Menunggu persetujuan admin.');
+      };
+      reader.readAsDataURL(file);
     }
 
-    function updateModalPriceDisplay() {
-      if (!currentModalProduct) return;
-      const originalPriceEl = document.getElementById('modal-original-price');
-      const finalPriceEl = document.getElementById('modal-final-price');
+    function switchAdminTab(tab) {
+      ['products', 'vouchers', 'gallery', 'settings'].forEach(t => {
+        document.getElementById(`adminPanel-${t}`).classList.add('hidden');
+        document.getElementById(`adminTabBtn-${t}`).className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white';
+      });
 
-      const finalPrice = calculateFinalPrice();
-
-      if (appliedVoucher && finalPrice < currentModalProduct.price) {
-        originalPriceEl.textContent = formatRupiah(currentModalProduct.price);
-        originalPriceEl.classList.remove('hidden');
-      } else {
-        originalPriceEl.classList.add('hidden');
-      }
-
-      finalPriceEl.textContent = formatRupiah(finalPrice);
-    }
-
-    // ================= CHECKOUT WHATSAPP =================
-    function checkoutToWhatsApp() {
-      if (!currentModalProduct) return;
-
-      const playerNick = localStorage.getItem('mawismp_player_nick') || '';
-      if (!playerNick) {
-        showToast("Nickname Wajib", "Harap masukkan Nickname Minecraft kamu sebelum melakukan checkout!", "error");
-        focusNicknameInput();
-        return;
-      }
-
-      const finalPrice = calculateFinalPrice();
-      const hargaText = formatRupiah(finalPrice);
-
-      const message = `Nick: ${playerNick}
-Mau beli: ${currentModalProduct.name}
-Harga: ${hargaText}${appliedVoucher ? ` (Voucher: ${appliedVoucher.code})` : ''}`;
-
-      const waUrl = `https://wa.me/${CS_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-      window.open(waUrl, '_blank');
-      closeProductModal();
-    }
-
-    // ================= DASHBOARD ADMIN & AUTHENTICATION =================
-    function handleAdminLogin(e) {
-      e.preventDefault();
-      const u = document.getElementById('admin-user').value.trim();
-      const p = document.getElementById('admin-pass').value.trim();
-
-      if ((u === 'admin' && p === 'mawi123') || (u === 'mawi' && p === 'smp2026')) {
-        isAdminLoggedIn = true;
-        document.getElementById('admin-login-box').classList.add('hidden');
-        document.getElementById('admin-dashboard-panel').classList.remove('hidden');
-        showToast("Login Berhasil", "Selamat datang di Panel Manajemen MawiSMP.", "success");
-        renderAdminTables();
-      } else {
-        showToast("Login Gagal", "Username atau password admin salah.", "error");
-      }
-    }
-
-    function handleAdminLogout() {
-      isAdminLoggedIn = false;
-      document.getElementById('admin-dashboard-panel').classList.add('hidden');
-      document.getElementById('admin-login-box').classList.remove('hidden');
-      document.getElementById('admin-user').value = '';
-      document.getElementById('admin-pass').value = '';
-      showToast("Telah Logout", "Sesi admin ditutup.", "info");
-    }
-
-    function renderAdminTables() {
-      const prodBody = document.getElementById('admin-products-table-body');
-      if (prodBody) {
-        prodBody.innerHTML = products.map(p => `
-          <tr class="hover:bg-white/5 transition">
-            <td class="p-3">
-              <img src="${p.image}" class="w-10 h-10 object-cover rounded-lg border border-mawi-accent/30" onerror="this.src='https://placehold.co/50x50/540804/EA8C55?text=ITEM'">
-            </td>
-            <td class="p-3 font-bold text-white">${p.name}</td>
-            <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${p.category === 'RANK' ? 'bg-amber-500/20 text-amber-300' : 'bg-emerald-500/20 text-emerald-300'}">${p.category}</span></td>
-            <td class="p-3 font-mono font-bold text-amber-400">${formatRupiah(p.price)}</td>
-            <td class="p-3 max-w-xs truncate text-gray-400">${p.desc}</td>
-            <td class="p-3 text-right space-x-2">
-              <button onclick="editProduct('${p.id}')" class="p-1.5 bg-blue-600/30 hover:bg-blue-600 text-blue-300 hover:text-white rounded-lg transition" title="Edit">
-                <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
-              </button>
-              <button onclick="deleteProduct('${p.id}')" class="p-1.5 bg-rose-600/30 hover:bg-rose-600 text-rose-300 hover:text-white rounded-lg transition" title="Hapus">
-                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-              </button>
-            </td>
-          </tr>
-        `).join('');
-      }
-
-      const voucherBody = document.getElementById('admin-vouchers-table-body');
-      if (voucherBody) {
-        voucherBody.innerHTML = vouchers.map((v, index) => `
-          <tr class="hover:bg-white/5 transition">
-            <td class="p-3 font-mono font-bold text-amber-300">${v.code}</td>
-            <td class="p-3">${v.type === 'PERCENT' ? 'Persentase' : 'Nominal Tetap'}</td>
-            <td class="p-3 font-bold text-white">${v.type === 'PERCENT' ? `${v.value}%` : formatRupiah(v.value)}</td>
-            <td class="p-3 text-right">
-              <button onclick="deleteVoucher(${index})" class="p-1.5 bg-rose-600/30 hover:bg-rose-600 text-rose-300 hover:text-white rounded-lg transition">
-                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-              </button>
-            </td>
-          </tr>
-        `).join('');
-      }
-
+      document.getElementById(`adminPanel-${tab}`).classList.remove('hidden');
+      document.getElementById(`adminTabBtn-${tab}`).className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-burgundy text-white';
       lucide.createIcons();
     }
 
-    // ================= CRUD PRODUK ADMIN =================
-    function openProductModal(prodId = null) {
-      if (typeof prodId === 'string' && !document.getElementById('page-admin').classList.contains('hidden') && isAdminLoggedIn) {
-        const p = products.find(item => item.id === prodId);
-        if (!p) return;
-        document.getElementById('admin-modal-title').textContent = "Edit Produk";
-        document.getElementById('prod-form-id').value = p.id;
-        document.getElementById('prod-form-name').value = p.name;
-        document.getElementById('prod-form-category').value = p.category;
-        document.getElementById('prod-form-price').value = p.price;
-        document.getElementById('prod-form-image').value = p.image;
-        document.getElementById('prod-form-desc').value = p.desc;
-        document.getElementById('admin-product-modal').classList.remove('hidden');
-      } else if (prodId === null) {
-        document.getElementById('admin-modal-title').textContent = "Tambah Produk Baru";
-        document.getElementById('prod-form-id').value = '';
-        document.getElementById('prod-form-name').value = '';
-        document.getElementById('prod-form-category').value = 'RANK';
-        document.getElementById('prod-form-price').value = '';
-        document.getElementById('prod-form-image').value = '';
-        document.getElementById('prod-form-desc').value = '';
-        document.getElementById('admin-product-modal').classList.remove('hidden');
-      } else {
-        const prod = products.find(p => p.id === prodId);
-        if (prod) {
-          currentModalProduct = prod;
-          appliedVoucher = null;
-          document.getElementById('modal-product-img').src = prod.image;
-          document.getElementById('modal-product-badge').textContent = prod.category;
-          document.getElementById('modal-product-title').textContent = prod.name;
-          const descBox = document.getElementById('modal-product-desc');
-          const lines = prod.desc.split('\n');
-          descBox.innerHTML = lines.map(l => `<div class="flex items-start gap-2"><span class="text-mawi-highlight">•</span><span>${l.replace(/^[-•*]\s*/, '')}</span></div>`).join('');
-          document.getElementById('modal-voucher-input').value = '';
-          document.getElementById('voucher-status-msg').className = "text-[11px] hidden";
-          updateModalPriceDisplay();
-          document.getElementById('product-modal').classList.remove('hidden');
-          lucide.createIcons();
-        }
-      }
+    function renderAdminProducts() {
+      const table = document.getElementById('adminProductsTable');
+      table.innerHTML = '';
+      AppState.products.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-glass transition';
+        tr.innerHTML = `
+          <td class="p-3 font-bold text-white">${p.name}</td>
+          <td class="p-3"><span class="px-2 py-0.5 rounded bg-void text-accent border border-glassBorder text-[10px]">${p.category}</span></td>
+          <td class="p-3 font-mono">Rp ${Number(p.price).toLocaleString('id-ID')}</td>
+          <td class="p-3 text-gray-400 max-w-xs truncate">${Array.isArray(p.features) ? p.features.join(', ') : p.features}</td>
+          <td class="p-3 text-right space-x-1.5">
+            <button onclick="editProduct('${p.id}')" class="px-2.5 py-1 bg-voidLight border border-glassBorder rounded-lg text-gray-300 hover:text-white">Edit</button>
+            <button onclick="deleteProduct('${p.id}')" class="px-2.5 py-1 bg-rose-900/40 text-rose-300 border border-rose-500/30 rounded-lg hover:bg-rose-900">Hapus</button>
+          </td>
+        `;
+        table.appendChild(tr);
+      });
+    }
+
+    function openProductModal() {
+      document.getElementById('productCrudTitle').innerText = 'Tambah Produk Baru';
+      document.getElementById('crudProductId').value = '';
+      document.getElementById('crudProductName').value = '';
+      document.getElementById('crudProductPrice').value = '';
+      document.getElementById('crudProductImage').value = '';
+      document.getElementById('crudProductFeatures').value = '';
+      document.getElementById('productCrudModal').classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closeProductCrudModal() {
+      document.getElementById('productCrudModal').classList.add('opacity-0', 'pointer-events-none');
     }
 
     function editProduct(id) {
-      openProductModal(id);
+      const p = AppState.products.find(x => x.id === id);
+      if (!p) return;
+      document.getElementById('productCrudTitle').innerText = 'Edit Produk: ' + p.name;
+      document.getElementById('crudProductId').value = p.id;
+      document.getElementById('crudProductName').value = p.name;
+      document.getElementById('crudProductCategory').value = p.category;
+      document.getElementById('crudProductPrice').value = p.price;
+      document.getElementById('crudProductImage').value = p.image_url;
+      document.getElementById('crudProductFeatures').value = Array.isArray(p.features) ? p.features.join(', ') : p.features;
+      document.getElementById('productCrudModal').classList.remove('opacity-0', 'pointer-events-none');
     }
 
-    function closeAdminProductModal() {
-      document.getElementById('admin-product-modal').classList.add('hidden');
-    }
+    function saveProductData() {
+      const id = document.getElementById('crudProductId').value || ('P-' + Date.now());
+      const name = document.getElementById('crudProductName').value.trim();
+      const category = document.getElementById('crudProductCategory').value;
+      const price = Number(document.getElementById('crudProductPrice').value);
+      const image_url = document.getElementById('crudProductImage').value.trim() || 'https://api.dicebear.com/7.x/shapes/svg?seed=' + name;
+      const features = document.getElementById('crudProductFeatures').value.split(',').map(s => s.trim()).filter(Boolean);
 
-    function handleSaveProductForm(e) {
-      e.preventDefault();
-      const id = document.getElementById('prod-form-id').value;
-      const name = document.getElementById('prod-form-name').value.trim();
-      const category = document.getElementById('prod-form-category').value;
-      const price = Number(document.getElementById('prod-form-price').value);
-      const image = document.getElementById('prod-form-image').value.trim() || 'https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=500&auto=format&fit=crop&q=80';
-      const desc = document.getElementById('prod-form-desc').value.trim();
-
-      if (id) {
-        const idx = products.findIndex(p => p.id === id);
-        if (idx !== -1) {
-          products[idx] = { id, name, category, price, image, desc };
-          showToast("Produk Diperbarui", `${name} berhasil diubah.`, "success");
-        }
-      } else {
-        const newProduct = {
-          id: 'prod-' + Date.now(),
-          name, category, price, image, desc
-        };
-        products.unshift(newProduct);
-        showToast("Produk Dibuat", `${name} ditambahkan ke katalog.`, "success");
-      }
-
-      closeAdminProductModal();
-      renderStoreProducts();
-      renderAdminTables();
-
-      if (GAS_API_URL) {
-        syncProductToGAS({ id: id || 'prod-' + Date.now(), name, category, price, image, desc, action: id ? 'UPDATE' : 'CREATE' });
-      }
-    }
-
-    function deleteProduct(id) {
-      const prod = products.find(p => p.id === id);
-      if (!prod) return;
-      
-      products = products.filter(p => p.id !== id);
-      showToast("Produk Dihapus", `${prod.name} telah dihapus dari sistem.`, "info");
-      renderStoreProducts();
-      renderAdminTables();
-
-      if (GAS_API_URL) {
-        syncProductToGAS({ id, action: 'DELETE' });
-      }
-    }
-
-    // ================= CRUD VOUCHER ADMIN =================
-    function handleAddVoucher(e) {
-      e.preventDefault();
-      const code = document.getElementById('voucher-code-input').value.trim().toUpperCase();
-      const type = document.getElementById('voucher-type-input').value;
-      const value = Number(document.getElementById('voucher-value-input').value);
-
-      if (vouchers.some(v => v.code === code)) {
-        showToast("Gagal", "Kode voucher tersebut sudah digunakan.", "error");
+      if (!name || isNaN(price)) {
+        showToast('Nama dan harga produk wajib diisi!', 'error');
         return;
       }
 
-      vouchers.push({ code, type, value });
-      document.getElementById('voucher-code-input').value = '';
-      document.getElementById('voucher-value-input').value = '';
-      
-      showToast("Voucher Ditambahkan", `Kode ${code} siap digunakan pembeli.`, "success");
-      renderAdminTables();
+      const productObj = { id, name, category, price, image_url, features };
+      const existingIdx = AppState.products.findIndex(p => p.id === id);
 
-      if (GAS_API_URL) {
-        syncVoucherToGAS({ code, type, value, action: 'CREATE' });
-      }
-    }
-
-    function deleteVoucher(idx) {
-      const v = vouchers[idx];
-      vouchers.splice(idx, 1);
-      showToast("Voucher Dihapus", `Kode ${v.code} telah dinonaktifkan.`, "info");
-      renderAdminTables();
-
-      if (GAS_API_URL) {
-        syncVoucherToGAS({ code: v.code, action: 'DELETE' });
-      }
-    }
-
-    // ================= INTEGRASI GOOGLE APPS SCRIPT (GAS) =================
-    async function fetchDataFromGAS() {
-      if (!GAS_API_URL) return;
-      try {
-        const res = await fetch(`${GAS_API_URL}?action=GET_ALL_DATA`);
-        const json = await res.json();
-        if (json.status === 'success') {
-          if (json.products && json.products.length > 0) products = json.products;
-          if (json.vouchers && json.vouchers.length > 0) vouchers = json.vouchers;
-          renderStoreProducts();
-          renderAdminTables();
-          showToast("Data Tersinkron", "Berhasil menarik data dari Google Sheets.", "success");
-        }
-      } catch (err) {
-        console.warn("GAS Connection Error (Fallback ke state lokal)", err);
-      }
-    }
-
-    async function syncProductToGAS(payload) {
-      if (!GAS_API_URL) return;
-      try {
-        await fetch(GAS_API_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'PRODUCT_MUTATION', ...payload })
-        });
-      } catch (err) {
-        console.error("Gagal sinkron produk ke GAS:", err);
-      }
-    }
-
-    async function syncVoucherToGAS(payload) {
-      if (!GAS_API_URL) return;
-      try {
-        await fetch(GAS_API_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'VOUCHER_MUTATION', ...payload })
-        });
-      } catch (err) {
-        console.error("Gagal sinkron voucher ke GAS:", err);
-      }
-    }
-
-    function refreshStoreData() {
-      if (GAS_API_URL) {
-        fetchDataFromGAS();
+      if (existingIdx > -1) {
+        AppState.products[existingIdx] = productObj;
       } else {
-        renderStoreProducts();
-        renderAdminTables();
-        showToast("Data Di-refresh", "Data lokal berhasil dimuat ulang.", "info");
+        AppState.products.push(productObj);
       }
+
+      localStorage.setItem('mawi_products_custom', JSON.stringify(AppState.products));
+      closeProductCrudModal();
+      renderAdminProducts();
+      renderProducts();
+      showToast('Data produk berhasil disimpan!');
+    }
+
+    function deleteProduct(id) {
+      if (!confirm('Yakin ingin menghapus produk ini?')) return;
+      AppState.products = AppState.products.filter(p => p.id !== id);
+      localStorage.setItem('mawi_products_custom', JSON.stringify(AppState.products));
+      renderAdminProducts();
+      renderProducts();
+      showToast('Produk dihapus.');
+    }
+
+    function renderAdminVouchers() {
+      const table = document.getElementById('adminVouchersTable');
+      table.innerHTML = '';
+      if (AppState.vouchers.length === 0) {
+        table.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-gray-400">Belum ada voucher.</td></tr>`;
+        return;
+      }
+
+      AppState.vouchers.forEach(v => {
+        const isActive = v.is_active === true || v.is_active === 'true';
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-glass transition';
+        tr.innerHTML = `
+          <td class="p-3 font-mono font-bold text-accent">${v.code}</td>
+          <td class="p-3 font-bold">${v.discount_percent}%</td>
+          <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${isActive ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30' : 'bg-rose-500/10 text-rose-400 border border-rose-500/30'}">${isActive ? 'AKTIF' : 'NONAKTIF'}</span></td>
+          <td class="p-3 text-right space-x-1.5">
+            <button onclick="editVoucher('${v.code}')" class="px-2.5 py-1 bg-voidLight border border-glassBorder rounded-lg text-gray-300 hover:text-white">Edit</button>
+            <button onclick="deleteVoucher('${v.code}')" class="px-2.5 py-1 bg-rose-900/40 text-rose-300 border border-rose-500/30 rounded-lg hover:bg-rose-900">Hapus</button>
+          </td>
+        `;
+        table.appendChild(tr);
+      });
+    }
+
+    function openVoucherModal() {
+      document.getElementById('voucherCrudTitle').innerText = 'Tambah Voucher Baru';
+      document.getElementById('crudVoucherOldCode').value = '';
+      document.getElementById('crudVoucherCode').value = '';
+      document.getElementById('crudVoucherPercent').value = '';
+      document.getElementById('crudVoucherStatus').value = 'true';
+      document.getElementById('voucherCrudModal').classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closeVoucherModal() {
+      document.getElementById('voucherCrudModal').classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function editVoucher(code) {
+      const v = AppState.vouchers.find(x => x.code.toUpperCase() === code.toUpperCase());
+      if (!v) return;
+      document.getElementById('voucherCrudTitle').innerText = 'Edit Voucher: ' + v.code;
+      document.getElementById('crudVoucherOldCode').value = v.code;
+      document.getElementById('crudVoucherCode').value = v.code;
+      document.getElementById('crudVoucherPercent').value = v.discount_percent;
+      document.getElementById('crudVoucherStatus').value = (v.is_active === true || v.is_active === 'true') ? 'true' : 'false';
+      document.getElementById('voucherCrudModal').classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function saveVoucherData() {
+      const oldCode = document.getElementById('crudVoucherOldCode').value.trim().toUpperCase();
+      const code = document.getElementById('crudVoucherCode').value.trim().toUpperCase();
+      const percent = Number(document.getElementById('crudVoucherPercent').value);
+      const isActive = document.getElementById('crudVoucherStatus').value === 'true';
+
+      if (!code || isNaN(percent) || percent <= 0 || percent > 100) {
+        showToast('Isi kode voucher dan diskon 1-100% dengan benar!', 'error');
+        return;
+      }
+
+      const voucherObj = { code, discount_percent: percent, is_active: isActive };
+      if (oldCode) {
+        const idx = AppState.vouchers.findIndex(v => v.code.toUpperCase() === oldCode);
+        if (idx > -1) AppState.vouchers[idx] = voucherObj;
+      } else {
+        AppState.vouchers.push(voucherObj);
+      }
+
+      localStorage.setItem('mawi_vouchers_custom', JSON.stringify(AppState.vouchers));
+      closeVoucherModal();
+      renderAdminVouchers();
+      showToast('Data voucher berhasil disimpan!');
+    }
+
+    function deleteVoucher(code) {
+      if (!confirm(`Hapus voucher ${code}?`)) return;
+      AppState.vouchers = AppState.vouchers.filter(v => v.code.toUpperCase() !== code.toUpperCase());
+      localStorage.setItem('mawi_vouchers_custom', JSON.stringify(AppState.vouchers));
+      renderAdminVouchers();
+      showToast('Voucher dihapus.');
+    }
+
+    function renderAdminGallery() {
+      const grid = document.getElementById('adminGalleryGrid');
+      grid.innerHTML = '';
+      AppState.gallery.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'p-2.5 rounded-xl bg-voidLight border border-glassBorder space-y-2';
+        card.innerHTML = `
+          <img src="${item.image_drive_url}" class="w-full h-24 object-cover rounded-lg">
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-bold text-white">${item.username}</span>
+            <span class="text-[10px] px-1.5 py-0.5 rounded bg-glass ${item.status === 'APPROVED' ? 'text-emerald-400' : 'text-amber-400'}">${item.status}</span>
+          </div>
+          <div class="flex gap-1">
+            <button onclick="approveGallery('${item.id}')" class="flex-1 py-1 rounded bg-emerald-700 text-white text-[10px] font-bold">Setujui</button>
+            <button onclick="deleteGalleryItem('${item.id}')" class="flex-1 py-1 rounded bg-rose-900 text-rose-200 text-[10px] font-bold">Hapus</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function approveGallery(id) {
+      const item = AppState.gallery.find(g => g.id === id);
+      if (item) {
+        item.status = 'APPROVED';
+        localStorage.setItem('mawi_gallery_custom', JSON.stringify(AppState.gallery));
+        renderAdminGallery();
+        renderGallery();
+        showToast('Foto disetujui.');
+      }
+    }
+
+    function deleteGalleryItem(id) {
+      AppState.gallery = AppState.gallery.filter(g => g.id !== id);
+      localStorage.setItem('mawi_gallery_custom', JSON.stringify(AppState.gallery));
+      renderAdminGallery();
+      renderGallery();
+      showToast('Foto dihapus.');
+    }
+
+    function saveWebSettings() {
+      const brand = document.getElementById('settingBrandName').value.trim() || 'MAWI SMP';
+      const logo = document.getElementById('settingLogoUrl').value.trim() || AppState.logoUrl;
+      const hero = document.getElementById('settingHeroText').value.trim() || AppState.heroText;
+      const gas = document.getElementById('settingGasUrl').value.trim();
+
+      AppState.brandName = brand;
+      AppState.logoUrl = logo;
+      AppState.heroText = hero;
+      AppState.gasApiUrl = gas;
+
+      localStorage.setItem('mawi_brand_name', brand);
+      localStorage.setItem('mawi_logo_url', logo);
+      localStorage.setItem('mawi_hero_text', hero);
+      localStorage.setItem('mawi_gas_url', gas);
+
+      applyBrandingUI();
+      showToast('Pengaturan website berhasil disimpan!');
     }
   </script>
 </body>
 </html>
-```
