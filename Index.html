@@ -1,0 +1,1399 @@
+```html
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MawiSMP - Official Server & Webstore</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Poppins & Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mawi: {
+              dark: '#540804',
+              deep: '#81171B',
+              accent: '#AD2E24',
+              soft: '#C75146',
+              highlight: '#EA8C55',
+              surface: '#2B0402',
+              card: '#3D0704'
+            }
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+            heading: ['Montserrat', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #170202;
+      color: #F7FAFC;
+    }
+    .custom-gradient {
+      background: linear-gradient(135deg, #540804 0%, #81171B 50%, #AD2E24 100%);
+    }
+    .hero-pattern {
+      background-color: #1a0302;
+      background-image: radial-gradient(#AD2E24 0.75px, transparent 0.75px), radial-gradient(#AD2E24 0.75px, #170202 0.75px);
+      background-size: 30px 30px;
+      background-position: 0 0, 15px 15px;
+    }
+    .glass-nav {
+      background: rgba(43, 4, 2, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(234, 140, 85, 0.2);
+    }
+    .glass-card {
+      background: rgba(61, 7, 4, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(173, 46, 36, 0.35);
+    }
+    .glass-card:hover {
+      border-color: #EA8C55;
+      box-shadow: 0 10px 25px -5px rgba(234, 140, 85, 0.2);
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #2B0402;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #81171B;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #EA8C55;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-mawi-highlight selection:text-mawi-dark font-sans">
+
+  <!-- ================= NOTIFIKASI TOAST ================= -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+  <!-- ================= TOPBAR & NICKNAME BAR ================= -->
+  <div class="bg-mawi-dark border-b border-mawi-accent/30 py-2 px-4 text-xs">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2 text-mawi-highlight font-medium">
+        <span class="flex h-2 w-2 relative">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        </span>
+        <span>Server Status: <strong class="text-white">ONLINE</strong> (Java & Bedrock)</span>
+      </div>
+
+      <!-- Player Nickname Box -->
+      <div class="flex items-center gap-2">
+        <label for="player-nick-input" class="text-gray-300 font-medium hidden sm:inline">Minecraft Nick:</label>
+        <div class="relative flex items-center">
+          <i data-lucide="user" class="w-3.5 h-3.5 absolute left-2.5 text-mawi-highlight"></i>
+          <input 
+            type="text" 
+            id="player-nick-input" 
+            placeholder="Ketik Nickname..." 
+            class="pl-8 pr-24 py-1 rounded bg-black/40 border border-mawi-accent/50 text-white text-xs focus:outline-none focus:border-mawi-highlight transition-colors w-48 sm:w-56"
+          >
+          <button 
+            id="btn-save-nick" 
+            onclick="savePlayerNickname()" 
+            class="absolute right-1 px-2 py-0.5 bg-mawi-accent hover:bg-mawi-soft text-white font-semibold rounded text-[10px] transition-colors"
+          >
+            Simpan
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="sticky top-0 z-40 glass-nav transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo -->
+        <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-mawi-accent to-mawi-highlight flex items-center justify-center p-0.5 shadow-lg shadow-mawi-dark/50">
+            <!-- Placeholder Logo Server -->
+            <img 
+              id="server-logo-img"
+              src="https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=128&auto=format&fit=crop&q=80" 
+              alt="MawiSMP Logo" 
+              class="w-full h-full object-cover rounded-[10px]"
+              onerror="this.src='https://placehold.co/100x100/540804/EA8C55?text=MAWI'"
+            >
+          </div>
+          <div>
+            <span class="text-2xl font-black font-heading tracking-wider text-white">MAWI<span class="text-mawi-highlight">SMP</span></span>
+            <p class="text-[10px] text-gray-400 tracking-widest uppercase">Crossplay Minecraft Server</p>
+          </div>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center gap-1 lg:gap-2">
+          <button onclick="navigateTo('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-lg font-medium text-sm transition-all text-mawi-highlight bg-white/5 flex items-center gap-2">
+            <i data-lucide="home" class="w-4 h-4"></i> Home
+          </button>
+          <button onclick="navigateTo('store')" id="nav-store" class="nav-btn px-4 py-2 rounded-lg font-medium text-sm transition-all text-gray-300 hover:text-white hover:bg-white/5 flex items-center gap-2">
+            <i data-lucide="shopping-bag" class="w-4 h-4"></i> Store
+          </button>
+          <button onclick="navigateTo('links')" id="nav-links" class="nav-btn px-4 py-2 rounded-lg font-medium text-sm transition-all text-gray-300 hover:text-white hover:bg-white/5 flex items-center gap-2">
+            <i data-lucide="link" class="w-4 h-4"></i> Komunitas
+          </button>
+          <button onclick="navigateTo('rules')" id="nav-rules" class="nav-btn px-4 py-2 rounded-lg font-medium text-sm transition-all text-gray-300 hover:text-white hover:bg-white/5 flex items-center gap-2">
+            <i data-lucide="shield-alert" class="w-4 h-4"></i> Rules
+          </button>
+          <button onclick="navigateTo('admin')" id="nav-admin" class="nav-btn px-4 py-2 rounded-lg font-medium text-sm transition-all text-gray-300 hover:text-white hover:bg-white/5 flex items-center gap-2">
+            <i data-lucide="lock" class="w-4 h-4"></i> Panel Admin
+          </button>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <div class="flex items-center md:hidden">
+          <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="p-2 rounded-lg bg-mawi-card text-gray-300 hover:text-white border border-mawi-accent/40">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-mawi-accent/30 bg-mawi-surface px-4 py-3 space-y-2">
+      <button onclick="navigateTo('home'); toggleMobileMenu()" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left text-sm font-medium text-white hover:bg-mawi-accent/30">
+        <i data-lucide="home" class="w-4 h-4 text-mawi-highlight"></i> Home
+      </button>
+      <button onclick="navigateTo('store'); toggleMobileMenu()" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left text-sm font-medium text-white hover:bg-mawi-accent/30">
+        <i data-lucide="shopping-bag" class="w-4 h-4 text-mawi-highlight"></i> Store
+      </button>
+      <button onclick="navigateTo('links'); toggleMobileMenu()" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left text-sm font-medium text-white hover:bg-mawi-accent/30">
+        <i data-lucide="link" class="w-4 h-4 text-mawi-highlight"></i> Komunitas & Links
+      </button>
+      <button onclick="navigateTo('rules'); toggleMobileMenu()" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left text-sm font-medium text-white hover:bg-mawi-accent/30">
+        <i data-lucide="shield-alert" class="w-4 h-4 text-mawi-highlight"></i> Peraturan
+      </button>
+      <button onclick="navigateTo('admin'); toggleMobileMenu()" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left text-sm font-medium text-white hover:bg-mawi-accent/30">
+        <i data-lucide="lock" class="w-4 h-4 text-mawi-highlight"></i> Panel Admin
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTENT AREA (SPA) ================= -->
+  <main class="flex-grow">
+    
+    <!-- 1. HALAMAN HOME -->
+    <section id="page-home" class="page-view hero-pattern min-h-[calc(100vh-120px)] py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto space-y-16">
+        
+        <!-- Hero Banner -->
+        <div class="text-center space-y-6 pt-6">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-mawi-accent/20 border border-mawi-highlight/30 text-mawi-highlight text-xs sm:text-sm font-semibold tracking-wide">
+            <i data-lucide="sparkles" class="w-4 h-4"></i> Official Minecraft Survival Multiplayer Server
+          </div>
+          <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black font-heading tracking-tight leading-none text-white">
+            PETUALANGAN TANPA BATAS DI <span class="bg-gradient-to-r from-mawi-soft via-mawi-highlight to-amber-300 bg-clip-text text-transparent">MAWISMP</span>
+          </h1>
+          <p class="max-w-2xl mx-auto text-gray-300 text-sm sm:text-lg font-light">
+            Server survival modern dengan fitur ekonomi seimbang, dungeon seru, claim proteksi aman, dan performa tinggi tanpa lag untuk Java & MCPE (Bedrock)!
+          </p>
+          <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+            <button onclick="navigateTo('store')" class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-mawi-accent to-mawi-highlight hover:from-mawi-soft hover:to-amber-500 font-bold text-white shadow-lg shadow-mawi-accent/30 transition transform hover:-translate-y-0.5 flex items-center gap-2">
+              <i data-lucide="shopping-cart" class="w-5 h-5"></i> Buka Web Store
+            </button>
+            <button onclick="navigateTo('links')" class="px-8 py-3.5 rounded-xl glass-card text-white hover:bg-mawi-dark/80 font-semibold border border-mawi-accent/50 transition flex items-center gap-2">
+              <i data-lucide="message-square" class="w-5 h-5 text-mawi-highlight"></i> Komunitas Discord
+            </button>
+          </div>
+        </div>
+
+        <!-- Server IP & Connection Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          
+          <!-- Java Edition Card -->
+          <div class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group">
+            <div class="absolute -right-6 -top-6 w-24 h-24 bg-mawi-accent/10 rounded-full blur-2xl group-hover:bg-mawi-highlight/20 transition-all"></div>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="p-3 bg-mawi-dark rounded-xl border border-mawi-accent/40 text-mawi-highlight">
+                    <i data-lucide="monitor" class="w-6 h-6"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-bold font-heading text-lg sm:text-xl text-white">Java Edition</h3>
+                    <p class="text-xs text-gray-400">PC & Laptop (All Versions)</p>
+                  </div>
+                </div>
+                <span class="text-xs font-semibold px-2.5 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full">Port Default</span>
+              </div>
+              <p class="text-xs text-gray-300">Gunakan server IP berikut di multiplayer menu game Minecraft PC kamu:</p>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-mawi-accent/30 flex items-center justify-between gap-2">
+              <div class="bg-black/50 px-4 py-2.5 rounded-xl border border-mawi-accent/40 flex-grow font-mono text-sm sm:text-base text-mawi-highlight font-bold truncate">
+                Mawi.my.id
+              </div>
+              <button onclick="copyToClipboard('Mawi.my.id', 'IP Java Server')" class="px-4 py-2.5 bg-mawi-accent hover:bg-mawi-soft text-white font-medium rounded-xl text-sm transition flex items-center gap-1.5 shrink-0 shadow-md">
+                <i data-lucide="copy" class="w-4 h-4"></i> <span>Salin IP</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Bedrock / MCPE Card -->
+          <div class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group">
+            <div class="absolute -right-6 -top-6 w-24 h-24 bg-mawi-highlight/10 rounded-full blur-2xl group-hover:bg-mawi-soft/20 transition-all"></div>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="p-3 bg-mawi-dark rounded-xl border border-mawi-accent/40 text-mawi-highlight">
+                    <i data-lucide="smartphone" class="w-6 h-6"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-bold font-heading text-lg sm:text-xl text-white">Bedrock / MCPE</h3>
+                    <p class="text-xs text-gray-400">Android, iOS, Win10 & Console</p>
+                  </div>
+                </div>
+                <span class="text-xs font-semibold px-2.5 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-full">Wajib Port</span>
+              </div>
+              <p class="text-xs text-gray-300">Masukkan IP dan Port secara lengkap pada tab Servers Minecraft PE:</p>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-mawi-accent/30 space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <div class="bg-black/50 px-3 py-1.5 rounded-lg border border-mawi-accent/40 flex-grow font-mono text-xs sm:text-sm text-gray-200">
+                  <span class="text-gray-400 text-[10px] block">IP Server:</span>
+                  <span class="font-bold text-mawi-highlight">Mawi.my.id</span>
+                </div>
+                <button onclick="copyToClipboard('Mawi.my.id', 'IP Bedrock')" class="px-3 py-2 bg-mawi-dark hover:bg-mawi-accent text-white rounded-lg text-xs transition flex items-center gap-1 border border-mawi-accent/40">
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i> Salin IP
+                </button>
+              </div>
+              <div class="flex items-center justify-between gap-2">
+                <div class="bg-black/50 px-3 py-1.5 rounded-lg border border-mawi-accent/40 flex-grow font-mono text-xs sm:text-sm text-gray-200">
+                  <span class="text-gray-400 text-[10px] block">Port:</span>
+                  <span class="font-bold text-amber-300">19132</span>
+                </div>
+                <button onclick="copyToClipboard('19132', 'Port Bedrock')" class="px-3 py-2 bg-mawi-dark hover:bg-mawi-accent text-white rounded-lg text-xs transition flex items-center gap-1 border border-mawi-accent/40">
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i> Salin Port
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Highlights Features Overview -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8">
+          <div class="glass-card p-6 rounded-xl text-center space-y-2">
+            <div class="w-12 h-12 mx-auto bg-mawi-dark border border-mawi-accent/40 rounded-full flex items-center justify-center text-mawi-highlight">
+              <i data-lucide="shield-check" class="w-6 h-6"></i>
+            </div>
+            <h4 class="font-bold text-white text-base">Land Claim Aman</h4>
+            <p class="text-xs text-gray-400">Proteksi bangunan dan chest kamu dari griefing dengan sistem claim yang mudah.</p>
+          </div>
+          <div class="glass-card p-6 rounded-xl text-center space-y-2">
+            <div class="w-12 h-12 mx-auto bg-mawi-dark border border-mawi-accent/40 rounded-full flex items-center justify-center text-mawi-highlight">
+              <i data-lucide="coins" class="w-6 h-6"></i>
+            </div>
+            <h4 class="font-bold text-white text-base">Economy & Shop</h4>
+            <p class="text-xs text-gray-400">Jual beli item dengan player lain, ikuti lelang pasar, dan bangun kekayaan server.</p>
+          </div>
+          <div class="glass-card p-6 rounded-xl text-center space-y-2">
+            <div class="w-12 h-12 mx-auto bg-mawi-dark border border-mawi-accent/40 rounded-full flex items-center justify-center text-mawi-highlight">
+              <i data-lucide="swords" class="w-6 h-6"></i>
+            </div>
+            <h4 class="font-bold text-white text-base">Custom Dungeon & Boss</h4>
+            <p class="text-xs text-gray-400">Tantang boss monster epik setiap akhir pekan dan dapatkan reward item langka.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 2. HALAMAN STORE (TOKO) -->
+    <section id="page-store" class="page-view hidden py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
+      
+      <!-- Store Header & Filter -->
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-mawi-accent/30 pb-6">
+        <div>
+          <h2 class="text-3xl font-black font-heading text-white flex items-center gap-3">
+            <i data-lucide="shopping-bag" class="text-mawi-highlight"></i> MAWISMP WEBSTORE
+          </h2>
+          <p class="text-xs sm:text-sm text-gray-300 mt-1">
+            Dukung server MawiSMP dan dapatkan Rank eksklusif serta Coin instan!
+          </p>
+        </div>
+
+        <!-- Filter Kategori Tabs -->
+        <div class="flex items-center gap-2 bg-mawi-surface p-1.5 rounded-xl border border-mawi-accent/40">
+          <button onclick="filterStoreCategory('ALL')" id="tab-cat-ALL" class="store-tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold bg-mawi-accent text-white transition">
+            Semua
+          </button>
+          <button onclick="filterStoreCategory('RANK')" id="tab-cat-RANK" class="store-tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition">
+            👑 Rank VIP
+          </button>
+          <button onclick="filterStoreCategory('COIN')" id="tab-cat-COIN" class="store-tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition">
+            💰 Server Coin
+          </button>
+        </div>
+      </div>
+
+      <!-- Player Nick Reminder -->
+      <div class="bg-gradient-to-r from-mawi-dark via-mawi-deep to-mawi-dark border border-mawi-highlight/30 p-4 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-mawi-highlight/20 rounded-lg text-mawi-highlight">
+            <i data-lucide="user-check" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <span class="text-gray-300">Berbelanja untuk Nickname:</span>
+            <span id="store-current-nick" class="font-bold text-mawi-highlight ml-1 text-sm">Belum Diset</span>
+          </div>
+        </div>
+        <button onclick="focusNicknameInput()" class="text-xs text-amber-300 underline hover:text-white">
+          Ubah Nickname
+        </button>
+      </div>
+
+      <!-- Products Grid -->
+      <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Products will be injected via JavaScript -->
+        <div class="col-span-full py-16 text-center text-gray-400 flex flex-col items-center justify-center">
+          <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-mawi-highlight mb-2"></i>
+          <p>Memuat katalog produk server...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. HALAMAN KOMUNITAS & LINKS -->
+    <section id="page-links" class="page-view hidden py-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto space-y-8">
+      <div class="text-center space-y-2">
+        <h2 class="text-3xl font-black font-heading text-white">HUBUNGAN & KOMUNITAS</h2>
+        <p class="text-sm text-gray-300">Bergabunglah dengan komunitas MawiSMP di berbagai platform media sosial resmi kami.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Discord -->
+        <a href="https://discord.gg/" target="_blank" class="glass-card p-6 rounded-2xl flex items-center gap-4 group hover:bg-[#5865F2]/10 transition border border-mawi-accent/30">
+          <div class="w-14 h-14 bg-[#5865F2]/20 border border-[#5865F2]/40 rounded-xl flex items-center justify-center text-[#5865F2] group-hover:scale-110 transition">
+            <i data-lucide="message-square" class="w-7 h-7"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-white text-lg">Discord Server</h3>
+            <p class="text-xs text-gray-400">Ngobrol bareng player, open ticket & voice chat.</p>
+            <span class="text-xs text-mawi-highlight font-medium mt-1 inline-flex items-center gap-1">Join Server &rarr;</span>
+          </div>
+        </a>
+
+        <!-- WhatsApp CS -->
+        <a href="https://wa.me/628892910155" target="_blank" class="glass-card p-6 rounded-2xl flex items-center gap-4 group hover:bg-emerald-500/10 transition border border-mawi-accent/30">
+          <div class="w-14 h-14 bg-emerald-500/20 border border-emerald-500/40 rounded-xl flex items-center justify-center text-emerald-400 group-hover:scale-110 transition">
+            <i data-lucide="phone-call" class="w-7 h-7"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-white text-lg">Customer Support WA</h3>
+            <p class="text-xs text-gray-400">Bantuan store, kendala login & pertanyaan.</p>
+            <span class="text-xs text-emerald-400 font-medium mt-1 inline-flex items-center gap-1">Hubungi CS &rarr;</span>
+          </div>
+        </a>
+
+        <!-- TikTok -->
+        <a href="https://tiktok.com/" target="_blank" class="glass-card p-6 rounded-2xl flex items-center gap-4 group hover:bg-pink-500/10 transition border border-mawi-accent/30">
+          <div class="w-14 h-14 bg-pink-500/20 border border-pink-500/40 rounded-xl flex items-center justify-center text-pink-400 group-hover:scale-110 transition">
+            <i data-lucide="video" class="w-7 h-7"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-white text-lg">TikTok MawiSMP</h3>
+            <p class="text-xs text-gray-400">Cuplikan keseruan, update event & giveaway.</p>
+            <span class="text-xs text-pink-400 font-medium mt-1 inline-flex items-center gap-1">Follow TikTok &rarr;</span>
+          </div>
+        </a>
+
+        <!-- Instagram -->
+        <a href="https://instagram.com/" target="_blank" class="glass-card p-6 rounded-2xl flex items-center gap-4 group hover:bg-purple-500/10 transition border border-mawi-accent/30">
+          <div class="w-14 h-14 bg-purple-500/20 border border-purple-500/40 rounded-xl flex items-center justify-center text-purple-400 group-hover:scale-110 transition">
+            <i data-lucide="camera" class="w-7 h-7"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-white text-lg">Instagram Official</h3>
+            <p class="text-xs text-gray-400">Info pengumuman dan dokumentasi event server.</p>
+            <span class="text-xs text-purple-400 font-medium mt-1 inline-flex items-center gap-1">Follow IG &rarr;</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 4. HALAMAN RULES -->
+    <section id="page-rules" class="page-view hidden py-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto space-y-8">
+      <div class="text-center space-y-2">
+        <h2 class="text-3xl font-black font-heading text-white">PERATURAN SERVER MAWISMP</h2>
+        <p class="text-sm text-gray-300">Patuhilah peraturan di bawah ini untuk menjaga kenyamanan bermain bersama di server.</p>
+      </div>
+
+      <div class="space-y-4">
+        
+        <div class="glass-card p-5 rounded-xl flex items-start gap-4">
+          <span class="w-8 h-8 rounded-full bg-mawi-accent text-white flex items-center justify-center font-bold text-sm shrink-0">1</span>
+          <div>
+            <h4 class="font-bold text-white text-base">Dilarang Menggunakan Cheat / Ilegal Client (Hacks)</h4>
+            <p class="text-xs text-gray-300 mt-1">Penggunaan X-Ray, Fly, KillAura, Auto-Clicker, Baritone, Speed, atau modifikasi klien yang memberi keuntungan curang akan langsung dikenakan <strong>Permanent Ban</strong>.</p>
+          </div>
+        </div>
+
+        <div class="glass-card p-5 rounded-xl flex items-start gap-4">
+          <span class="w-8 h-8 rounded-full bg-mawi-accent text-white flex items-center justify-center font-bold text-sm shrink-0">2</span>
+          <div>
+            <h4 class="font-bold text-white text-base">Dilarang Griefing & Stealing di Wilayah Claim</h4>
+            <p class="text-xs text-gray-300 mt-1">Merusak bangunan milik orang lain, menjebak pemain dengan perangkap lava di luar zona PvP, atau mencuri barang milik pemain lain adalah pelanggaran berat.</p>
+          </div>
+        </div>
+
+        <div class="glass-card p-5 rounded-xl flex items-start gap-4">
+          <span class="w-8 h-8 rounded-full bg-mawi-accent text-white flex items-center justify-center font-bold text-sm shrink-0">3</span>
+          <div>
+            <h4 class="font-bold text-white text-base">Jaga Sopan Santun & Dilarang SARA / Toxic Berlebihan</h4>
+            <p class="text-xs text-gray-300 mt-1">Hormati sesama pemain dan staf. Dilarang melakukan ujaran kebencian, diskriminasi SARA, pornografi, maupun spam di kolom chat publik server.</p>
+          </div>
+        </div>
+
+        <div class="glass-card p-5 rounded-xl flex items-start gap-4">
+          <span class="w-8 h-8 rounded-full bg-mawi-accent text-white flex items-center justify-center font-bold text-sm shrink-0">4</span>
+          <div>
+            <h4 class="font-bold text-white text-base">Dilarang Eksploitasi Bug / Duplikasi Item (Dupe)</h4>
+            <p class="text-xs text-gray-300 mt-1">Jika menemukan celah bug atau glitch sistem, segera laporkan ke Admin/Staff. Memanfaatkan bug dupe akan berakibat reset akun dan banned permanent.</p>
+          </div>
+        </div>
+
+        <div class="glass-card p-5 rounded-xl flex items-start gap-4">
+          <span class="w-8 h-8 rounded-full bg-mawi-accent text-white flex items-center justify-center font-bold text-sm shrink-0">5</span>
+          <div>
+            <h4 class="font-bold text-white text-base">Dilarang Promosi Server Lain (Advertising)</h4>
+            <p class="text-xs text-gray-300 mt-1">Menyebarkan IP atau link server Minecraft lain di chat atau private message akan dikenakan IP-Mute dan Banned.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 5. DASHBOARD ADMIN -->
+    <section id="page-admin" class="page-view hidden py-10 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-8">
+      
+      <!-- Login Admin Card (Shown if not logged in) -->
+      <div id="admin-login-box" class="max-w-md mx-auto glass-card p-8 rounded-2xl space-y-6 shadow-2xl border border-mawi-accent/50">
+        <div class="text-center space-y-2">
+          <div class="w-14 h-14 bg-mawi-dark border border-mawi-highlight/40 rounded-2xl mx-auto flex items-center justify-center text-mawi-highlight">
+            <i data-lucide="lock" class="w-7 h-7"></i>
+          </div>
+          <h2 class="text-2xl font-bold font-heading text-white">Admin Login</h2>
+          <p class="text-xs text-gray-300">Masuk untuk mengelola produk toko dan voucher diskon server MawiSMP.</p>
+        </div>
+
+        <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-gray-300 mb-1">Username Admin</label>
+            <input type="text" id="admin-user" required placeholder="admin" class="w-full px-4 py-2.5 rounded-xl bg-black/50 border border-mawi-accent/40 text-white text-sm focus:outline-none focus:border-mawi-highlight">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-300 mb-1">Password</label>
+            <input type="password" id="admin-pass" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-xl bg-black/50 border border-mawi-accent/40 text-white text-sm focus:outline-none focus:border-mawi-highlight">
+          </div>
+          <button type="submit" id="btn-admin-submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-mawi-accent to-mawi-highlight text-white font-bold text-sm hover:opacity-95 transition shadow-lg flex items-center justify-center gap-2">
+            <i data-lucide="log-in" class="w-4 h-4"></i> Masuk Dashboard
+          </button>
+        </form>
+        <p class="text-[11px] text-center text-gray-400">Default fallback lokal: <code>admin</code> / <code>mawi123</code> (Bisa dikoneksikan ke Sheet Google Apps Script).</p>
+      </div>
+
+      <!-- Admin Management Panel (Shown after login) -->
+      <div id="admin-dashboard-panel" class="hidden space-y-8">
+        
+        <!-- Header Panel -->
+        <div class="flex flex-wrap items-center justify-between gap-4 glass-card p-6 rounded-2xl">
+          <div>
+            <span class="text-xs text-mawi-highlight font-semibold uppercase tracking-wider">Dashboard Kontrol</span>
+            <h2 class="text-2xl font-bold text-white font-heading">Manajemen Web Store MawiSMP</h2>
+          </div>
+          <div class="flex items-center gap-3">
+            <button onclick="refreshStoreData()" class="px-4 py-2 rounded-xl bg-mawi-surface hover:bg-mawi-card text-white text-xs border border-mawi-accent/40 flex items-center gap-2">
+              <i data-lucide="refresh-cw" class="w-4 h-4"></i> Sync Data
+            </button>
+            <button onclick="handleAdminLogout()" class="px-4 py-2 rounded-xl bg-rose-900/40 hover:bg-rose-900/60 text-rose-300 text-xs border border-rose-500/40 flex items-center gap-2">
+              <i data-lucide="log-out" class="w-4 h-4"></i> Keluar
+            </button>
+          </div>
+        </div>
+
+        <!-- Google Apps Script Config Alert -->
+        <div class="p-4 rounded-xl bg-amber-950/40 border border-amber-600/40 text-xs text-amber-200 flex items-start gap-3">
+          <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5"></i>
+          <div>
+            <p class="font-bold">Konfigurasi API Google Sheets (Code.gs):</p>
+            <p class="text-amber-300/80 mt-1">Pastikan Anda telah memasukkan URL Web App Google Apps Script di variabel JavaScript <code>GAS_API_URL</code>. Saat ini data menggunakan mock backend & sinkronisasi otomatis.</p>
+          </div>
+        </div>
+
+        <!-- Section 1: CRUD Produk -->
+        <div class="glass-card p-6 sm:p-8 rounded-2xl space-y-6">
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                <i data-lucide="package-plus" class="text-mawi-highlight"></i> Daftar & Tambah Produk
+              </h3>
+              <p class="text-xs text-gray-400">Tambah item Rank VIP atau Coin Server baru ke etalase toko.</p>
+            </div>
+            <button onclick="openProductModal()" class="px-4 py-2.5 rounded-xl bg-mawi-accent hover:bg-mawi-soft text-white text-xs font-bold transition flex items-center gap-2">
+              <i data-lucide="plus-circle" class="w-4 h-4"></i> Tambah Produk Baru
+            </button>
+          </div>
+
+          <!-- Table Produk -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-gray-300">
+              <thead class="bg-black/40 text-gray-400 uppercase text-[10px] tracking-wider border-b border-mawi-accent/30">
+                <tr>
+                  <th class="p-3">Foto</th>
+                  <th class="p-3">Nama Item</th>
+                  <th class="p-3">Kategori</th>
+                  <th class="p-3">Harga (Rp)</th>
+                  <th class="p-3">Deskripsi</th>
+                  <th class="p-3 text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="admin-products-table-body" class="divide-y divide-mawi-accent/20">
+                <!-- Rows via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Section 2: Kelola Voucher Diskon -->
+        <div class="glass-card p-6 sm:p-8 rounded-2xl space-y-6">
+          <div>
+            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+              <i data-lucide="ticket-percent" class="text-amber-400"></i> Kelola Kode Voucher Diskon
+            </h3>
+            <p class="text-xs text-gray-400">Buat kupon potongan harga dalam persentase (%) atau nominal rupiah tetap (Rp).</p>
+          </div>
+
+          <!-- Form Tambah Voucher -->
+          <form onsubmit="handleAddVoucher(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-3 bg-black/30 p-4 rounded-xl border border-mawi-accent/30">
+            <div>
+              <label class="block text-[11px] text-gray-400 mb-1">Kode Voucher</label>
+              <input type="text" id="voucher-code-input" required placeholder="Contoh: MAWIPROMO" class="w-full px-3 py-2 rounded-lg bg-black/60 border border-mawi-accent/40 text-white text-xs uppercase font-mono focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-[11px] text-gray-400 mb-1">Tipe Diskon</label>
+              <select id="voucher-type-input" class="w-full px-3 py-2 rounded-lg bg-black/60 border border-mawi-accent/40 text-white text-xs focus:outline-none">
+                <option value="PERCENT">Persentase (%)</option>
+                <option value="NOMINAL">Nominal (Rp)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] text-gray-400 mb-1">Nilai Diskon</label>
+              <input type="number" id="voucher-value-input" required placeholder="10 atau 5000" min="1" class="w-full px-3 py-2 rounded-lg bg-black/60 border border-mawi-accent/40 text-white text-xs focus:outline-none">
+            </div>
+            <div class="flex items-end">
+              <button type="submit" class="w-full py-2 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg text-xs transition flex items-center justify-center gap-1.5">
+                <i data-lucide="plus" class="w-4 h-4"></i> Buat Voucher
+              </button>
+            </div>
+          </form>
+
+          <!-- Voucher List Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-gray-300">
+              <thead class="bg-black/40 text-gray-400 uppercase text-[10px] tracking-wider border-b border-mawi-accent/30">
+                <tr>
+                  <th class="p-3">Kode Voucher</th>
+                  <th class="p-3">Tipe</th>
+                  <th class="p-3">Besaran Potongan</th>
+                  <th class="p-3 text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="admin-vouchers-table-body" class="divide-y divide-mawi-accent/20">
+                <!-- Rows via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-mawi-surface border-t border-mawi-accent/30 py-8 px-4 text-center text-xs text-gray-400 space-y-3">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-white tracking-wider">MAWISMP</span>
+        <span>&bull;</span>
+        <span>&copy; 2026 Mawi Network. All Rights Reserved.</span>
+      </div>
+      <div class="flex items-center gap-4 text-gray-400">
+        <a href="https://wa.me/628892910155" target="_blank" class="hover:text-mawi-highlight transition">CS WhatsApp: 08892910155</a>
+        <span>&bull;</span>
+        <span class="text-emerald-400 font-mono">Server IP: Mawi.my.id</span>
+      </div>
+    </div>
+    <p class="text-[10px] text-gray-500">Not an official Minecraft product. We are not approved by or associated with Mojang or Microsoft.</p>
+  </footer>
+
+  <!-- ================= MODAL DETAIL & CHECKOUT PRODUK ================= -->
+  <div id="product-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-card rounded-2xl max-w-lg w-full overflow-hidden border border-mawi-highlight/40 shadow-2xl animate-in fade-in zoom-in duration-200">
+      
+      <!-- Modal Header -->
+      <div class="relative h-48 bg-gradient-to-t from-black to-transparent overflow-hidden">
+        <img id="modal-product-img" src="" alt="Product Cover" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-mawi-surface via-mawi-surface/50 to-transparent"></div>
+        <button onclick="closeProductModal()" class="absolute top-3 right-3 p-2 bg-black/60 rounded-full text-gray-300 hover:text-white border border-white/10 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+        <div class="absolute bottom-3 left-4 right-4">
+          <span id="modal-product-badge" class="px-2.5 py-0.5 text-[10px] font-bold uppercase rounded-full bg-mawi-accent text-white inline-block mb-1">Rank</span>
+          <h3 id="modal-product-title" class="text-2xl font-black font-heading text-white">VIP Rank</h3>
+        </div>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 space-y-5 bg-mawi-surface">
+        
+        <div>
+          <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Benefit & Deskripsi Item</h4>
+          <div id="modal-product-desc" class="text-xs sm:text-sm text-gray-200 leading-relaxed max-h-36 overflow-y-auto pr-2 space-y-1">
+            <!-- Desc List -->
+          </div>
+        </div>
+
+        <!-- Voucher Input Section -->
+        <div class="p-3.5 bg-black/40 rounded-xl border border-mawi-accent/40 space-y-2">
+          <label class="block text-xs font-medium text-gray-300 flex items-center gap-1.5">
+            <i data-lucide="tag" class="w-3.5 h-3.5 text-mawi-highlight"></i> Kode Promo / Voucher Diskon
+          </label>
+          <div class="flex gap-2">
+            <input type="text" id="modal-voucher-input" placeholder="Masukkan kode promo..." class="flex-grow px-3 py-1.5 rounded-lg bg-black/60 border border-mawi-accent/50 text-white text-xs uppercase font-mono focus:outline-none">
+            <button onclick="applyVoucherDiscount()" class="px-4 py-1.5 bg-mawi-accent hover:bg-mawi-soft text-white font-bold text-xs rounded-lg transition">
+              Terapkan
+            </button>
+          </div>
+          <p id="voucher-status-msg" class="text-[11px] hidden"></p>
+        </div>
+
+        <!-- Total Price & Checkout -->
+        <div class="pt-2 border-t border-mawi-accent/30 flex items-center justify-between">
+          <div>
+            <span class="text-[11px] text-gray-400 block">Total Pembayaran:</span>
+            <div class="flex items-baseline gap-2">
+              <span id="modal-original-price" class="text-xs text-gray-400 line-through hidden">Rp 50.000</span>
+              <span id="modal-final-price" class="text-xl font-black text-amber-400 font-heading">Rp 50.000</span>
+            </div>
+          </div>
+          <button onclick="checkoutToWhatsApp()" class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-sm rounded-xl shadow-lg shadow-emerald-900/40 transition transform active:scale-95 flex items-center gap-2">
+            <i data-lucide="message-circle" class="w-5 h-5"></i> Beli Sekarang
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL TAMBAH / EDIT PRODUK (ADMIN) ================= -->
+  <div id="admin-product-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-card rounded-2xl max-w-lg w-full p-6 space-y-4 border border-mawi-accent/50 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-mawi-accent/30 pb-3">
+        <h3 id="admin-modal-title" class="text-lg font-bold text-white">Tambah Produk Baru</h3>
+        <button onclick="closeAdminProductModal()" class="text-gray-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleSaveProductForm(event)" class="space-y-3 text-xs">
+        <input type="hidden" id="prod-form-id">
+        <div>
+          <label class="block text-gray-300 mb-1">Nama Produk / Rank</label>
+          <input type="text" id="prod-form-name" required placeholder="Contoh: Rank VIP Sultan" class="w-full px-3 py-2 rounded-lg bg-black/50 border border-mawi-accent/40 text-white focus:outline-none">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-gray-300 mb-1">Kategori</label>
+            <select id="prod-form-category" class="w-full px-3 py-2 rounded-lg bg-black/50 border border-mawi-accent/40 text-white focus:outline-none">
+              <option value="RANK">RANK VIP</option>
+              <option value="COIN">COIN SERVER</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-gray-300 mb-1">Harga (Rupiah)</label>
+            <input type="number" id="prod-form-price" required min="1000" placeholder="25000" class="w-full px-3 py-2 rounded-lg bg-black/50 border border-mawi-accent/40 text-white focus:outline-none">
+          </div>
+        </div>
+        <div>
+          <label class="block text-gray-300 mb-1">URL Foto / Gambar Produk</label>
+          <input type="url" id="prod-form-image" placeholder="https://..." class="w-full px-3 py-2 rounded-lg bg-black/50 border border-mawi-accent/40 text-white focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-gray-300 mb-1">Deskripsi & Benefit (Pisahkan dengan baris baru / Enter)</label>
+          <textarea id="prod-form-desc" rows="4" placeholder="+ Akses /fly di claim&#10;+ Prefix [VIP] di Chat&#10;+ 5x SetHome" class="w-full px-3 py-2 rounded-lg bg-black/50 border border-mawi-accent/40 text-white focus:outline-none"></textarea>
+        </div>
+        <div class="pt-3 flex justify-end gap-2">
+          <button type="button" onclick="closeAdminProductModal()" class="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300">Batal</button>
+          <button type="submit" class="px-5 py-2 rounded-lg bg-mawi-accent hover:bg-mawi-soft text-white font-bold">Simpan Produk</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    /**
+     * KONFIGURASI BACKEND & API
+     * Ganti GAS_API_URL dengan URL Web App Google Apps Script Anda setelah di-deploy.
+     */
+    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbziffmsavgNA_xjO4z9uCmNb5pV0bTiOskrlTHBjzxvQp9zW-PEDO74xdsFjdRNX5El/exec"; // Contoh: "https://script.google.com/macros/s/AKfycbx.../exec"
+    const CS_WHATSAPP_NUMBER = "628892910155";
+
+    // STATE LOKAL APLIKASI
+    let products = [
+      {
+        id: "prod-1",
+        name: "Rank VIP (1 Bulan)",
+        category: "RANK",
+        price: 25000,
+        image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=500&auto=format&fit=crop&q=80",
+        desc: "• Prefix [VIP] eksklusif berwarna Cyan di chat\n• Akses command /feed dan /near\n• Limit 5x /sethome\n• Mendapatkan 1x VIP Kit mingguan"
+      },
+      {
+        id: "prod-2",
+        name: "Rank MVP (Permanen)",
+        category: "RANK",
+        price: 65000,
+        image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500&auto=format&fit=crop&q=80",
+        desc: "• Prefix [MVP] Emas Mengkilap\n• Akses command /fly di area claim sendiri\n• Limit 15x /sethome\n• Akses Virtual Crafting Table (/wb) & Enderchest (/ec)\n• Prioritas join slot server penuh"
+      },
+      {
+        id: "prod-3",
+        name: "Rank SULTAN (Permanen)",
+        category: "RANK",
+        price: 150000,
+        image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80",
+        desc: "• Prefix kustom [SULTAN] dengan efek gradient RGB\n• Akses /fly di semua world non-PvP\n• Unlimited /sethome\n• Keep Inventory saat mati di alam Overworld\n• Bonus 50.000 Server Coin langsung!"
+      },
+      {
+        id: "prod-4",
+        name: "Paket 10.000 Mawi Coin",
+        category: "COIN",
+        price: 10000,
+        image: "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=500&auto=format&fit=crop&q=80",
+        desc: "• 10.000 Koin Mata Uang In-Game\n• Gunakan untuk belanja di /shop atau lelang /ah\n• Proses kirim kilat instan"
+      },
+      {
+        id: "prod-5",
+        name: "Paket 50.000 Mawi Coin",
+        category: "COIN",
+        price: 45000,
+        image: "https://images.unsplash.com/photo-1622979135225-d2ba269bc1df?w=500&auto=format&fit=crop&q=80",
+        desc: "• 50.000 Koin Server (Hemat Rp 5.000)\n• Cocok untuk ekspansi pembelian Land Claim besar dan transaksi antar pemain"
+      },
+      {
+        id: "prod-6",
+        name: "Paket 120.000 Mawi Coin",
+        category: "COIN",
+        price: 100000,
+        image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500&auto=format&fit=crop&q=80",
+        desc: "• 120.000 Koin Server (Bonus Ekstra 20.000 Coin)\n• Bonus 1x Mystery Mythic Gacha Crate Key"
+      }
+    ];
+
+    let vouchers = [
+      { code: "MAWIBARU", type: "PERCENT", value: 10 },
+      { code: "HEMAT5K", type: "NOMINAL", value: 5000 }
+    ];
+
+    let activeCategory = 'ALL';
+    let currentModalProduct = null;
+    let appliedVoucher = null;
+    let isAdminLoggedIn = false;
+
+    // ================= INISIALISASI & LIFECYCLE =================
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      loadStoredNickname();
+      renderStoreProducts();
+      renderAdminTables();
+      
+      // Sync dari Google Apps Script jika URL disediakan
+      if (GAS_API_URL) {
+        fetchDataFromGAS();
+      }
+    });
+
+    // ================= TOAST NOTIFICATION =================
+    function showToast(title, message = "", type = "success") {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      const colors = {
+        success: 'border-emerald-500/50 bg-mawi-dark text-white',
+        info: 'border-mawi-highlight/50 bg-mawi-dark text-white',
+        error: 'border-rose-500/50 bg-rose-950 text-white'
+      };
+
+      toast.className = `pointer-events-auto p-4 rounded-xl border shadow-2xl flex items-start gap-3 transform transition-all duration-300 translate-y-4 opacity-0 max-w-sm ${colors[type] || colors.info}`;
+      toast.innerHTML = `
+        <div class="p-1 text-mawi-highlight">
+          <i data-lucide="${type === 'success' ? 'check-circle-2' : type === 'error' ? 'alert-circle' : 'info'}" class="w-5 h-5"></i>
+        </div>
+        <div class="flex-grow text-xs">
+          <p class="font-bold text-sm text-white">${title}</p>
+          ${message ? `<p class="text-gray-300 mt-0.5">${message}</p>` : ''}
+        </div>
+      `;
+
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      // Animasi masuk
+      setTimeout(() => {
+        toast.classList.remove('translate-y-4', 'opacity-0');
+      }, 10);
+
+      // Auto dismiss
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-x-4');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // ================= COPY TO CLIPBOARD =================
+    function copyToClipboard(text, label = "Teks") {
+      const tempInput = document.createElement('input');
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      try {
+        document.execCommand('copy');
+        showToast("Berhasil Disalin!", `${label} (${text}) tersimpan di clipboard.`, "success");
+      } catch (err) {
+        showToast("Gagal Menyalin", "Silakan salin manual teks tersebut.", "error");
+      }
+      document.body.removeChild(tempInput);
+    }
+
+    // ================= SISTEM NICKNAME (LOCALSTORAGE) =================
+    function loadStoredNickname() {
+      const savedNick = localStorage.getItem('mawismp_player_nick') || '';
+      const input = document.getElementById('player-nick-input');
+      const storeNickDisplay = document.getElementById('store-current-nick');
+      
+      if (input) input.value = savedNick;
+      if (storeNickDisplay) {
+        storeNickDisplay.textContent = savedNick ? savedNick : 'Belum Diset (Wajib saat checkout)';
+      }
+    }
+
+    function savePlayerNickname() {
+      const input = document.getElementById('player-nick-input');
+      const val = input.value.trim();
+      if (!val) {
+        showToast("Nickname Kosong", "Masukkan nickname Minecraft Anda terlebih dahulu.", "error");
+        return;
+      }
+      localStorage.setItem('mawismp_player_nick', val);
+      loadStoredNickname();
+      showToast("Nickname Tersimpan", `Nickname aktif: ${val}`, "success");
+    }
+
+    function focusNicknameInput() {
+      const input = document.getElementById('player-nick-input');
+      if (input) {
+        input.focus();
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    // ================= SPA TAB ROUTING =================
+    function navigateTo(pageId) {
+      document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
+      const targetPage = document.getElementById(`page-${pageId}`);
+      if (targetPage) {
+        targetPage.classList.remove('hidden');
+      }
+
+      // Update Nav Button Styles
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('text-mawi-highlight', 'bg-white/5');
+        btn.classList.add('text-gray-300');
+      });
+      const activeBtn = document.getElementById(`nav-${pageId}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-gray-300');
+        activeBtn.classList.add('text-mawi-highlight', 'bg-white/5');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      lucide.createIcons();
+    }
+
+    function toggleMobileMenu() {
+      const m = document.getElementById('mobile-menu');
+      m.classList.toggle('hidden');
+    }
+
+    // ================= STORE FRONTEND LOGIC =================
+    function formatRupiah(num) {
+      return 'Rp ' + Number(num).toLocaleString('id-ID');
+    }
+
+    function filterStoreCategory(cat) {
+      activeCategory = cat;
+      document.querySelectorAll('.store-tab-btn').forEach(btn => {
+        btn.classList.remove('bg-mawi-accent', 'text-white');
+        btn.classList.add('text-gray-400');
+      });
+      const currentTab = document.getElementById(`tab-cat-${cat}`);
+      if (currentTab) {
+        currentTab.classList.add('bg-mawi-accent', 'text-white');
+        currentTab.classList.remove('text-gray-400');
+      }
+      renderStoreProducts();
+    }
+
+    function renderStoreProducts() {
+      const container = document.getElementById('products-grid');
+      if (!container) return;
+
+      const filtered = activeCategory === 'ALL' 
+        ? products 
+        : products.filter(p => p.category === activeCategory);
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-16 text-center text-gray-400">
+            <i data-lucide="package-x" class="w-12 h-12 mx-auto mb-2 text-mawi-soft"></i>
+            <p class="text-sm font-semibold">Tidak ada produk dalam kategori ini.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      container.innerHTML = filtered.map(p => `
+        <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between group cursor-pointer transition transform hover:-translate-y-1" onclick="openProductModal('${p.id}')">
+          <div class="relative h-44 overflow-hidden bg-black/40">
+            <img src="${p.image || 'https://placehold.co/400x250/540804/EA8C55?text=Mawi+Store'}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/400x250/540804/EA8C55?text=Mawi+Store'">
+            <span class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase ${p.category === 'RANK' ? 'bg-amber-500 text-black' : 'bg-emerald-500 text-black'} shadow-md">
+              ${p.category}
+            </span>
+          </div>
+          
+          <div class="p-5 flex flex-col flex-grow justify-between space-y-4">
+            <div>
+              <h3 class="font-bold font-heading text-lg text-white group-hover:text-mawi-highlight transition">${p.name}</h3>
+              <p class="text-xs text-gray-400 line-clamp-2 mt-1.5 whitespace-pre-line">${p.desc}</p>
+            </div>
+
+            <div class="pt-3 border-t border-mawi-accent/30 flex items-center justify-between">
+              <div>
+                <span class="text-[10px] text-gray-400 block">Harga:</span>
+                <span class="text-base font-black text-amber-400 font-heading">${formatRupiah(p.price)}</span>
+              </div>
+              <button class="px-3.5 py-1.5 rounded-lg bg-mawi-accent group-hover:bg-mawi-soft text-white text-xs font-semibold flex items-center gap-1.5 shadow transition">
+                <i data-lucide="eye" class="w-3.5 h-3.5"></i> Detail
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    // ================= MODAL DETAIL PRODUK & VOUCHER =================
+    function openProductModal(productId) {
+      const prod = products.find(p => p.id === productId);
+      if (!prod) return;
+
+      currentModalProduct = prod;
+      appliedVoucher = null;
+
+      document.getElementById('modal-product-img').src = prod.image || 'https://placehold.co/500x300/540804/EA8C55?text=MAWI';
+      document.getElementById('modal-product-badge').textContent = prod.category;
+      document.getElementById('modal-product-title').textContent = prod.name;
+      
+      const descBox = document.getElementById('modal-product-desc');
+      const lines = prod.desc.split('\n');
+      descBox.innerHTML = lines.map(l => `<div class="flex items-start gap-2"><span class="text-mawi-highlight">•</span><span>${l.replace(/^[-•*]\s*/, '')}</span></div>`).join('');
+
+      document.getElementById('modal-voucher-input').value = '';
+      const statusMsg = document.getElementById('voucher-status-msg');
+      statusMsg.className = "text-[11px] hidden";
+      statusMsg.textContent = "";
+
+      updateModalPriceDisplay();
+
+      document.getElementById('product-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeProductModal() {
+      document.getElementById('product-modal').classList.add('hidden');
+      currentModalProduct = null;
+      appliedVoucher = null;
+    }
+
+    function applyVoucherDiscount() {
+      const input = document.getElementById('modal-voucher-input');
+      const code = input.value.trim().toUpperCase();
+      const statusMsg = document.getElementById('voucher-status-msg');
+
+      if (!code) {
+        statusMsg.textContent = "Ketikkan kode voucher terlebih dahulu.";
+        statusMsg.className = "text-[11px] text-rose-400 block";
+        return;
+      }
+
+      const match = vouchers.find(v => v.code.toUpperCase() === code);
+      if (!match) {
+        statusMsg.textContent = "Kode voucher tidak valid atau sudah kedaluwarsa.";
+        statusMsg.className = "text-[11px] text-rose-400 block";
+        appliedVoucher = null;
+      } else {
+        appliedVoucher = match;
+        const discText = match.type === 'PERCENT' ? `${match.value}%` : formatRupiah(match.value);
+        statusMsg.textContent = `Voucher berhasil diterapkan! Hemat ${discText}.`;
+        statusMsg.className = "text-[11px] text-emerald-400 font-semibold block";
+        showToast("Voucher Diterapkan!", `Potongan ${discText} berhasil dihitung.`, "success");
+      }
+      updateModalPriceDisplay();
+    }
+
+    function calculateFinalPrice() {
+      if (!currentModalProduct) return 0;
+      let finalPrice = Number(currentModalProduct.price);
+
+      if (appliedVoucher) {
+        if (appliedVoucher.type === 'PERCENT') {
+          const pot = (finalPrice * appliedVoucher.value) / 100;
+          finalPrice = Math.max(0, finalPrice - pot);
+        } else if (appliedVoucher.type === 'NOMINAL') {
+          finalPrice = Math.max(0, finalPrice - appliedVoucher.value);
+        }
+      }
+      return finalPrice;
+    }
+
+    function updateModalPriceDisplay() {
+      if (!currentModalProduct) return;
+      const originalPriceEl = document.getElementById('modal-original-price');
+      const finalPriceEl = document.getElementById('modal-final-price');
+
+      const finalPrice = calculateFinalPrice();
+
+      if (appliedVoucher && finalPrice < currentModalProduct.price) {
+        originalPriceEl.textContent = formatRupiah(currentModalProduct.price);
+        originalPriceEl.classList.remove('hidden');
+      } else {
+        originalPriceEl.classList.add('hidden');
+      }
+
+      finalPriceEl.textContent = formatRupiah(finalPrice);
+    }
+
+    // ================= CHECKOUT WHATSAPP =================
+    function checkoutToWhatsApp() {
+      if (!currentModalProduct) return;
+
+      const playerNick = localStorage.getItem('mawismp_player_nick') || '';
+      if (!playerNick) {
+        showToast("Nickname Wajib", "Harap masukkan Nickname Minecraft kamu sebelum melakukan checkout!", "error");
+        focusNicknameInput();
+        return;
+      }
+
+      const finalPrice = calculateFinalPrice();
+      const hargaText = formatRupiah(finalPrice);
+
+      const message = `Nick: ${playerNick}
+Mau beli: ${currentModalProduct.name}
+Harga: ${hargaText}${appliedVoucher ? ` (Voucher: ${appliedVoucher.code})` : ''}`;
+
+      const waUrl = `https://wa.me/${CS_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      window.open(waUrl, '_blank');
+      closeProductModal();
+    }
+
+    // ================= DASHBOARD ADMIN & AUTHENTICATION =================
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      const u = document.getElementById('admin-user').value.trim();
+      const p = document.getElementById('admin-pass').value.trim();
+
+      if ((u === 'admin' && p === 'mawi123') || (u === 'mawi' && p === 'smp2026')) {
+        isAdminLoggedIn = true;
+        document.getElementById('admin-login-box').classList.add('hidden');
+        document.getElementById('admin-dashboard-panel').classList.remove('hidden');
+        showToast("Login Berhasil", "Selamat datang di Panel Manajemen MawiSMP.", "success");
+        renderAdminTables();
+      } else {
+        showToast("Login Gagal", "Username atau password admin salah.", "error");
+      }
+    }
+
+    function handleAdminLogout() {
+      isAdminLoggedIn = false;
+      document.getElementById('admin-dashboard-panel').classList.add('hidden');
+      document.getElementById('admin-login-box').classList.remove('hidden');
+      document.getElementById('admin-user').value = '';
+      document.getElementById('admin-pass').value = '';
+      showToast("Telah Logout", "Sesi admin ditutup.", "info");
+    }
+
+    function renderAdminTables() {
+      const prodBody = document.getElementById('admin-products-table-body');
+      if (prodBody) {
+        prodBody.innerHTML = products.map(p => `
+          <tr class="hover:bg-white/5 transition">
+            <td class="p-3">
+              <img src="${p.image}" class="w-10 h-10 object-cover rounded-lg border border-mawi-accent/30" onerror="this.src='https://placehold.co/50x50/540804/EA8C55?text=ITEM'">
+            </td>
+            <td class="p-3 font-bold text-white">${p.name}</td>
+            <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${p.category === 'RANK' ? 'bg-amber-500/20 text-amber-300' : 'bg-emerald-500/20 text-emerald-300'}">${p.category}</span></td>
+            <td class="p-3 font-mono font-bold text-amber-400">${formatRupiah(p.price)}</td>
+            <td class="p-3 max-w-xs truncate text-gray-400">${p.desc}</td>
+            <td class="p-3 text-right space-x-2">
+              <button onclick="editProduct('${p.id}')" class="p-1.5 bg-blue-600/30 hover:bg-blue-600 text-blue-300 hover:text-white rounded-lg transition" title="Edit">
+                <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="deleteProduct('${p.id}')" class="p-1.5 bg-rose-600/30 hover:bg-rose-600 text-rose-300 hover:text-white rounded-lg transition" title="Hapus">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      const voucherBody = document.getElementById('admin-vouchers-table-body');
+      if (voucherBody) {
+        voucherBody.innerHTML = vouchers.map((v, index) => `
+          <tr class="hover:bg-white/5 transition">
+            <td class="p-3 font-mono font-bold text-amber-300">${v.code}</td>
+            <td class="p-3">${v.type === 'PERCENT' ? 'Persentase' : 'Nominal Tetap'}</td>
+            <td class="p-3 font-bold text-white">${v.type === 'PERCENT' ? `${v.value}%` : formatRupiah(v.value)}</td>
+            <td class="p-3 text-right">
+              <button onclick="deleteVoucher(${index})" class="p-1.5 bg-rose-600/30 hover:bg-rose-600 text-rose-300 hover:text-white rounded-lg transition">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      lucide.createIcons();
+    }
+
+    // ================= CRUD PRODUK ADMIN =================
+    function openProductModal(prodId = null) {
+      if (typeof prodId === 'string' && !document.getElementById('page-admin').classList.contains('hidden') && isAdminLoggedIn) {
+        const p = products.find(item => item.id === prodId);
+        if (!p) return;
+        document.getElementById('admin-modal-title').textContent = "Edit Produk";
+        document.getElementById('prod-form-id').value = p.id;
+        document.getElementById('prod-form-name').value = p.name;
+        document.getElementById('prod-form-category').value = p.category;
+        document.getElementById('prod-form-price').value = p.price;
+        document.getElementById('prod-form-image').value = p.image;
+        document.getElementById('prod-form-desc').value = p.desc;
+        document.getElementById('admin-product-modal').classList.remove('hidden');
+      } else if (prodId === null) {
+        document.getElementById('admin-modal-title').textContent = "Tambah Produk Baru";
+        document.getElementById('prod-form-id').value = '';
+        document.getElementById('prod-form-name').value = '';
+        document.getElementById('prod-form-category').value = 'RANK';
+        document.getElementById('prod-form-price').value = '';
+        document.getElementById('prod-form-image').value = '';
+        document.getElementById('prod-form-desc').value = '';
+        document.getElementById('admin-product-modal').classList.remove('hidden');
+      } else {
+        const prod = products.find(p => p.id === prodId);
+        if (prod) {
+          currentModalProduct = prod;
+          appliedVoucher = null;
+          document.getElementById('modal-product-img').src = prod.image;
+          document.getElementById('modal-product-badge').textContent = prod.category;
+          document.getElementById('modal-product-title').textContent = prod.name;
+          const descBox = document.getElementById('modal-product-desc');
+          const lines = prod.desc.split('\n');
+          descBox.innerHTML = lines.map(l => `<div class="flex items-start gap-2"><span class="text-mawi-highlight">•</span><span>${l.replace(/^[-•*]\s*/, '')}</span></div>`).join('');
+          document.getElementById('modal-voucher-input').value = '';
+          document.getElementById('voucher-status-msg').className = "text-[11px] hidden";
+          updateModalPriceDisplay();
+          document.getElementById('product-modal').classList.remove('hidden');
+          lucide.createIcons();
+        }
+      }
+    }
+
+    function editProduct(id) {
+      openProductModal(id);
+    }
+
+    function closeAdminProductModal() {
+      document.getElementById('admin-product-modal').classList.add('hidden');
+    }
+
+    function handleSaveProductForm(e) {
+      e.preventDefault();
+      const id = document.getElementById('prod-form-id').value;
+      const name = document.getElementById('prod-form-name').value.trim();
+      const category = document.getElementById('prod-form-category').value;
+      const price = Number(document.getElementById('prod-form-price').value);
+      const image = document.getElementById('prod-form-image').value.trim() || 'https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=500&auto=format&fit=crop&q=80';
+      const desc = document.getElementById('prod-form-desc').value.trim();
+
+      if (id) {
+        const idx = products.findIndex(p => p.id === id);
+        if (idx !== -1) {
+          products[idx] = { id, name, category, price, image, desc };
+          showToast("Produk Diperbarui", `${name} berhasil diubah.`, "success");
+        }
+      } else {
+        const newProduct = {
+          id: 'prod-' + Date.now(),
+          name, category, price, image, desc
+        };
+        products.unshift(newProduct);
+        showToast("Produk Dibuat", `${name} ditambahkan ke katalog.`, "success");
+      }
+
+      closeAdminProductModal();
+      renderStoreProducts();
+      renderAdminTables();
+
+      if (GAS_API_URL) {
+        syncProductToGAS({ id: id || 'prod-' + Date.now(), name, category, price, image, desc, action: id ? 'UPDATE' : 'CREATE' });
+      }
+    }
+
+    function deleteProduct(id) {
+      const prod = products.find(p => p.id === id);
+      if (!prod) return;
+      
+      products = products.filter(p => p.id !== id);
+      showToast("Produk Dihapus", `${prod.name} telah dihapus dari sistem.`, "info");
+      renderStoreProducts();
+      renderAdminTables();
+
+      if (GAS_API_URL) {
+        syncProductToGAS({ id, action: 'DELETE' });
+      }
+    }
+
+    // ================= CRUD VOUCHER ADMIN =================
+    function handleAddVoucher(e) {
+      e.preventDefault();
+      const code = document.getElementById('voucher-code-input').value.trim().toUpperCase();
+      const type = document.getElementById('voucher-type-input').value;
+      const value = Number(document.getElementById('voucher-value-input').value);
+
+      if (vouchers.some(v => v.code === code)) {
+        showToast("Gagal", "Kode voucher tersebut sudah digunakan.", "error");
+        return;
+      }
+
+      vouchers.push({ code, type, value });
+      document.getElementById('voucher-code-input').value = '';
+      document.getElementById('voucher-value-input').value = '';
+      
+      showToast("Voucher Ditambahkan", `Kode ${code} siap digunakan pembeli.`, "success");
+      renderAdminTables();
+
+      if (GAS_API_URL) {
+        syncVoucherToGAS({ code, type, value, action: 'CREATE' });
+      }
+    }
+
+    function deleteVoucher(idx) {
+      const v = vouchers[idx];
+      vouchers.splice(idx, 1);
+      showToast("Voucher Dihapus", `Kode ${v.code} telah dinonaktifkan.`, "info");
+      renderAdminTables();
+
+      if (GAS_API_URL) {
+        syncVoucherToGAS({ code: v.code, action: 'DELETE' });
+      }
+    }
+
+    // ================= INTEGRASI GOOGLE APPS SCRIPT (GAS) =================
+    async function fetchDataFromGAS() {
+      if (!GAS_API_URL) return;
+      try {
+        const res = await fetch(`${GAS_API_URL}?action=GET_ALL_DATA`);
+        const json = await res.json();
+        if (json.status === 'success') {
+          if (json.products && json.products.length > 0) products = json.products;
+          if (json.vouchers && json.vouchers.length > 0) vouchers = json.vouchers;
+          renderStoreProducts();
+          renderAdminTables();
+          showToast("Data Tersinkron", "Berhasil menarik data dari Google Sheets.", "success");
+        }
+      } catch (err) {
+        console.warn("GAS Connection Error (Fallback ke state lokal)", err);
+      }
+    }
+
+    async function syncProductToGAS(payload) {
+      if (!GAS_API_URL) return;
+      try {
+        await fetch(GAS_API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'PRODUCT_MUTATION', ...payload })
+        });
+      } catch (err) {
+        console.error("Gagal sinkron produk ke GAS:", err);
+      }
+    }
+
+    async function syncVoucherToGAS(payload) {
+      if (!GAS_API_URL) return;
+      try {
+        await fetch(GAS_API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'VOUCHER_MUTATION', ...payload })
+        });
+      } catch (err) {
+        console.error("Gagal sinkron voucher ke GAS:", err);
+      }
+    }
+
+    function refreshStoreData() {
+      if (GAS_API_URL) {
+        fetchDataFromGAS();
+      } else {
+        renderStoreProducts();
+        renderAdminTables();
+        showToast("Data Di-refresh", "Data lokal berhasil dimuat ulang.", "info");
+      }
+    }
+  </script>
+</body>
+</html>
+```
