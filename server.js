@@ -1,6 +1,7 @@
 /**
  * MAWI SMP - UNIFIED BACKEND & FRONTEND SERVER
  * Menjalankan Backend API Express + Menyajikan Website index.html dalam 1 Aplikasi
+ * MENDUKUNG DUAL DATABASE: LUCKPERMS & LIBRELOGIN TERPISAH
  */
 
 const express = require('express');
@@ -64,13 +65,29 @@ const antiBotRateLimiter = (req, res, next) => {
 
 app.use('/api/', antiBotRateLimiter);
 
-// MySQL Connection Pool Configuration (Mendukung Port Custom Panel Hosting)
-const dbPool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'minecraft_db',
-  port: Number(process.env.DB_PORT) || 3306,
+// ==========================================
+// CONFIG DUAL MYSQL DATABASE POOLS
+// ==========================================
+
+// Connection Pool 1: LuckPerms
+const luckpermsPool = mysql.createPool({
+  host: process.env.LP_DB_HOST || process.env.DB_HOST || 'localhost',
+  user: process.env.LP_DB_USER || process.env.DB_USER || 'root',
+  password: process.env.LP_DB_PASS || process.env.DB_PASSWORD || '',
+  database: process.env.LP_DB_NAME || process.env.DB_NAME_LUCKPERMS || process.env.DB_NAME || 'minecraft_db',
+  port: Number(process.env.LP_DB_PORT || process.env.DB_PORT) || 3306,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
+
+// Connection Pool 2: LibreLogin
+const libreloginPool = mysql.createPool({
+  host: process.env.LOGIN_DB_HOST || process.env.DB_HOST || 'localhost',
+  user: process.env.LOGIN_DB_USER || process.env.DB_USER || 'root',
+  password: process.env.LOGIN_DB_PASS || process.env.DB_PASSWORD || '',
+  database: process.env.LOGIN_DB_NAME || process.env.DB_NAME_LIBRELOGIN || process.env.DB_NAME || 'minecraft_db',
+  port: Number(process.env.LOGIN_DB_PORT || process.env.DB_PORT) || 3306,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
@@ -112,26 +129,39 @@ app.post('/api/player/check-rank', async (req, res) => {
   let cleanSkinName = rawUsername.replace(/^_+|_+$/g, '') || 'Steve';
   const headAvatarUrl = `https://mc-heads.net/avatar/${encodeURIComponent(cleanSkinName)}/100`;
 
+  let rankRows = [];
+  let loginRows = [];
+
   try {
     const placeholders = possibleUsernames.map(() => '?').join(',');
 
-    // 1. Query LuckPerms
-    const [rankRows] = await dbPool.query(
-      `SELECT username, COALESCE(primary_group, 'default') AS primary_group 
-       FROM luckperms_players 
-       WHERE LOWER(username) IN (${placeholders.toLowerCase()})
-       LIMIT 1`,
-      possibleUsernames.map(u => u.toLowerCase())
-    );
+    // 1. Query Database LuckPerms
+    try {
+      const [lpResult] = await luckpermsPool.query(
+        `SELECT username, COALESCE(primary_group, 'default') AS primary_group 
+         FROM luckperms_players 
+         WHERE LOWER(username) IN (${placeholders.toLowerCase()})
+         LIMIT 1`,
+        possibleUsernames.map(u => u.toLowerCase())
+      );
+      rankRows = lpResult;
+    } catch (errLP) {
+      console.warn('[DB WARNING - LuckPerms]: Gagal query LuckPerms DB:', errLP.message);
+    }
 
-    // 2. Query LibreLogin
-    const [loginRows] = await dbPool.query(
-      `SELECT uuid, username 
-       FROM librelogin_users 
-       WHERE LOWER(username) IN (${placeholders.toLowerCase()})
-       LIMIT 1`,
-      possibleUsernames.map(u => u.toLowerCase())
-    );
+    // 2. Query Database LibreLogin
+    try {
+      const [loginResult] = await libreloginPool.query(
+        `SELECT uuid, username 
+         FROM librelogin_users 
+         WHERE LOWER(username) IN (${placeholders.toLowerCase()})
+         LIMIT 1`,
+        possibleUsernames.map(u => u.toLowerCase())
+      );
+      loginRows = loginResult;
+    } catch (errLogin) {
+      console.warn('[DB WARNING - LibreLogin]: Gagal query LibreLogin DB:', errLogin.message);
+    }
 
     const detectedRank = (rankRows.length > 0 && rankRows[0].primary_group) 
       ? rankRows[0].primary_group.toUpperCase() 
@@ -173,7 +203,7 @@ app.post('/api/player/check-rank', async (req, res) => {
 
 // Endpoint Health Check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', server: 'Mawi SMP Express API Running' });
+  res.json({ status: 'OK', server: 'Mawi SMP Express API Running Dual-DB' });
 });
 
 // Fallback Route: Mengarahkan semua halaman non-API ke index.html
