@@ -64,12 +64,13 @@ const antiBotRateLimiter = (req, res, next) => {
 
 app.use('/api/', antiBotRateLimiter);
 
-// MySQL Connection Pool Configuration
+// MySQL Connection Pool Configuration (Mendukung Port Custom Panel Hosting)
 const dbPool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'minecraft_db',
+  port: Number(process.env.DB_PORT) || 3306,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
