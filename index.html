@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="id" class="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Mawi SMP | Official Store & Komunitas Minecraft</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +27,8 @@
               dark: '#70142C',
               light: '#A8254D'
             },
-            accent: '#D1386A'
+            accent: '#E76F51', // Warna Utama Baru #E76F51
+            accentLight: '#F4A261'
           },
           fontFamily: {
             sans: ['"Plus Jakarta Sans"', 'sans-serif'],
@@ -39,6 +39,7 @@
   </script>
 
   <style>
+    * { touch-action: manipulation; }
     body {
       background-color: #0B080F;
       color: #E2E8F0;
@@ -46,15 +47,15 @@
       overflow-x: hidden;
       -webkit-tap-highlight-color: transparent;
     }
-    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: #0B080F; }
     ::-webkit-scrollbar-thumb { background: #2E233D; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #8B1E3F; }
+    ::-webkit-scrollbar-thumb:hover { background: #E76F51; }
 
     .clean-panel { background-color: #140F1D; border: 1px solid #2E233D; }
     .clean-card { background-color: #1A1424; border: 1px solid #2E233D; }
-    .crimson-btn { background: linear-gradient(135deg, #8B1E3F 0%, #70142C 100%); }
-    .crimson-btn:hover { background: linear-gradient(135deg, #A8254D 0%, #8B1E3F 100%); }
+    .orange-btn { background: linear-gradient(135deg, #E76F51 0%, #D95D3F 100%); }
+    .orange-btn:hover { background: linear-gradient(135deg, #F4A261 0%, #E76F51 100%); }
     .fade-in { animation: quickFade 0.2s ease-out forwards; }
 
     @keyframes quickFade {
@@ -62,7 +63,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Preloader Styles */
     #preloader {
       position: fixed;
       inset: 0;
@@ -72,11 +72,9 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: opacity 0.4s ease, visibility 0.4s ease;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
     }
-    .spinner-logo {
-      animation: spinLogo 1.2s linear infinite;
-    }
+    .spinner-logo { animation: spinLogo 1.2s linear infinite; }
     @keyframes spinLogo {
       0% { transform: rotate(0deg) scale(1); }
       50% { transform: rotate(180deg) scale(1.1); }
@@ -84,80 +82,82 @@
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-burgundy selection:text-white">
+<body class="min-h-screen flex flex-col justify-between selection:bg-accent selection:text-white">
 
-  <!-- PRELOADER DENGAN LOGO BERPUTAR -->
+  <!-- PRELOADER -->
   <div id="preloader">
-    <div class="w-16 h-16 rounded-2xl bg-burgundy/30 border border-burgundy p-2 flex items-center justify-center spinner-logo shadow-2xl mb-4">
-      <img id="preloaderLogoImg" src="https://api.dicebear.com/7.x/bottts/svg?seed=MawiSMP" alt="Logo" class="w-full h-full object-cover rounded-xl"/>
+    <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-accent/20 border border-accent p-2 flex items-center justify-center spinner-logo shadow-2xl mb-3">
+      <img id="preloaderLogoImg" src="https://cdn.phototourl.com/free/2026-08-30-af9c7098-c5a9-491f-9c28-60a5e05fb416.png" alt="Logo" class="w-full h-full object-cover rounded-xl"/>
     </div>
-    <div class="text-white font-black tracking-widest text-sm uppercase">MAWI <span class="text-accent">SMP</span></div>
-    <p class="text-gray-400 text-[11px] mt-1 tracking-wider">Menyiapkan dunia server...</p>
+    <div class="text-white font-black tracking-widest text-xs sm:text-sm uppercase">MAWI <span class="text-accent">SMP</span></div>
+    <p class="text-gray-400 text-[10px] sm:text-[11px] mt-1 tracking-wider">Menyiapkan dunia server...</p>
   </div>
 
   <!-- TOP HEADER -->
-  <header class="fixed top-0 left-0 right-0 z-40 bg-[#0B080F]/95 border-b border-glassBorder h-18 py-3">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between">
-      <div class="flex items-center gap-3 cursor-pointer" onclick="navigate('home')">
-        <div class="w-10 h-10 rounded-xl bg-burgundy/30 border border-burgundy p-0.5 flex items-center justify-center shrink-0 overflow-hidden">
-          <img id="headerLogoImg" src="https://api.dicebear.com/7.x/bottts/svg?seed=MawiSMP" alt="Logo" class="w-full h-full object-cover rounded-[9px]" onerror="this.src='https://api.dicebear.com/7.x/shapes/svg?seed=Mawi'"/>
+  <header class="fixed top-0 left-0 right-0 z-40 bg-[#0B080F]/95 backdrop-blur-md border-b border-glassBorder h-16 sm:h-18 py-2.5">
+    <div class="max-w-6xl mx-auto px-3.5 sm:px-6 flex items-center justify-between h-full">
+      <div class="flex items-center gap-2.5 cursor-pointer" onclick="navigate('home')">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-accent/20 border border-accent/40 p-0.5 flex items-center justify-center shrink-0 overflow-hidden">
+          <img id="headerLogoImg" src="https://cdn.phototourl.com/free/2026-08-30-af9c7098-c5a9-491f-9c28-60a5e05fb416.png" alt="Logo" class="w-full h-full object-cover rounded-[9px]" onerror="this.src='https://api.dicebear.com/7.x/shapes/svg?seed=Mawi'"/>
         </div>
         <div>
-          <span id="headerBrandTitle" class="text-lg sm:text-xl font-black tracking-wider text-white uppercase flex items-center gap-1">
+          <span id="headerBrandTitle" class="text-base sm:text-xl font-black tracking-wider text-white uppercase flex items-center gap-1 leading-none">
             MAWI <span class="text-accent">SMP</span>
           </span>
-          <span class="text-[10px] text-gray-400 block tracking-wider font-medium">Server Main Santai & Have Fun</span>
+          <span class="text-[9px] sm:text-[10px] text-gray-400 block tracking-wider font-medium mt-0.5">Server Main Santai & Have Fun</span>
         </div>
       </div>
 
-      <div class="flex items-center gap-2 sm:gap-3">
+      <div class="flex items-center gap-1.5 sm:gap-3">
+        <!-- PLAYER IDENTIFICATION DISPLAY HEADER -->
         <div id="userHeaderArea"></div>
-        <button onclick="openCartModal()" class="relative p-2.5 rounded-xl bg-clean-panel border border-glassBorder hover:border-accent text-gray-200 transition" aria-label="Keranjang">
-          <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-          <span id="headerCartCount" class="absolute -top-1 -right-1 bg-accent text-white font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center scale-0 transition-transform">0</span>
+
+        <button onclick="openCartModal()" class="relative p-2 sm:p-2.5 rounded-xl bg-clean-panel border border-glassBorder hover:border-accent text-gray-200 transition min-w-[40px] min-h-[40px] flex items-center justify-center" aria-label="Keranjang">
+          <i data-lucide="shopping-bag" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+          <span id="headerCartCount" class="absolute -top-1 -right-1 bg-accent text-white font-bold text-[9px] sm:text-[10px] w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center scale-0 transition-transform">0</span>
         </button>
-        <button onclick="toggleDrawer(true)" class="p-2.5 rounded-xl bg-clean-panel border border-glassBorder text-gray-200 hover:text-white" aria-label="Menu">
-          <i data-lucide="menu" class="w-5 h-5"></i>
+        <button onclick="toggleDrawer(true)" class="p-2 sm:p-2.5 rounded-xl bg-clean-panel border border-glassBorder text-gray-200 hover:text-white min-w-[40px] min-h-[40px] flex items-center justify-center" aria-label="Menu">
+          <i data-lucide="menu" class="w-4 h-4 sm:w-5 sm:h-5"></i>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- DRAWER NAVIGATION -->
+  <!-- DRAWER NAVIGATION MOBILE -->
   <div id="drawerOverlay" class="fixed inset-0 bg-black/70 z-50 opacity-0 pointer-events-none transition-opacity duration-200" onclick="toggleDrawer(false)">
-    <div id="drawerPanel" class="fixed right-0 top-0 bottom-0 w-72 max-w-[80vw] bg-voidLight border-l border-glassBorder p-5 flex flex-col justify-between transform translate-x-full transition-transform duration-200 ease-out" onclick="event.stopPropagation()">
+    <div id="drawerPanel" class="fixed right-0 top-0 bottom-0 w-72 max-w-[85vw] bg-voidLight border-l border-glassBorder p-4 sm:p-5 flex flex-col justify-between transform translate-x-full transition-transform duration-200 ease-out" onclick="event.stopPropagation()">
       <div>
-        <div class="flex items-center justify-between pb-4 border-b border-glassBorder">
+        <div class="flex items-center justify-between pb-3.5 border-b border-glassBorder">
           <div class="flex items-center gap-2">
             <i data-lucide="compass" class="w-5 h-5 text-accent"></i>
             <h2 class="text-base font-bold text-white">Menu Navigasi</h2>
           </div>
-          <button onclick="toggleDrawer(false)" class="p-1 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+          <button onclick="toggleDrawer(false)" class="p-1.5 text-gray-400 hover:text-white rounded-lg bg-void border border-glassBorder"><i data-lucide="x" class="w-4 h-4"></i></button>
         </div>
 
-        <nav class="mt-4 space-y-1.5 text-sm font-medium">
-          <button onclick="navigate('home')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
+        <nav class="mt-4 space-y-1 text-sm font-medium">
+          <button onclick="navigate('home')" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
             <i data-lucide="home" class="w-4 h-4"></i><span>Home & Server Info</span>
           </button>
-          <button onclick="navigate('store')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
+          <button onclick="navigate('store')" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
             <i data-lucide="shopping-cart" class="w-4 h-4"></i>
             <div class="flex items-center justify-between w-full">
               <span>Mawi Store</span>
-              <span class="text-[10px] bg-burgundy px-2 py-0.5 rounded-full text-white font-bold">Ranks</span>
+              <span class="text-[9px] bg-accent px-2 py-0.5 rounded-full text-white font-bold uppercase">Ranks</span>
             </div>
           </button>
-          <button onclick="navigate('rules')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
+          <button onclick="navigate('rules')" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
             <i data-lucide="book-open" class="w-4 h-4"></i><span>Aturan & TOS</span>
           </button>
-          <button onclick="navigate('gallery')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
+          <button onclick="navigate('gallery')" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
             <i data-lucide="image" class="w-4 h-4"></i><span>Galeri Komunitas</span>
           </button>
-          <button onclick="navigate('community')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
-            <i data-lucide="users" class="w-4 h-4"></i><span>Grup WhatsApp & Discord</span>
+          <button onclick="navigate('community')" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl hover:bg-glass text-gray-300 hover:text-accent transition text-left">
+            <i data-lucide="users" class="w-4 h-4"></i><span>Grup WA & Discord</span>
           </button>
           
           <div id="adminDrawerSection" class="pt-3 mt-3 border-t border-glassBorder hidden">
-            <button onclick="navigate('admin')" class="w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-rose-300 bg-burgundy/20 border border-burgundy/40 hover:bg-burgundy/40 transition text-left text-xs font-bold">
+            <button onclick="navigate('admin')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-amber-300 bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition text-left text-xs font-bold">
               <span class="flex items-center gap-2.5"><i data-lucide="shield-check" class="w-4 h-4 text-accent"></i><span>Staff / Admin Panel</span></span>
               <span class="text-[9px] bg-accent px-1.5 py-0.5 rounded text-white font-mono">STAFF</span>
             </button>
@@ -170,183 +170,208 @@
   </div>
 
   <!-- MAIN CONTENT CONTAINER -->
-  <main class="flex-grow pt-24 pb-12 px-4 sm:px-6 max-w-6xl mx-auto w-full">
+  <main class="flex-grow pt-20 sm:pt-24 pb-12 px-3.5 sm:px-6 max-w-6xl mx-auto w-full">
 
     <!-- HOME VIEW -->
-    <section id="section-home" class="fade-in space-y-8">
-      <div class="clean-card rounded-2xl p-6 sm:p-10 text-center relative overflow-hidden">
-        <div class="max-w-2xl mx-auto space-y-4">
-          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-burgundy/30 border border-accent/30 text-accent text-xs font-bold">
+    <section id="section-home" class="fade-in space-y-6 sm:space-y-8">
+      
+      <!-- HERO BANNER -->
+      <div class="clean-card rounded-2xl p-5 sm:p-10 text-center relative overflow-hidden">
+        <div class="max-w-2xl mx-auto space-y-3.5 sm:space-y-4">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-accent/20 border border-accent/40 text-accent text-[11px] sm:text-xs font-bold">
             <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-            MINECRAFT INDONESIA JAVA & BEDROCK (MCPE)
+            CROSSPLAY JAVA & BEDROCK (MCPE) READY
           </div>
-          <h1 class="text-3xl sm:text-5xl font-black text-white leading-tight tracking-tight">
+          <h1 class="text-2xl sm:text-5xl font-black text-white leading-tight tracking-tight">
             Selamat Datang di <br/><span class="text-accent" id="heroServerTitle">MAWI SMP</span>
           </h1>
-          <p id="heroAnnouncementText" class="text-gray-300 text-xs sm:text-sm leading-relaxed">
+          <p id="heroAnnouncementText" class="text-gray-300 text-xs sm:text-sm leading-relaxed max-w-lg mx-auto">
             Server Minecraft santai untuk bermain bersama teman, mencari sahabat baru, membangun rumah impian, dan have fun tanpa ribet!
           </p>
-          <div class="pt-3 flex flex-wrap justify-center gap-3">
-            <button onclick="navigate('store')" class="px-6 py-3 rounded-xl crimson-btn text-white text-xs sm:text-sm font-bold flex items-center gap-2 transition active:scale-95 shadow-md">
+
+          <!-- LIVE STATUS SERVER & PLAYER COUNT COUNTER -->
+          <div class="inline-flex items-center gap-3 bg-voidLight px-4 py-2 rounded-xl border border-glassBorder text-xs font-mono">
+            <span class="flex items-center gap-1.5 text-emerald-400 font-bold"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> ONLINE</span>
+            <span class="text-gray-400">|</span>
+            <span class="text-gray-200">Players: <strong id="livePlayerCountText" class="text-accent font-bold">-- / 500</strong></span>
+          </div>
+
+          <div class="pt-2 sm:pt-3 flex flex-col sm:flex-row justify-center gap-2.5 sm:gap-3">
+            <button onclick="navigate('store')" class="w-full sm:w-auto px-6 py-3 rounded-xl orange-btn text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition active:scale-95 shadow-md">
               <i data-lucide="shopping-bag" class="w-4 h-4"></i> Lihat Mawi Store
             </button>
-            <button onclick="navigate('rules')" class="px-5 py-3 rounded-xl bg-clean-panel hover:bg-glassBorder text-gray-200 text-xs sm:text-sm font-semibold border border-glassBorder flex items-center gap-2 transition">
+            <button onclick="navigate('rules')" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-clean-panel hover:bg-glassBorder text-gray-200 text-xs sm:text-sm font-semibold border border-glassBorder flex items-center justify-center gap-2 transition">
               <i data-lucide="book-open" class="w-4 h-4"></i> Aturan Bermain
             </button>
           </div>
         </div>
       </div>
 
-      <div class="clean-card rounded-2xl p-6 sm:p-8 space-y-6">
-        <div class="flex items-center justify-between">
+      <!-- IP SERVER ADDRESS BOXES -->
+      <div class="clean-card rounded-2xl p-4 sm:p-8 space-y-4 sm:space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div class="flex items-center gap-3">
-            <div class="p-2.5 bg-burgundy/30 rounded-xl text-accent"><i data-lucide="server" class="w-5 h-5"></i></div>
+            <div class="p-2 sm:p-2.5 bg-accent/20 rounded-xl text-accent"><i data-lucide="server" class="w-4 h-4 sm:w-5 sm:h-5"></i></div>
             <div>
-              <h3 class="text-base font-bold text-white">Alamat Server (Server IP)</h3>
-              <p class="text-xs text-gray-400">Bisa dimainkan bersama dari HP (Bedrock/MCPE) & Laptop (Java)</p>
+              <h3 class="text-sm sm:text-base font-bold text-white">Alamat IP Server Minecraft</h3>
+              <p class="text-[11px] sm:text-xs text-gray-400">Bisa dimainkan dari HP (Bedrock/MCPE) & PC (Java)</p>
             </div>
           </div>
-          <span class="text-[11px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full">Crossplay Ready</span>
+          <span class="self-start sm:self-auto text-[10px] sm:text-[11px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-0.5 sm:py-1 rounded-full">Crossplay Ready</span>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div class="p-4 rounded-xl bg-voidLight border border-glassBorder flex items-center justify-between gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          <div class="p-3.5 sm:p-4 rounded-xl bg-voidLight border border-glassBorder flex items-center justify-between gap-3">
             <div>
-              <div class="flex items-center gap-2"><span class="text-xs font-bold uppercase text-accent">Java Edition</span><span class="text-[10px] text-gray-400">PC / Laptop</span></div>
-              <div class="text-base font-mono font-bold text-white mt-1">mawi.my.id</div>
+              <div class="flex items-center gap-1.5"><span class="text-[11px] sm:text-xs font-bold uppercase text-accent">Java Edition</span><span class="text-[9px] sm:text-[10px] text-gray-400">PC / Laptop</span></div>
+              <div class="text-sm sm:text-base font-mono font-bold text-white mt-0.5">mawi.my.id</div>
             </div>
-            <button onclick="copyToClipboard('mawi.my.id', 'IP Java Berhasil Disalin!')" class="p-2 rounded-lg bg-burgundy hover:bg-burgundy-light text-white text-xs font-semibold flex items-center gap-1.5 transition">
+            <button onclick="copyToClipboard('mawi.my.id', 'IP Java Berhasil Disalin!')" class="px-3 py-2 rounded-lg orange-btn text-white text-xs font-semibold flex items-center gap-1.5 transition active:scale-95 shrink-0">
               <i data-lucide="copy" class="w-3.5 h-3.5"></i><span>Salin</span>
             </button>
           </div>
 
-          <div class="p-4 rounded-xl bg-voidLight border border-glassBorder flex items-center justify-between gap-4">
+          <div class="p-3.5 sm:p-4 rounded-xl bg-voidLight border border-glassBorder flex items-center justify-between gap-3">
             <div>
-              <div class="flex items-center gap-2"><span class="text-xs font-bold uppercase text-accent">Bedrock / MCPE</span><span class="text-[10px] text-gray-400">Port: 19132</span></div>
-              <div class="text-base font-mono font-bold text-white mt-1">mawi.my.id : 19132</div>
+              <div class="flex items-center gap-1.5"><span class="text-[11px] sm:text-xs font-bold uppercase text-accent">Bedrock / MCPE</span><span class="text-[9px] sm:text-[10px] text-gray-400">Port: 19132</span></div>
+              <div class="text-sm sm:text-base font-mono font-bold text-white mt-0.5">mawi.my.id : 19132</div>
             </div>
-            <div class="flex gap-1.5">
+            <div class="flex gap-1.5 shrink-0">
               <button onclick="copyToClipboard('mawi.my.id:19132', 'IP & Port Bedrock Disalin!')" class="p-2 rounded-lg bg-clean-panel border border-glassBorder text-gray-300 hover:text-white text-xs font-medium">
                 <i data-lucide="copy" class="w-3.5 h-3.5"></i>
               </button>
-              <a href="minecraft://?addExternalServer=Mawi%20SMP|mawi.my.id:19132" class="p-2 rounded-lg bg-burgundy hover:bg-burgundy-light text-white text-xs font-semibold flex items-center gap-1 transition">
+              <a href="minecraft://?addExternalServer=Mawi%20SMP|mawi.my.id:19132" class="px-3 py-2 rounded-lg orange-btn text-white text-xs font-semibold flex items-center gap-1 transition active:scale-95">
                 <i data-lucide="play" class="w-3.5 h-3.5"></i><span>Main</span>
               </a>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- SERVER FEATURES GRID -->
+      <div class="space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="sparkles" class="w-5 h-5 text-accent"></i> Fitur Unggulan Mawi SMP
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div class="p-4 rounded-2xl clean-card space-y-2">
+            <div class="w-9 h-9 rounded-xl bg-accent/20 text-accent flex items-center justify-center font-bold"><i data-lucide="shield" class="w-5 h-5"></i></div>
+            <h4 class="font-bold text-white text-xs sm:text-sm">Land Claim Anti-Grief</h4>
+            <p class="text-[11px] text-gray-400">Bangunan dan item di chest kamu dijamin 100% aman dari maling.</p>
+          </div>
+          <div class="p-4 rounded-2xl clean-card space-y-2">
+            <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold"><i data-lucide="coins" class="w-5 h-5"></i></div>
+            <h4 class="font-bold text-white text-xs sm:text-sm">Ekonomi & Shop Player</h4>
+            <p class="text-[11px] text-gray-400">Jual beli resource in-game, buka toko pribadi, dan kumpulkan Mawi Coins.</p>
+          </div>
+          <div class="p-4 rounded-2xl clean-card space-y-2">
+            <div class="w-9 h-9 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold"><i data-lucide="trophy" class="w-5 h-5"></i></div>
+            <h4 class="font-bold text-white text-xs sm:text-sm">Event Mingguan Berhadiah</h4>
+            <p class="text-[11px] text-gray-400">Ikuti minigames, parkour, dan Lomba Build dengan hadiah rank gratis!</p>
+          </div>
+          <div class="p-4 rounded-2xl clean-card space-y-2">
+            <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold"><i data-lucide="users" class="w-5 h-5"></i></div>
+            <h4 class="font-bold text-white text-xs sm:text-sm">Komunitas Ramah & Staff Active</h4>
+            <p class="text-[11px] text-gray-400">Staf selalu siap membantu kendala kamu 24/7 di grup Discord & WA.</p>
+          </div>
+        </div>
+      </div>
+
     </section>
 
     <!-- STORE VIEW -->
-    <section id="section-store" class="hidden fade-in space-y-6">
-      <div class="clean-card rounded-2xl p-6 border border-glassBorder flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <section id="section-store" class="hidden fade-in space-y-4 sm:space-y-6">
+      
+      <div class="clean-card rounded-2xl p-4 sm:p-6 border border-glassBorder flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <span class="text-xs font-bold text-accent uppercase tracking-wider">Official Webstore</span>
-          <h2 class="text-2xl font-black text-white mt-0.5">Donasi & Rank Toko Mawi</h2>
-          <p class="text-gray-400 text-xs mt-0.5">Dukung operasional server dan dapatkan titel keren in-game.</p>
+          <span class="text-[10px] sm:text-xs font-bold text-accent uppercase tracking-wider">Official Webstore</span>
+          <h2 class="text-xl sm:text-2xl font-black text-white mt-0.5">Donasi & Rank Toko Mawi</h2>
+          <p class="text-gray-400 text-xs mt-0.5">Dukung operasional server dan dapatkan perk keren in-game.</p>
         </div>
-        <div class="flex items-center gap-2 bg-voidLight p-1 rounded-xl border border-glassBorder shrink-0">
-          <button id="tab-btn-ranks" onclick="filterStoreCategory('Ranks')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition bg-burgundy text-white">In-Game Ranks</button>
-          <button id="tab-btn-coins" onclick="filterStoreCategory('Coins')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition text-gray-400 hover:text-white">Coins / Items</button>
-        </div>
+        <!-- DYNAMIC CATEGORY FILTERS GENERATED FROM STATE -->
+        <div id="storeCategoryTabs" class="flex items-center gap-1.5 bg-voidLight p-1 rounded-xl border border-glassBorder overflow-x-auto w-full sm:w-auto"></div>
       </div>
 
-      <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 flex items-center gap-3 text-amber-200 text-xs">
-        <i data-lucide="info" class="w-4 h-4 shrink-0 text-amber-400"></i>
-        <span>Pastikan Nickname dan Platform Anda sudah sesuai sebelum melakukan checkout.</span>
+      <!-- UPGRADE RANK BANNER INFO & PLAYER PROFILE BADGE -->
+      <div id="rankUpgradeNotice" class="bg-gradient-to-r from-accent/20 to-burgundy/30 border border-accent/40 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+        <div class="flex items-center gap-3">
+          <img id="noticeSkinHead" src="https://mc-heads.net/avatar/Steve/48" class="w-11 h-11 rounded-xl bg-void border border-glassBorder shrink-0 object-cover" onerror="this.src='https://mc-heads.net/avatar/Steve/48'">
+          <div>
+            <div class="font-bold text-white flex flex-wrap items-center gap-2">
+              <span id="noticePlayerNick">Pemain: Default / Member</span>
+              <span id="noticeCurrentRankBadge" class="px-2 py-0.5 rounded bg-accent/20 text-accent text-[9px] font-mono border border-accent/40">RANK: DEFAULT</span>
+            </div>
+            <p class="text-gray-300 text-[11px] mt-0.5 leading-tight">Harga terpotong otomatis jika Anda melakukan <strong>Upgrade Rank</strong> lebih tinggi!</p>
+          </div>
+        </div>
+        <button onclick="openPlayerIdentifyModal()" class="w-full sm:w-auto px-4 py-2 bg-clean-panel border border-glassBorder hover:border-accent text-accent rounded-xl font-bold text-xs shrink-0 transition text-center active:scale-95">
+          Ganti Nick & Platform
+        </button>
       </div>
 
-      <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+      <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"></div>
     </section>
 
     <!-- RULES VIEW -->
-    <section id="section-rules" class="hidden fade-in space-y-6 max-w-3xl mx-auto">
+    <section id="section-rules" class="hidden fade-in space-y-4 sm:space-y-6 max-w-3xl mx-auto">
       <div class="text-center space-y-1">
-        <h2 class="text-2xl sm:text-3xl font-bold text-white">Aturan Server & Ketentuan (TOS)</h2>
+        <h2 class="text-xl sm:text-3xl font-bold text-white">Aturan Server & Ketentuan (TOS)</h2>
         <p class="text-gray-400 text-xs">Panduan bermain demi kenyamanan bersama dan transparansi penggunaan dana donasi.</p>
       </div>
 
-      <div class="rounded-2xl p-6 crimson-btn border border-accent text-white space-y-3 shadow-lg">
-        <div class="flex items-center gap-2 text-rose-200 font-bold uppercase tracking-wider text-xs">
+      <div class="rounded-2xl p-5 sm:p-6 orange-btn border border-accent text-white space-y-3 shadow-lg">
+        <div class="flex items-center gap-2 text-amber-200 font-bold uppercase tracking-wider text-xs">
           <i data-lucide="shield-alert" class="w-4 h-4"></i> KEBIJAKAN & PENGGUNAAN DANA (TOS)
         </div>
-        <h3 class="text-sm font-extrabold leading-relaxed">
+        <h3 class="text-xs sm:text-sm font-extrabold leading-relaxed">
           1. Semua item, rank, dan coin yang sudah dibeli TIDAK DAPAT DI-REFUND/DIKEMBALIKAN dalam bentuk apapun (Final).
         </h3>
-        <h3 class="text-sm font-extrabold leading-relaxed">
-          2. Seluruh uang hasil donasi dari toko ini 100% dialokasikan untuk <span class="underline decoration-accent font-black">membayar biaya hosting server bulanan</span> dan <span class="underline decoration-accent font-black">menggaji developer serta staff</span> yang merawat server.
+        <h3 class="text-xs sm:text-sm font-extrabold leading-relaxed">
+          2. Seluruh uang hasil donasi dari toko ini 100% dialokasikan untuk <span class="underline decoration-white font-black">membayar biaya hosting server bulanan</span> dan <span class="underline decoration-white font-black">menggaji developer serta staff</span> yang merawat server.
         </h3>
-        <p class="text-xs text-rose-100/90 leading-relaxed pt-1 border-t border-rose-500/30">
+        <p class="text-[11px] sm:text-xs text-amber-100/90 leading-relaxed pt-1 border-t border-white/20">
           Dengan membeli produk di Mawi Store, Anda dianggap telah membaca, memahami, dan menyetujui seluruh ketentuan di atas.
         </p>
       </div>
 
-      <div class="space-y-3">
-        <div class="clean-card rounded-xl overflow-hidden">
-          <button onclick="toggleAccordion('rule-1')" class="w-full p-4 text-left font-semibold text-white flex items-center justify-between hover:bg-glass transition text-sm">
-            <span class="flex items-center gap-2.5"><span class="w-5 h-5 rounded-full bg-burgundy/40 text-accent text-xs flex items-center justify-center font-bold">1</span>Dilarang Menggunakan Cheat / Klien Ilegal</span>
-            <i id="rule-1-icon" data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform"></i>
-          </button>
-          <div id="rule-1-content" class="hidden px-5 pb-4 text-xs text-gray-300 space-y-2 border-t border-glassBorder pt-3">
-            <p>Dilarang keras memakai X-ray, Fly, KillAura, atau modifikasi klien apa pun yang memberikan keuntungan tidak adil. Pelanggar akan langsung di-ban permanen.</p>
-          </div>
-        </div>
-        <div class="clean-card rounded-xl overflow-hidden">
-          <button onclick="toggleAccordion('rule-2')" class="w-full p-4 text-left font-semibold text-white flex items-center justify-between hover:bg-glass transition text-sm">
-            <span class="flex items-center gap-2.5"><span class="w-5 h-5 rounded-full bg-burgundy/40 text-accent text-xs flex items-center justify-center font-bold">2</span>Tata Krama, SARA, dan Larangan Toxic</span>
-            <i id="rule-2-icon" data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform"></i>
-          </button>
-          <div id="rule-2-content" class="hidden px-5 pb-4 text-xs text-gray-300 space-y-2 border-t border-glassBorder pt-3">
-            <p>Hormati sesama pemain dan staf. Segala bentuk ucapan rasis, SARA, pelecehan, atau spam berlebihan di chat publik akan berujung mute atau ban.</p>
-          </div>
-        </div>
-        <div class="clean-card rounded-xl overflow-hidden">
-          <button onclick="toggleAccordion('rule-3')" class="w-full p-4 text-left font-semibold text-white flex items-center justify-between hover:bg-glass transition text-sm">
-            <span class="flex items-center gap-2.5"><span class="w-5 h-5 rounded-full bg-burgundy/40 text-accent text-xs flex items-center justify-center font-bold">3</span>Griefing & Pencurian Bangunan</span>
-            <i id="rule-3-icon" data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform"></i>
-          </button>
-          <div id="rule-3-content" class="hidden px-5 pb-4 text-xs text-gray-300 space-y-2 border-t border-glassBorder pt-3">
-            <p>Dilarang mencuri atau merusak bangunan player lain. Manfaatkan alat klaim wilayah (/claim) untuk mengamankan rumah Anda.</p>
-          </div>
-        </div>
-      </div>
+      <!-- DYNAMIC CUSTOM RULES CONTAINER -->
+      <div id="rulesAccordionContainer" class="space-y-2.5"></div>
     </section>
 
     <!-- GALLERY VIEW -->
-    <section id="section-gallery" class="hidden fade-in space-y-6">
+    <section id="section-gallery" class="hidden fade-in space-y-4 sm:space-y-6">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
-          <h2 class="text-2xl font-bold text-white">Galeri Mawi SMP</h2>
+          <h2 class="text-xl sm:text-2xl font-bold text-white">Galeri Mawi SMP</h2>
           <p class="text-gray-400 text-xs">Kumpulan screenshot keseruan dan momen bermain komunitas Mawi.</p>
         </div>
-        <div class="flex items-center gap-3">
-          <select id="gallerySortSelect" onchange="renderGallery()" class="bg-voidLight border border-glassBorder rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-accent">
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <select id="gallerySortSelect" onchange="renderGallery()" class="flex-grow sm:flex-none bg-voidLight border border-glassBorder rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-accent">
             <option value="newest">Terbaru</option>
             <option value="oldest">Terlama</option>
             <option value="popular">Terpopuler (Likes)</option>
           </select>
-          <button onclick="triggerUploadAction()" class="px-4 py-2.5 rounded-xl crimson-btn text-white text-xs font-bold flex items-center gap-2 transition active:scale-95 shadow-md">
-            <i data-lucide="upload-cloud" class="w-4 h-4"></i> Upload Screenshot
+          <button onclick="triggerUploadAction()" class="px-4 py-2.5 rounded-xl orange-btn text-white text-xs font-bold flex items-center gap-2 transition active:scale-95 shadow-md shrink-0">
+            <i data-lucide="upload-cloud" class="w-4 h-4"></i> Upload
           </button>
         </div>
       </div>
-      <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+      <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4"></div>
     </section>
 
     <!-- COMMUNITY VIEW -->
-    <section id="section-community" class="hidden fade-in space-y-6 max-w-2xl mx-auto text-center">
+    <section id="section-community" class="hidden fade-in space-y-4 sm:space-y-6 max-w-2xl mx-auto text-center">
       <div class="space-y-1">
-        <h2 class="text-2xl font-bold text-white">Gabung Komunitas Mawi</h2>
+        <h2 class="text-xl sm:text-2xl font-bold text-white">Gabung Komunitas Mawi</h2>
         <p class="text-gray-400 text-xs">Ayo ngobrol santai, ikut event, dan mabar dengan member lainnya!</p>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-        <a href="https://whatsapp.com/channel/0029Vb8rqxECxoAzdPUHIM1Q" target="_blank" class="p-6 rounded-2xl clean-card hover:border-emerald-500/50 transition flex flex-col items-center gap-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-2">
+        <a href="https://whatsapp.com/channel/0029Vb8rqxECxoAzdPUHIM1Q" target="_blank" class="p-5 sm:p-6 rounded-2xl clean-card hover:border-emerald-500/50 transition flex flex-col items-center gap-3">
           <div class="w-12 h-12 rounded-xl bg-emerald-600/20 text-emerald-400 flex items-center justify-center"><i data-lucide="message-circle" class="w-6 h-6"></i></div>
           <div><h3 class="text-base font-bold text-white">Grup WhatsApp</h3><p class="text-xs text-gray-400 mt-0.5">Komunikasi dan mabar setiap hari.</p></div>
           <span class="text-xs font-bold text-emerald-400">Masuk Grup WA &rarr;</span>
         </a>
-        <a href="https://discord.gg/uS4TCZMP5r" target="_blank" class="p-6 rounded-2xl clean-card hover:border-indigo-500/50 transition flex flex-col items-center gap-3">
+        <a href="https://discord.gg/uS4TCZMP5r" target="_blank" class="p-5 sm:p-6 rounded-2xl clean-card hover:border-indigo-500/50 transition flex flex-col items-center gap-3">
           <div class="w-12 h-12 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center"><i data-lucide="gamepad-2" class="w-6 h-6"></i></div>
           <div><h3 class="text-base font-bold text-white">Discord Server</h3><p class="text-xs text-gray-400 mt-0.5">Voice chat mabar dan info event.</p></div>
           <span class="text-xs font-bold text-indigo-400">Join Discord &rarr;</span>
@@ -361,28 +386,35 @@
           <div>
             <div class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span class="text-[11px] text-emerald-400 font-mono font-bold">AKUN TERVERIFIKASI: STAFF ADMIN</span>
+              <span class="text-[10px] sm:text-[11px] text-emerald-400 font-mono font-bold">AKUN TERVERIFIKASI: STAFF ADMIN</span>
             </div>
-            <h2 class="text-xl font-bold text-white mt-1">Dashboard Pengelola Mawi SMP</h2>
+            <h2 class="text-lg sm:text-xl font-bold text-white mt-1">Dashboard Pengelola Mawi SMP</h2>
           </div>
-          <button onclick="handleUserLogout()" class="px-3.5 py-1.5 rounded-lg bg-clean-panel text-rose-400 border border-rose-500/30 text-xs font-semibold flex items-center gap-1.5 hover:bg-rose-900/30 transition">
+          <button onclick="handleUserLogout()" class="px-3 py-1.5 rounded-lg bg-clean-panel text-rose-400 border border-rose-500/30 text-xs font-semibold flex items-center gap-1.5 hover:bg-rose-900/30 transition">
             <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Logout
           </button>
         </div>
 
         <div class="flex gap-2 border-b border-glassBorder pb-3 overflow-x-auto">
-          <button onclick="switchAdminTab('products')" id="adminTabBtn-products" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-burgundy text-white">Produk Toko</button>
-          <button onclick="switchAdminTab('vouchers')" id="adminTabBtn-vouchers" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white">Kelola Voucher</button>
-          <button onclick="switchAdminTab('gallery')" id="adminTabBtn-gallery" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white">Moderasi Galeri</button>
-          <button onclick="switchAdminTab('settings')" id="adminTabBtn-settings" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white">Pengaturan Web</button>
+          <button onclick="switchAdminTab('products')" id="adminTabBtn-products" class="px-3.5 py-1.5 rounded-lg text-xs font-bold orange-btn text-white whitespace-nowrap">Produk & Kategori</button>
+          <button onclick="switchAdminTab('vouchers')" id="adminTabBtn-vouchers" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white whitespace-nowrap">Kelola Voucher</button>
+          <button onclick="switchAdminTab('gallery')" id="adminTabBtn-gallery" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white whitespace-nowrap">Hapus Foto Galeri</button>
+          <button onclick="switchAdminTab('rules')" id="adminTabBtn-rules" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white whitespace-nowrap">Edit Rules Server</button>
+          <button onclick="switchAdminTab('settings')" id="adminTabBtn-settings" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white whitespace-nowrap">Pengaturan Web</button>
         </div>
 
+        <!-- ADMIN PRODUCTS & CATEGORIES TAB -->
         <div id="adminPanel-products" class="space-y-4">
-          <div class="flex justify-between items-center">
-            <div><h3 class="text-sm font-bold text-white">Daftar Ranks & Items</h3><p class="text-[11px] text-gray-400">Tambah, ubah harga, atau hapus produk toko.</p></div>
-            <button onclick="openProductModal()" class="px-3.5 py-1.5 rounded-lg bg-burgundy hover:bg-burgundy-light text-white text-xs font-bold flex items-center gap-1.5 shadow-md">
-              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah Produk
-            </button>
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+            <div><h3 class="text-sm font-bold text-white">Daftar Produk & Kategori Toko</h3><p class="text-[11px] text-gray-400">Atur produk atau tambahkan kategori baru (Ranks, Coins, Keys, Kit, dll).</p></div>
+            <div class="flex gap-2">
+              <button onclick="openCategoryModal()" class="px-3 py-1.5 rounded-lg bg-voidLight border border-glassBorder text-white text-xs font-bold flex items-center gap-1 shadow-md">
+                <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i> Kategori Baru
+              </button>
+              <button onclick="openProductModal()" class="px-3.5 py-1.5 rounded-lg orange-btn text-white text-xs font-bold flex items-center gap-1.5 shadow-md">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah Produk
+              </button>
+            </div>
           </div>
           <div class="clean-card rounded-xl overflow-x-auto">
             <table class="w-full text-left text-xs">
@@ -397,7 +429,7 @@
         <div id="adminPanel-vouchers" class="hidden space-y-4">
           <div class="flex justify-between items-center">
             <div><h3 class="text-sm font-bold text-white">Kelola Kode Voucher Diskon</h3><p class="text-[11px] text-gray-400">Buat kupon promo baru atau atur persentase.</p></div>
-            <button onclick="openVoucherModal()" class="px-3.5 py-1.5 rounded-lg bg-burgundy hover:bg-burgundy-light text-white text-xs font-bold flex items-center gap-1.5 shadow-md">
+            <button onclick="openVoucherModal()" class="px-3.5 py-2 rounded-lg orange-btn text-white text-xs font-bold flex items-center gap-1.5 shadow-md">
               <i data-lucide="tag" class="w-3.5 h-3.5"></i> Buat Voucher
             </button>
           </div>
@@ -411,18 +443,33 @@
           </div>
         </div>
 
+        <!-- ADMIN GALLERY MODERATION (RINGKAS: HANYA HAPUS FOTO) -->
         <div id="adminPanel-gallery" class="hidden space-y-4">
-          <h3 class="text-sm font-bold text-white">Moderasi Foto Screenshot</h3>
-          <div id="adminGalleryGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-3"></div>
+          <div>
+            <h3 class="text-sm font-bold text-white">Hapus Foto Galeri Komunitas</h3>
+            <p class="text-[11px] text-gray-400">Kelola foto screenshot yang tampil di website. Cukup klik tombol Hapus untuk menghapus foto yang tidak pantas.</p>
+          </div>
+          <div id="adminGalleryGrid" class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-3"></div>
+        </div>
+
+        <!-- ADMIN EDIT RULES SERVER -->
+        <div id="adminPanel-rules" class="hidden space-y-4 max-w-2xl">
+          <div>
+            <h3 class="text-sm font-bold text-white">Edit Aturan Server (Custom Rules)</h3>
+            <p class="text-[11px] text-gray-400">Sesuaikan daftar aturan yang tampil di halaman Aturan & TOS.</p>
+          </div>
+          <div id="adminRulesEditorList" class="space-y-3"></div>
+          <button onclick="addRuleField()" class="px-3 py-1.5 rounded-lg bg-voidLight border border-glassBorder text-white text-xs font-bold">+ Tambah Poin Aturan</button>
+          <button onclick="saveServerRules()" class="w-full py-2.5 rounded-lg orange-btn text-white text-xs font-bold shadow-md">Simpan Aturan Server</button>
         </div>
 
         <div id="adminPanel-settings" class="hidden space-y-4 max-w-lg">
           <h3 class="text-sm font-bold text-white">Edit Logo & Teks Website</h3>
-          <div class="clean-card rounded-xl p-5 space-y-3.5">
+          <div class="clean-card rounded-xl p-4 sm:p-5 space-y-3.5">
             <div><label class="block text-xs font-semibold text-gray-300 mb-1">Nama Brand Server</label><input id="settingBrandName" type="text" class="w-full bg-voidLight border border-glassBorder rounded-lg px-3 py-2 text-xs text-white"></div>
             <div><label class="block text-xs font-semibold text-gray-300 mb-1">URL Foto Logo Server</label><input id="settingLogoUrl" type="url" class="w-full bg-voidLight border border-glassBorder rounded-lg px-3 py-2 text-xs text-white"></div>
             <div><label class="block text-xs font-semibold text-gray-300 mb-1">Teks Sambutan / Deskripsi Hero</label><textarea id="settingHeroText" rows="3" class="w-full bg-voidLight border border-glassBorder rounded-lg p-3 text-xs text-white"></textarea></div>
-            <button onclick="saveWebSettings()" class="w-full py-2.5 rounded-lg crimson-btn text-white text-xs font-bold shadow-md">Simpan Perubahan</button>
+            <button onclick="saveWebSettings()" class="w-full py-2.5 rounded-lg orange-btn text-white text-xs font-bold shadow-md">Simpan Perubahan</button>
           </div>
         </div>
       </div>
@@ -430,146 +477,214 @@
 
   </main>
 
-  <!-- MODALS -->
-  <div id="userAuthModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
-    <div class="clean-card w-full max-w-md rounded-2xl p-6 space-y-4">
-      <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
-        <div class="flex items-center gap-2"><i data-lucide="user-plus" class="w-5 h-5 text-accent"></i><h3 id="authModalTitle" class="font-bold text-white text-base">Daftar Akun Member Mawi</h3></div>
-        <button onclick="closeAuthModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
-      </div>
-
-      <div class="flex bg-voidLight p-1 rounded-xl border border-glassBorder text-xs font-bold">
-        <button id="authTabBtn-reg" onclick="toggleAuthTab('register')" class="flex-1 py-2 rounded-lg bg-burgundy text-white">Daftar Baru</button>
-        <button id="authTabBtn-login" onclick="toggleAuthTab('login')" class="flex-1 py-2 rounded-lg text-gray-400 hover:text-white">Sudah Punya Akun</button>
-      </div>
-
-      <form id="authFormRegister" onsubmit="event.preventDefault(); handleUserRegister();" class="space-y-3 text-xs">
-        <div><label class="block font-semibold text-gray-300 mb-1">Nama Lengkap</label><input id="regName" type="text" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
-        <div><label class="block font-semibold text-gray-300 mb-1">Alamat Gmail</label><input id="regEmail" type="email" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
-        <div><label class="block font-semibold text-gray-300 mb-1">Minecraft IGN</label><input id="regNick" type="text" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
-        <div>
-          <label class="block font-semibold text-gray-300 mb-1">Platform Minecraft</label>
-          <select id="regPlatform" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none focus:border-accent">
-            <option value="Java">Java Edition (PC / Laptop)</option>
-            <option value="MCPE">Bedrock / MCPE (HP / Konsol)</option>
-          </select>
+  <!-- MODAL 1: IDENTIFIKASI NICKNAME & PLATFORM PLAYER (PERSIS FOTO REFERENSI 1) -->
+  <div id="playerIdentifyModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-3.5 sm:p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="clean-card w-full max-w-md rounded-2xl p-5 sm:p-6 space-y-4 relative max-h-[90vh] overflow-y-auto">
+      
+      <!-- HEADER ICON -->
+      <div class="flex flex-col items-center text-center space-y-2 pt-2">
+        <div class="w-12 h-12 rounded-2xl bg-accent/20 border border-accent/40 flex items-center justify-center text-accent shadow-inner">
+          <i data-lucide="smartphone" class="w-6 h-6"></i>
         </div>
-        <div><label class="block font-semibold text-gray-300 mb-1">Password</label><input id="regPass" type="password" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
-        <button type="submit" class="w-full py-3 rounded-xl crimson-btn text-white font-bold text-xs shadow-md mt-2">Daftarkan Akun</button>
-      </form>
+        <div>
+          <h3 class="font-black text-white text-lg">Selamat Datang</h3>
+          <p class="text-gray-400 text-xs">Masukan username untuk memulai</p>
+        </div>
+      </div>
 
-      <form id="authFormLogin" onsubmit="event.preventDefault(); handleUserLogin();" class="hidden space-y-3 text-xs">
-        <div><label class="block font-semibold text-gray-300 mb-1">Gmail / Username</label><input id="loginEmail" type="text" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
+      <!-- PLATFORM TOGGLE SWITCH (JAVA VS BEDROCK ORANGE) -->
+      <div class="flex bg-voidLight p-1 rounded-2xl border border-glassBorder text-xs font-bold">
+        <button id="modalPlatformBtnJava" onclick="selectModalPlatform('Java')" class="flex-1 py-2.5 rounded-xl transition orange-btn text-white shadow">Java</button>
+        <button id="modalPlatformBtnBedrock" onclick="selectModalPlatform('Bedrock')" class="flex-1 py-2.5 rounded-xl transition text-gray-400 hover:text-white">Bedrock</button>
+      </div>
+
+      <!-- INPUT USERNAME MINECRAFT DENGAN GAMEPAD ICON -->
+      <div class="space-y-1">
+        <div class="relative">
+          <input id="modalPlayerNickInput" type="text" placeholder="Username Minecraft" onblur="checkPlayerRankOnBlur()" class="w-full bg-voidLight border border-glassBorder rounded-2xl px-4 py-3 text-white text-xs sm:text-sm font-medium focus:border-accent focus:outline-none pr-10">
+          <div class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
+            <i data-lucide="gamepad-2" class="w-4 h-4"></i>
+          </div>
+        </div>
+        <p id="mcpePrefixNotice" class="text-[10px] text-accent hidden"> Platform Bedrock/MCPE dipilih (Otomatis mendeteksi prefix '_' di database server).</p>
+      </div>
+
+      <!-- STATUS PENGECEKAN RANK / UNREGISTERED PLAYER NOTICE CARD -->
+      <div id="playerRankStatusAlert" class="hidden p-3 rounded-2xl text-xs space-y-1"></div>
+
+      <!-- OPSI REFERRAL CODE TOGGLE -->
+      <div class="pt-1">
+        <button type="button" onclick="toggleReferralInput()" class="text-gray-400 hover:text-white text-xs font-medium flex items-center gap-1.5">
+          <i data-lucide="gift" class="w-4 h-4 text-accent"></i><span>Punya kode referral?</span>
+        </button>
+        <div id="referralInputWrapper" class="hidden mt-2">
+          <input id="modalReferralInput" type="text" placeholder="Masukkan Kode Referral" class="w-full bg-voidLight border border-glassBorder rounded-xl px-3 py-2 text-xs text-white uppercase font-mono">
+        </div>
+      </div>
+
+      <!-- BUTTON LANJUTKAN -->
+      <button onclick="savePlayerIdentificationAndProceed()" class="w-full py-3.5 rounded-2xl orange-btn text-white font-bold text-xs sm:text-sm shadow-lg flex items-center justify-center gap-2 active:scale-95">
+        <span>Lanjutkan</span>
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL 2: CHECKOUT RINGKASAN PESANAN & TOS CHECKBOX (PERSIS FOTO REFERENSI 2) -->
+  <div id="cartModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-3.5 sm:p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="clean-card w-full max-w-md rounded-2xl p-5 sm:p-6 space-y-4 max-h-[90vh] flex flex-col justify-between">
+      
+      <div>
+        <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
+          <div>
+            <h3 class="font-bold text-white text-base">Checkout</h3>
+            <p class="text-[11px] text-gray-400">Periksa detail pesanan Anda sebelum melakukan pembayaran.</p>
+          </div>
+          <button onclick="closeCartModal()" class="text-gray-400 hover:text-white p-1 rounded-lg bg-void border border-glassBorder"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </div>
+
+        <!-- PLAYER BRIEF BANNER IN CHECKOUT -->
+        <div class="mt-3 p-2.5 rounded-xl bg-voidLight border border-glassBorder flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2">
+            <img id="checkoutSkinHead" src="https://mc-heads.net/avatar/Steve/36" class="w-7 h-7 rounded-lg bg-void border border-glassBorder object-cover shrink-0">
+            <div>
+              <span id="checkoutNickDisplay" class="font-bold text-white block">Steve</span>
+              <span id="checkoutPlatformDisplay" class="text-[9px] text-accent font-mono">Java (Rank: DEFAULT)</span>
+            </div>
+          </div>
+          <button onclick="openPlayerIdentifyModal()" class="text-accent hover:underline text-[10px] font-bold">Ubah</button>
+        </div>
+
+        <!-- PRODUCT SECTION BLOCK (CARD PRODUK SEPERTI FOTO 2) -->
+        <div class="mt-3 space-y-2">
+          <label class="block text-xs font-bold text-gray-300">Produk</label>
+          <div id="cartItemList" class="space-y-2 max-h-36 overflow-y-auto pr-1"></div>
+        </div>
+
+        <!-- VOUCHER CODE INPUT -->
+        <div class="mt-3 flex gap-2">
+          <input id="voucherCodeInput" type="text" placeholder="KODE VOUCHER" class="flex-grow bg-voidLight border border-glassBorder rounded-xl px-3 py-2 text-white uppercase font-mono text-xs focus:outline-none focus:border-accent">
+          <button onclick="applyVoucher()" class="px-3.5 py-2 bg-clean-panel border border-glassBorder rounded-xl font-bold text-accent shrink-0 text-xs">Terapkan</button>
+        </div>
+        <div id="voucherFeedback" class="text-[10px] font-medium hidden mt-1"></div>
+
+        <!-- RINGKASAN PESANAN (SUBTOTAL, PPN, TOTAL) SEPERTI FOTO 2 -->
+        <div class="mt-3.5 p-3.5 rounded-2xl bg-voidLight border border-glassBorder space-y-1.5 text-xs">
+          <h4 class="font-bold text-white mb-2">Ringkasan Pesanan</h4>
+          <div class="flex justify-between text-gray-400"><span>Subtotal</span><span id="cartSubtotalText">Rp 0</span></div>
+          <div id="cartUpgradeDiscountRow" class="flex justify-between text-emerald-400 hidden">
+            <span id="cartUpgradeLabel">Potongan Upgrade</span>
+            <span id="cartUpgradeText">- Rp 0</span>
+          </div>
+          <div id="cartDiscountRow" class="flex justify-between text-emerald-400 hidden">
+            <span>Diskon Voucher</span>
+            <span id="cartDiscountText">- Rp 0</span>
+          </div>
+          <div class="flex justify-between text-gray-400"><span>PPN (0%)</span><span>Rp 0</span></div>
+          <div class="flex justify-between text-sm font-bold text-white pt-2 border-t border-glassBorder mt-1">
+            <span>Total</span>
+            <span id="cartTotalText" class="text-accent text-base">Rp 0</span>
+          </div>
+        </div>
+
+        <!-- SYARAT & KETENTUAN CHECKBOX (FOTO 2) -->
+        <div class="mt-3 p-3 rounded-xl bg-voidLight border border-glassBorder flex items-start gap-2.5 text-[11px] text-gray-300">
+          <input id="tosAcceptCheckbox" type="checkbox" onchange="toggleCheckoutButtonState()" class="mt-0.5 w-4 h-4 rounded accent-accent bg-void border-glassBorder cursor-pointer">
+          <label for="tosAcceptCheckbox" class="cursor-pointer leading-tight">
+            Saya telah membaca dan menyetujui <button type="button" onclick="navigate('rules')" class="text-accent font-bold hover:underline">Syarat & Ketentuan</button> layanan ini.
+            <span class="block text-gray-500 text-[10px] mt-0.5">Dengan melanjutkan, Anda menyetujui ketentuan layanan kami.</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- BUTTON BAYAR SEKARANG (LOCKED UNTIL CHECKBOX CHECKED) -->
+      <div class="pt-3 space-y-2">
+        <button id="payNowBtn" disabled onclick="processWhatsAppCheckout()" class="w-full py-3.5 rounded-2xl orange-btn text-white font-bold text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition active:scale-95">
+          <i data-lucide="lock" class="w-4 h-4"></i>
+          <span>Bayar Sekarang</span>
+        </button>
+        <p class="text-[10px] text-gray-500 text-center flex items-center justify-center gap-1">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i> Transaksi Anda aman dan terenkripsi
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL AUTH STAFF -->
+  <div id="userAuthModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-3.5 sm:p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="clean-card w-full max-w-md rounded-2xl p-5 sm:p-6 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
+        <div class="flex items-center gap-2"><i data-lucide="shield-check" class="w-5 h-5 text-accent"></i><h3 class="font-bold text-white text-base">Masuk Dashboard Staff</h3></div>
+        <button onclick="closeAuthModal()" class="text-gray-400 hover:text-white p-1 rounded-lg bg-void border border-glassBorder"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <form onsubmit="event.preventDefault(); handleUserLogin();" class="space-y-3 text-xs">
+        <div><label class="block font-semibold text-gray-300 mb-1">Gmail / Username Admin</label><input id="loginEmail" type="text" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
         <div><label class="block font-semibold text-gray-300 mb-1">Password</label><input id="loginPass" type="password" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
-        <button type="submit" class="w-full py-3 rounded-xl crimson-btn text-white font-bold text-xs shadow-md mt-2">Masuk ke Akun</button>
+        <button type="submit" class="w-full py-3 rounded-xl orange-btn text-white font-bold text-xs shadow-md mt-2">Masuk ke Dashboard</button>
       </form>
     </div>
   </div>
 
-  <!-- Profile Edit Modal -->
-  <div id="profileEditModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
-    <div class="clean-card w-full max-w-md rounded-2xl p-6 space-y-4">
-      <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
-        <div class="flex items-center gap-2"><i data-lucide="user-cog" class="w-5 h-5 text-accent"></i><h3 class="font-bold text-white text-base">Edit Profil Akun</h3></div>
-        <button onclick="closeProfileModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
-      </div>
-
-      <form onsubmit="event.preventDefault(); saveProfileEdit();" class="space-y-3 text-xs">
-        <div><label class="block font-semibold text-gray-300 mb-1">Nama Lengkap</label><input id="editProfileName" type="text" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
-        <div><label class="block font-semibold text-gray-300 mb-1">Minecraft IGN</label><input id="editProfileNick" type="text" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
-        <div>
-          <label class="block font-semibold text-gray-300 mb-1">Platform Minecraft</label>
-          <select id="editProfilePlatform" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white">
-            <option value="Java">Java Edition</option>
-            <option value="MCPE">Bedrock / MCPE</option>
-          </select>
-        </div>
-        <div><label class="block font-semibold text-gray-300 mb-1">Password Baru (Opsional)</label><input id="editProfilePass" type="password" placeholder="Kosongkan jika tidak diubah" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
-        <button type="submit" class="w-full py-3 rounded-xl crimson-btn text-white font-bold text-xs shadow-md mt-2">Simpan Perubahan Profil</button>
-      </form>
-    </div>
-  </div>
-
-  <div id="uploadModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
-    <div class="clean-card w-full max-w-md rounded-2xl p-6 space-y-4">
+  <!-- UPLOAD SCREENSHOT MODAL WITH CAPTION -->
+  <div id="uploadModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-3.5 sm:p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="clean-card w-full max-w-md rounded-2xl p-5 sm:p-6 space-y-4 max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
         <h3 class="font-bold text-white text-base">Upload Screenshot Mawi</h3>
-        <button onclick="closeUploadModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <button onclick="closeUploadModal()" class="text-gray-400 hover:text-white p-1 rounded-lg bg-void border border-glassBorder"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
-      <div class="space-y-3.5 text-xs">
-        <div id="uploadAccountBadge" class="p-2.5 rounded-xl bg-voidLight border border-glassBorder flex items-center justify-between">
-          <div><span class="text-[10px] text-gray-400 block">Mengupload sebagai:</span><span id="uploadAccName" class="font-bold text-white">-</span></div>
-          <span id="uploadAccGmail" class="text-[10px] font-mono text-accent">-</span>
-        </div>
-        <div><label class="block font-semibold text-gray-300 mb-1">Pilih Gambar Screenshot</label><input id="uploadFileInput" type="file" accept="image/*" class="w-full text-xs text-gray-400 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-burgundy file:text-white cursor-pointer"></div>
+      <div class="space-y-3 text-xs">
+        <div><label class="block font-semibold text-gray-300 mb-1">Pilih Gambar Screenshot</label><input id="uploadFileInput" type="file" accept="image/*" class="w-full text-xs text-gray-400 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-accent file:text-white cursor-pointer"></div>
+        <div><label class="block font-semibold text-gray-300 mb-1">Keterangan / Caption Foto</label><textarea id="uploadCaptionInput" rows="2" placeholder="Contoh: Mabar seru bareng teman-teman di Mawi SMP!" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white focus:outline-none focus:border-accent"></textarea></div>
         <div class="p-3 bg-voidLight rounded-xl border border-glassBorder flex items-center justify-between">
           <span class="text-gray-400 font-medium">Verifikasi: <strong id="galleryCaptchaQuestion" class="text-accent font-bold">4 + 3 = ?</strong></span>
           <input id="galleryCaptchaAns" type="number" placeholder="Hasil" class="w-20 bg-void border border-glassBorder rounded-lg px-2.5 py-1.5 text-xs text-white">
         </div>
-        <button onclick="submitGalleryUpload()" class="w-full py-3 rounded-xl crimson-btn text-white font-bold text-xs shadow-md">Kirim Foto ke Galeri</button>
+        <button onclick="submitGalleryUpload()" class="w-full py-3 rounded-xl orange-btn text-white font-bold text-xs shadow-md active:scale-95">Kirim Foto ke Galeri</button>
       </div>
     </div>
   </div>
 
-  <div id="perkModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
-    <div class="clean-card w-full max-w-md rounded-2xl p-6 space-y-4">
-      <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
-        <div class="flex items-center gap-2"><i data-lucide="sparkles" class="w-5 h-5 text-accent"></i><h3 id="perkModalTitle" class="font-bold text-white text-base">Detail Perks</h3></div>
-        <button onclick="closePerkModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
-      </div>
-      <ul id="perkModalList" class="space-y-2.5 text-xs text-gray-200 max-h-60 overflow-y-auto pr-1"></ul>
-      <button onclick="closePerkModal()" class="w-full py-2.5 rounded-xl bg-clean-panel border border-glassBorder text-white text-xs font-bold">Tutup</button>
-    </div>
-  </div>
-
-  <div id="cartModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
-    <div class="clean-card w-full max-w-lg rounded-2xl p-6 space-y-4 max-h-[90vh] flex flex-col justify-between">
-      <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
-        <div class="flex items-center gap-2"><i data-lucide="shopping-cart" class="w-5 h-5 text-accent"></i><h3 class="font-bold text-white text-base">Keranjang Belanja</h3></div>
-        <button onclick="closeCartModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
-      </div>
-      <div id="cartItemList" class="space-y-3 overflow-y-auto max-h-52 divide-y divide-glassBorder pr-1"></div>
-      <div class="space-y-3 pt-3 border-t border-glassBorder text-xs">
-        <div class="flex gap-2">
-          <input id="voucherCodeInput" type="text" placeholder="KODE VOUCHER" class="flex-grow bg-voidLight border border-glassBorder rounded-xl px-3 py-2 text-white uppercase font-mono">
-          <button onclick="applyVoucher()" class="px-3.5 py-2 bg-clean-panel border border-glassBorder rounded-xl font-bold text-accent">Terapkan</button>
-        </div>
-        <div id="voucherFeedback" class="text-[11px] font-medium hidden"></div>
-        <div class="p-3.5 rounded-xl bg-voidLight space-y-1.5">
-          <div class="flex justify-between text-gray-400"><span>Subtotal</span><span id="cartSubtotalText">Rp 0</span></div>
-          <div id="cartDiscountRow" class="flex justify-between text-emerald-400 hidden"><span>Diskon</span><span id="cartDiscountText">- Rp 0</span></div>
-          <div class="flex justify-between text-base font-bold text-white pt-2 border-t border-glassBorder"><span>Total</span><span id="cartTotalText" class="text-accent">Rp 0</span></div>
-        </div>
-        <button onclick="processWhatsAppCheckout()" class="w-full py-3 rounded-xl crimson-btn text-white text-xs sm:text-sm font-bold shadow-md flex items-center justify-center gap-2">
-          <i data-lucide="send" class="w-4 h-4"></i> Checkout ke WhatsApp Admin
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div id="productCrudModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
-    <div class="clean-card w-full max-w-lg rounded-2xl p-6 space-y-3.5 max-h-[90vh] overflow-y-auto text-xs">
+  <!-- ADMIN PRODUCT MODAL -->
+  <div id="productCrudModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-3.5 sm:p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="clean-card w-full max-w-lg rounded-2xl p-5 sm:p-6 space-y-3.5 max-h-[90vh] overflow-y-auto text-xs">
       <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
         <h3 id="productCrudTitle" class="font-bold text-white text-base">Tambah Produk Baru</h3>
-        <button onclick="closeProductCrudModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <button onclick="closeProductCrudModal()" class="text-gray-400 hover:text-white p-1 rounded-lg bg-void border border-glassBorder"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
       <input type="hidden" id="crudProductId">
       <div><label class="block font-semibold text-gray-300 mb-1">Nama Produk</label><input id="crudProductName" type="text" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
       <div class="grid grid-cols-2 gap-3">
-        <div><label class="block font-semibold text-gray-300 mb-1">Kategori</label><select id="crudProductCategory" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"><option value="Ranks">In-Game Ranks</option><option value="Coins">Coins / Items</option></select></div>
+        <div>
+          <label class="block font-semibold text-gray-300 mb-1">Kategori</label>
+          <select id="crudProductCategory" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></select>
+        </div>
         <div><label class="block font-semibold text-gray-300 mb-1">Harga (Rp)</label><input id="crudProductPrice" type="number" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
       </div>
       <div><label class="block font-semibold text-gray-300 mb-1">Image URL</label><input id="crudProductImage" type="url" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
       <div><label class="block font-semibold text-gray-300 mb-1">Fitur Perks (Pisahkan koma)</label><textarea id="crudProductFeatures" rows="3" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></textarea></div>
-      <button onclick="saveProductData()" class="w-full py-2.5 rounded-xl crimson-btn text-white font-bold shadow-md">Simpan Produk</button>
+      <button onclick="saveProductData()" class="w-full py-2.5 rounded-xl orange-btn text-white font-bold shadow-md active:scale-95">Simpan Produk</button>
     </div>
   </div>
 
-  <div id="voucherCrudModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
-    <div class="clean-card w-full max-w-md rounded-2xl p-6 space-y-3.5 text-xs">
+  <!-- ADMIN KATEGORI MODAL -->
+  <div id="categoryCrudModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-3.5 sm:p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="clean-card w-full max-w-md rounded-2xl p-5 sm:p-6 space-y-3 text-xs">
+      <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
+        <h3 class="font-bold text-white text-base">Tambah Kategori Toko</h3>
+        <button onclick="closeCategoryModal()" class="text-gray-400 hover:text-white p-1 rounded-lg bg-void border border-glassBorder"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <div><label class="block font-semibold text-gray-300 mb-1">Nama Kategori Baru</label><input id="newCategoryName" type="text" placeholder="Contoh: Keys, Kits, Crates" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
+      <button onclick="saveNewCategory()" class="w-full py-2.5 rounded-xl orange-btn text-white font-bold shadow-md">Tambah Kategori</button>
+    </div>
+  </div>
+
+  <!-- ADMIN VOUCHER MODAL -->
+  <div id="voucherCrudModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-3.5 sm:p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="clean-card w-full max-w-md rounded-2xl p-5 sm:p-6 space-y-3.5 text-xs">
       <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
         <h3 id="voucherCrudTitle" class="font-bold text-white text-base">Tambah Voucher Baru</h3>
-        <button onclick="closeVoucherModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <button onclick="closeVoucherModal()" class="text-gray-400 hover:text-white p-1 rounded-lg bg-void border border-glassBorder"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
       <input type="hidden" id="crudVoucherOldCode">
       <div><label class="block font-semibold text-gray-300 mb-1">Kode Voucher</label><input id="crudVoucherCode" type="text" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white uppercase font-mono"></div>
@@ -577,19 +692,31 @@
         <div><label class="block font-semibold text-gray-300 mb-1">Diskon (%)</label><input id="crudVoucherPercent" type="number" min="1" max="100" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
         <div><label class="block font-semibold text-gray-300 mb-1">Status</label><select id="crudVoucherStatus" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"><option value="true">Aktif</option><option value="false">Nonaktif</option></select></div>
       </div>
-      <button onclick="saveVoucherData()" class="w-full py-2.5 rounded-xl crimson-btn text-white font-bold shadow-md mt-2">Simpan Voucher</button>
+      <button onclick="saveVoucherData()" class="w-full py-2.5 rounded-xl orange-btn text-white font-bold shadow-md mt-2">Simpan Voucher</button>
     </div>
   </div>
 
-  <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+  <!-- PERK DETAILS MODAL -->
+  <div id="perkModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-3.5 sm:p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="clean-card w-full max-w-md rounded-2xl p-5 sm:p-6 space-y-4 max-h-[85vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
+        <div class="flex items-center gap-2"><i data-lucide="sparkles" class="w-5 h-5 text-accent"></i><h3 id="perkModalTitle" class="font-bold text-white text-base">Detail Perks</h3></div>
+        <button onclick="closePerkModal()" class="text-gray-400 hover:text-white p-1 rounded-lg bg-void border border-glassBorder"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <ul id="perkModalList" class="space-y-2 text-xs text-gray-200 max-h-60 overflow-y-auto pr-1"></ul>
+      <button onclick="closePerkModal()" class="w-full py-2.5 rounded-xl bg-clean-panel border border-glassBorder text-white text-xs font-bold active:scale-95">Tutup</button>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none max-w-[90vw]"></div>
 
   <!-- FOOTER -->
-  <footer class="border-t border-glassBorder bg-[#09060D] pt-12 pb-8 mt-16 text-xs text-gray-400">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+  <footer class="border-t border-glassBorder bg-[#09060D] pt-10 pb-8 mt-12 sm:mt-16 text-xs text-gray-400">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8 mb-8">
       <div class="space-y-3 md:col-span-2">
         <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-lg bg-burgundy/30 border border-burgundy p-0.5 overflow-hidden">
-            <img id="footerLogoImg" src="https://api.dicebear.com/7.x/bottts/svg?seed=MawiSMP" alt="Logo" class="w-full h-full object-cover rounded-md"/>
+          <div class="w-8 h-8 rounded-lg bg-accent/20 border border-accent p-0.5 overflow-hidden">
+            <img id="footerLogoImg" src="https://cdn.phototourl.com/free/2026-08-30-af9c7098-c5a9-491f-9c28-60a5e05fb416.png" alt="Logo" class="w-full h-full object-cover rounded-md"/>
           </div>
           <span id="footerBrandTitle" class="text-base font-black text-white tracking-wider">MAWI SMP</span>
         </div>
@@ -616,37 +743,44 @@
         </a>
       </div>
     </div>
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-6 border-t border-glassBorder/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-gray-500 text-[11px]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-6 border-t border-glassBorder/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-gray-500 text-[11px] text-center sm:text-left">
       <p>&copy; 2026 <strong>Mawi SMP Community</strong>. Bukan produk resmi Mojang AB atau Microsoft.</p>
       <span>Server IP: <strong class="text-gray-300 font-mono">mawi.my.id</strong></span>
     </div>
   </footer>
 
-  <!-- SCRIPT -->
+  <!-- MAIN APP SCRIPT -->
   <script>
     const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbywUKYkFS7QtcGrFT7UqLS3g3WIhjOPg4C6w9MRdw9BaPFqpGXk55gSLA4dEgyWzxrdIQ/exec";
+    const EXPRESS_BACKEND_URL = "http://localhost:3000/api";
     const CS_WHATSAPP_NUMBER = "628892910155";
+
+    const DEFAULT_RANK_PRICES = {
+      'DEFAULT': 0, 'MEMBER': 0, 'VIP': 25000, 'MVP': 50000, 'SULTAN': 100000, 'OVERLORD': 200000, 'LORD': 390000
+    };
+
+    const DEFAULT_RULES = [
+      { title: "Dilarang Cheat / Klien Ilegal", body: "Dilarang keras memakai X-ray, Fly, KillAura, atau modifikasi klien apa pun. Pelanggar akan langsung di-ban permanen." },
+      { title: "Tata Krama & Larangan SARA", body: "Hormati sesama pemain dan staf. Ucapan rasis, SARA, atau spam berlebihan berujung mute/ban." },
+      { title: "Griefing & Pencurian Bangunan", body: "Dilarang mencuri atau merusak bangunan player lain. Gunakan /claim untuk mengamankan wilayah." }
+    ];
 
     const SEED_USERS = [
       { name: "Owner / Admin Mawi", email: "admin@mawi.com", nick: "AdminMawi", platform: "Java", pass: "mawi2026", isAdmin: true }
     ];
 
-    const SEED_VOUCHERS = [
-      { code: "MAWIHEMAT", discount_percent: 15, is_active: true },
-      { code: "MAWIBARU", discount_percent: 10, is_active: true }
-    ];
+    const SEED_CATEGORIES = ["Ranks", "Coins", "Kits", "Keys"];
 
     const SEED_PRODUCTS = [
       { id: "RANK-01", name: "VIP Rank", category: "Ranks", price: 25000, image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=VIPRank", features: ["Prefix VIP Hijau di Chat", "Akses 2x /sethome", "Perintah /hat", "Akses Kit VIP Mingguan"] },
       { id: "RANK-02", name: "MVP Rank", category: "Ranks", price: 50000, image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=MVPRank", features: ["Prefix MVP Biru Cyan", "Akses 5x /sethome", "Akses /feed", "Kit MVP & 500 Klaim Blok"] },
       { id: "RANK-03", name: "Sultan Rank", category: "Ranks", price: 100000, image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=SultanRank", features: ["Prefix SULTAN Emas Berkilau", "Akses /fly santai", "10x /sethome & /heal", "Prioritas Slot Masuk"] },
-      { id: "COIN-01", name: "10,000 Mawi Coins", category: "Coins", price: 10000, image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=Coins10k", features: ["10.000 Koin Ekonomi Server", "Bisa digunakan untuk belanja di /shop in-game"] },
-      { id: "COIN-02", name: "50,000 Mawi Coins", category: "Coins", price: 45000, image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=Coins50k", features: ["50.000 Koin Ekonomi Server + Bonus 500 Klaim Blok"] }
+      { id: "RANK-04", name: "[LORD] Rank", category: "Ranks", price: 390000, image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=LordRank", features: ["Prefix LORD Mahkota Emas", "Akses /fly, /heal, /feed", "15x /sethome", "Custom Kit Lord Setiap Hari"] },
+      { id: "COIN-01", name: "10,000 Mawi Coins", category: "Coins", price: 10000, image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=Coins10k", features: ["10.000 Koin Ekonomi Server", "Bisa digunakan untuk belanja di /shop in-game"] }
     ];
 
     const SEED_GALLERY = [
-      { id: "G-1", username: "SteveSantai", image_drive_url: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=70", status: "APPROVED", likes: 12, timestamp: Date.now() - 50000 },
-      { id: "G-2", username: "AlexTeman", image_drive_url: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=70", status: "APPROVED", likes: 25, timestamp: Date.now() - 100000 }
+      { id: "G-1", username: "SteveSantai", caption: "Mabar bangun rumah raksasa di Mawi SMP!", image_drive_url: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=70", status: "APPROVED", likes: 18, timestamp: Date.now() - 50000 }
     ];
 
     const AppState = {
@@ -654,31 +788,58 @@
       logoUrl: 'https://cdn.phototourl.com/free/2026-08-30-af9c7098-c5a9-491f-9c28-60a5e05fb416.png',
       heroText: 'Server Minecraft santai untuk bermain bersama teman, mencari sahabat baru, membangun rumah impian, dan have fun tanpa ribet!',
       currentUser: JSON.parse(localStorage.getItem('mawi_auth_user') || 'null'),
+      activePlayer: JSON.parse(localStorage.getItem('mawi_active_player') || '{"nick":"","platform":"Java","rank":"DEFAULT","rankPrice":0,"isRegistered":true}'),
       registeredUsers: [...SEED_USERS],
+      categories: [...SEED_CATEGORIES],
+      products: [...SEED_PRODUCTS],
+      vouchers: [{ code: "MAWIHEMAT", discount_percent: 15, is_active: true }],
+      gallery: [...SEED_GALLERY],
+      rules: [...DEFAULT_RULES],
       cart: JSON.parse(localStorage.getItem('mawi_cart') || '[]'),
       appliedVoucher: null,
       currentCategory: 'Ranks',
       captchaAns: 0,
-      products: [...SEED_PRODUCTS],
-      vouchers: [...SEED_VOUCHERS],
-      gallery: [...SEED_GALLERY]
+      selectedModalPlatform: 'Java'
     };
 
     window.addEventListener('DOMContentLoaded', async () => {
       lucide.createIcons();
       initCaptcha();
       await loadDataFromSheets();
-      
-      // Hilangkan preloader setelah semua data siap
+      fetchLiveServerStatus();
+
+      if (AppState.activePlayer.nick) {
+        await fetchPlayerRankFromBackend(AppState.activePlayer.nick, AppState.activePlayer.platform);
+      } else {
+        updatePlayerUI();
+      }
+
       setTimeout(() => {
         const preloader = document.getElementById('preloader');
         if (preloader) {
           preloader.style.opacity = '0';
           preloader.style.visibility = 'hidden';
-          setTimeout(() => preloader.remove(), 400);
+          setTimeout(() => preloader.remove(), 300);
         }
-      }, 500);
+      }, 400);
     });
+
+    // INTEGRASI LIVE ONLINE PLAYER COUNT COUNTER DARI SERVER REAL-TIME
+    async function fetchLiveServerStatus() {
+      const counterEl = document.getElementById('livePlayerCountText');
+      if (!counterEl) return;
+      try {
+        const res = await fetch('https://api.mcsrvstat.us/2/mawi.my.id');
+        const data = await res.json();
+        if (data && data.online && data.players) {
+          counterEl.innerText = `${data.players.online} / ${data.players.max || 500}`;
+        } else {
+          counterEl.innerText = `128 / 500`;
+        }
+      } catch (e) {
+        counterEl.innerText = `128 / 500`;
+      }
+    }
 
     async function loadDataFromSheets() {
       if (!GAS_WEB_APP_URL.includes("MASUKKAN_URL")) {
@@ -686,28 +847,26 @@
           const res = await fetch(GAS_WEB_APP_URL);
           const json = await res.json();
           if (json.status === 'success') {
-            if (json.products && json.products.length > 0) AppState.products = json.products;
-            if (json.vouchers && json.vouchers.length > 0) AppState.vouchers = json.vouchers;
-            if (json.gallery && json.gallery.length > 0) AppState.gallery = json.gallery;
-            if (json.users && json.users.length > 0) AppState.registeredUsers = json.users;
+            if (json.products) AppState.products = json.products;
+            if (json.categories) AppState.categories = json.categories;
+            if (json.vouchers) AppState.vouchers = json.vouchers;
+            if (json.gallery) AppState.gallery = json.gallery;
+            if (json.rules) AppState.rules = json.rules;
             if (json.settings) {
               if (json.settings.brandName) AppState.brandName = json.settings.brandName;
-              if (json.settings.logoUrl) {
-                AppState.logoUrl = json.settings.logoUrl;
-                document.getElementById('preloaderLogoImg').src = json.settings.logoUrl;
-              }
+              if (json.settings.logoUrl) AppState.logoUrl = json.settings.logoUrl;
               if (json.settings.heroText) AppState.heroText = json.settings.heroText;
             }
           }
-        } catch (e) {
-          console.warn("Menggunakan data lokal cadangan.");
-        }
+        } catch (e) { console.warn("Menggunakan data lokal."); }
       }
       applyBrandingUI();
       updateUserHeaderUI();
       updateCartBadge();
+      renderCategoryTabs();
       renderProducts();
       renderGallery();
+      renderRulesView();
     }
 
     async function syncToSheets(payload) {
@@ -718,9 +877,7 @@
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload)
         });
-      } catch (e) {
-        console.warn("Gagal sync ke Google Sheets:", e);
-      }
+      } catch (e) { console.warn("Gagal sync:", e); }
     }
 
     function applyBrandingUI() {
@@ -732,251 +889,153 @@
       document.getElementById('heroAnnouncementText').innerText = AppState.heroText;
     }
 
-    function navigate(viewId) {
-      if (viewId === 'admin') {
-        if (!AppState.currentUser || !AppState.currentUser.isAdmin) {
-          showToast('Akses ditolak: Menu ini khusus Admin!', 'error');
-          return;
+    // PENGECEKAN RANK VIA EXPRESS BACKEND
+    async function fetchPlayerRankFromBackend(nick, platform) {
+      if (!nick || !nick.trim()) return;
+      const cleanNick = nick.trim();
+      
+      try {
+        const response = await fetch(`${EXPRESS_BACKEND_URL}/player/check-rank`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: cleanNick, platform: platform || 'Java' })
+        });
+        const data = await response.json();
+
+        if (data.success && data.player) {
+          AppState.activePlayer.nick = data.player.username || cleanNick;
+          AppState.activePlayer.platform = data.player.platform || platform;
+          AppState.activePlayer.rank = data.player.rank || 'DEFAULT';
+          AppState.activePlayer.rankPrice = data.player.rankPrice || DEFAULT_RANK_PRICES[AppState.activePlayer.rank] || 0;
+          AppState.activePlayer.isRegistered = !!data.player.isRegistered;
         }
+      } catch (err) {
+        console.warn('Backend API Offline, menggunakan fallback rank.');
+        AppState.activePlayer.nick = cleanNick;
+        AppState.activePlayer.platform = platform || 'Java';
+        AppState.activePlayer.rank = AppState.activePlayer.rank || 'DEFAULT';
+        AppState.activePlayer.rankPrice = DEFAULT_RANK_PRICES[AppState.activePlayer.rank] || 0;
+        AppState.activePlayer.isRegistered = true;
       }
 
-      toggleDrawer(false);
-      ['home', 'store', 'rules', 'gallery', 'community', 'admin'].forEach(v => {
-        document.getElementById(`section-${v}`).classList.add('hidden');
-      });
-
-      const target = document.getElementById(`section-${viewId}`);
-      if (target) {
-        target.classList.remove('hidden');
-        target.classList.add('fade-in');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-
-      if (viewId === 'store') renderProducts();
-      if (viewId === 'gallery') renderGallery();
-      if (viewId === 'admin') {
-        renderAdminProducts();
-        renderAdminVouchers();
-        renderAdminGallery();
-        document.getElementById('settingBrandName').value = AppState.brandName;
-        document.getElementById('settingLogoUrl').value = AppState.logoUrl;
-        document.getElementById('settingHeroText').value = AppState.heroText;
-      }
-      lucide.createIcons();
-    }
-
-    function toggleDrawer(open) {
-      const overlay = document.getElementById('drawerOverlay');
-      const panel = document.getElementById('drawerPanel');
-      if (open) {
-        overlay.classList.remove('opacity-0', 'pointer-events-none');
-        panel.classList.remove('translate-x-full');
-      } else {
-        overlay.classList.add('opacity-0', 'pointer-events-none');
-        panel.classList.add('translate-x-full');
-      }
-    }
-
-    function showToast(message, type = 'success') {
-      const container = document.getElementById('toastContainer');
-      const toast = document.createElement('div');
-      toast.className = `${type === 'error' ? 'bg-rose-950 border-rose-600' : 'bg-burgundy border-accent'} text-white border px-3.5 py-2.5 rounded-xl text-xs font-medium shadow-xl flex items-center gap-2 pointer-events-auto fade-in`;
-      toast.innerHTML = `<i data-lucide="${type === 'error' ? 'alert-circle' : 'check'}" class="w-4 h-4"></i><span>${message}</span>`;
-      container.appendChild(toast);
-      lucide.createIcons();
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        setTimeout(() => toast.remove(), 200);
-      }, 3000);
-    }
-
-    function copyToClipboard(text, msg = 'Tersalin!') {
-      const input = document.createElement('input');
-      input.value = text;
-      document.body.appendChild(input);
-      input.select();
-      document.execCommand('copy');
-      document.body.removeChild(input);
-      showToast(msg);
-    }
-
-    function openAuthModal(tab = 'register') {
-      toggleAuthTab(tab);
-      document.getElementById('userAuthModal').classList.remove('opacity-0', 'pointer-events-none');
-    }
-
-    function closeAuthModal() { document.getElementById('userAuthModal').classList.add('opacity-0', 'pointer-events-none'); }
-
-    function toggleAuthTab(tab) {
-      const regBtn = document.getElementById('authTabBtn-reg');
-      const logBtn = document.getElementById('authTabBtn-login');
-      const regForm = document.getElementById('authFormRegister');
-      const logForm = document.getElementById('authFormLogin');
-      const title = document.getElementById('authModalTitle');
-
-      if (tab === 'register') {
-        regBtn.className = 'flex-1 py-2 rounded-lg bg-burgundy text-white';
-        logBtn.className = 'flex-1 py-2 rounded-lg text-gray-400 hover:text-white';
-        regForm.classList.remove('hidden');
-        logForm.classList.add('hidden');
-        title.innerText = 'Daftar Akun Member Mawi';
-      } else {
-        logBtn.className = 'flex-1 py-2 rounded-lg bg-burgundy text-white';
-        regBtn.className = 'flex-1 py-2 rounded-lg text-gray-400 hover:text-white';
-        logForm.classList.remove('hidden');
-        regForm.classList.add('hidden');
-        title.innerText = 'Masuk ke Akun Anda';
-      }
-    }
-
-    function handleUserRegister() {
-      const name = document.getElementById('regName').value.trim();
-      const email = document.getElementById('regEmail').value.trim().toLowerCase();
-      const nick = document.getElementById('regNick').value.trim();
-      const platform = document.getElementById('regPlatform').value;
-      const pass = document.getElementById('regPass').value.trim();
-
-      if (!name || !email || !nick || !pass) return showToast('Semua kolom wajib diisi!', 'error');
-
-      const exists = AppState.registeredUsers.find(u => u.email === email);
-      if (exists) {
-        showToast('Email sudah terdaftar. Silakan login.', 'error');
-        toggleAuthTab('login');
-        return;
-      }
-
-      const isAdmin = (email === 'admin@mawi.com' || nick.toLowerCase() === 'admin');
-      const newUser = { name, email, nick, platform, pass, isAdmin };
-      AppState.registeredUsers.push(newUser);
-      syncToSheets({ action: 'saveUser', user: newUser });
-
-      AppState.currentUser = { name, email, nick, platform, isAdmin };
-      localStorage.setItem('mawi_auth_user', JSON.stringify(AppState.currentUser));
-
-      updateUserHeaderUI();
-      closeAuthModal();
-      showToast(`Selamat datang ${name} (${platform})! Akun terdaftar.`);
-    }
-
-    function handleUserLogin() {
-      const emailInput = document.getElementById('loginEmail').value.trim().toLowerCase();
-      const passInput = document.getElementById('loginPass').value.trim();
-
-      let user = AppState.registeredUsers.find(u => (u.email.toLowerCase() === emailInput || u.nick.toLowerCase() === emailInput) && u.pass === passInput);
-      if (!user && (emailInput === 'admin' || emailInput === 'admin@mawi.com') && passInput === 'mawi2026') {
-        user = { name: "Owner / Admin Mawi", email: "admin@mawi.com", nick: "AdminMawi", platform: "Java", isAdmin: true };
-      }
-
-      if (user) {
-        AppState.currentUser = { name: user.name, email: user.email, nick: user.nick, platform: user.platform || 'Java', isAdmin: !!user.isAdmin };
-        localStorage.setItem('mawi_auth_user', JSON.stringify(AppState.currentUser));
-        updateUserHeaderUI();
-        closeAuthModal();
-        showToast(`Login berhasil sebagai ${user.isAdmin ? 'ADMIN' : 'Member'}!`);
-      } else {
-        showToast('Gmail/Username atau Password salah!', 'error');
-      }
-    }
-
-    function handleUserLogout() {
-      AppState.currentUser = null;
-      localStorage.removeItem('mawi_auth_user');
-      updateUserHeaderUI();
-      navigate('home');
-      showToast('Anda telah keluar.');
-    }
-
-    function openProfileModal() {
-      if (!AppState.currentUser) return;
-      document.getElementById('editProfileName').value = AppState.currentUser.name;
-      document.getElementById('editProfileNick').value = AppState.currentUser.nick;
-      document.getElementById('editProfilePlatform').value = AppState.currentUser.platform || 'Java';
-      document.getElementById('editProfilePass').value = '';
-      document.getElementById('profileEditModal').classList.remove('opacity-0', 'pointer-events-none');
-    }
-
-    function closeProfileModal() {
-      document.getElementById('profileEditModal').classList.add('opacity-0', 'pointer-events-none');
-    }
-
-    function saveProfileEdit() {
-      const name = document.getElementById('editProfileName').value.trim();
-      const nick = document.getElementById('editProfileNick').value.trim();
-      const platform = document.getElementById('editProfilePlatform').value;
-      const pass = document.getElementById('editProfilePass').value.trim();
-
-      if (!name || !nick) return showToast('Nama dan IGN wajib diisi!', 'error');
-
-      AppState.currentUser.name = name;
-      AppState.currentUser.nick = nick;
-      AppState.currentUser.platform = platform;
-
-      let userRecord = AppState.registeredUsers.find(u => u.email === AppState.currentUser.email);
-      if (userRecord) {
-        userRecord.name = name;
-        userRecord.nick = nick;
-        userRecord.platform = platform;
-        if (pass) userRecord.pass = pass;
-        syncToSheets({ action: 'saveUser', user: userRecord });
-      }
-
-      localStorage.setItem('mawi_auth_user', JSON.stringify(AppState.currentUser));
-      updateUserHeaderUI();
-      closeProfileModal();
-      showToast('Profil akun berhasil diperbarui!');
-    }
-
-    function updateUserHeaderUI() {
-      const userArea = document.getElementById('userHeaderArea');
-      const drawerInfo = document.getElementById('drawerAccountInfo');
-      const adminDrawerSection = document.getElementById('adminDrawerSection');
-
-      if (AppState.currentUser) {
-        if (AppState.currentUser.isAdmin) adminDrawerSection.classList.remove('hidden');
-        else adminDrawerSection.classList.add('hidden');
-
-        userArea.innerHTML = `
-          <div class="flex items-center gap-2 bg-clean-panel border border-glassBorder px-3 py-1.5 rounded-full text-xs cursor-pointer" onclick="openProfileModal()" title="Klik untuk edit profil">
-            <span class="w-2 h-2 rounded-full ${AppState.currentUser.isAdmin ? 'bg-accent animate-ping' : 'bg-emerald-400'}"></span>
-            <span class="text-white font-bold max-w-[85px] sm:max-w-none truncate">${AppState.currentUser.nick}</span>
-            <span class="text-[9px] bg-void px-1.5 py-0.5 rounded text-accent border border-glassBorder">${AppState.currentUser.platform || 'Java'}</span>
-            ${AppState.currentUser.isAdmin ? '<span class="text-[9px] bg-burgundy px-1.5 py-0.5 rounded text-white font-bold">STAFF</span>' : ''}
-            <button onclick="event.stopPropagation(); handleUserLogout();" class="text-gray-400 hover:text-rose-400 ml-1"><i data-lucide="log-out" class="w-3.5 h-3.5"></i></button>
-          </div>
-        `;
-        drawerInfo.innerHTML = `
-          <div class="space-y-2">
-            <div class="flex items-center justify-between">
-              <div><span class="text-white font-bold">${AppState.currentUser.name}</span><span class="text-[10px] text-gray-400 block">${AppState.currentUser.email} (${AppState.currentUser.platform || 'Java'})</span></div>
-              <button onclick="openProfileModal(); toggleDrawer(false);" class="px-2 py-1 bg-void border border-glassBorder text-accent rounded text-[10px] font-semibold">Edit</button>
-            </div>
-            <button onclick="handleUserLogout()" class="w-full py-1.5 bg-rose-950/40 border border-rose-500/30 text-rose-300 rounded text-[10px] font-bold">Logout</button>
-          </div>
-        `;
-      } else {
-        adminDrawerSection.classList.add('hidden');
-        userArea.innerHTML = `
-          <button onclick="openAuthModal('register')" class="flex items-center gap-1.5 bg-clean-panel hover:bg-glassBorder border border-glassBorder px-3 py-1.5 rounded-full text-xs font-semibold text-gray-200 transition">
-            <i data-lucide="user" class="w-3.5 h-3.5 text-accent"></i><span>Daftar / Masuk</span>
-          </button>
-        `;
-        drawerInfo.innerHTML = `<button onclick="openAuthModal('register'); toggleDrawer(false);" class="w-full py-2.5 bg-burgundy rounded-xl text-white font-bold text-xs shadow-md">Daftar / Masuk Akun</button>`;
-      }
-      lucide.createIcons();
-    }
-
-    function filterStoreCategory(cat) {
-      AppState.currentCategory = cat;
-      const rankBtn = document.getElementById('tab-btn-ranks');
-      const coinBtn = document.getElementById('tab-btn-coins');
-      if (cat === 'Ranks') {
-        rankBtn.className = 'px-4 py-1.5 rounded-lg text-xs font-bold transition bg-burgundy text-white';
-        coinBtn.className = 'px-4 py-1.5 rounded-lg text-xs font-bold transition text-gray-400 hover:text-white';
-      } else {
-        coinBtn.className = 'px-4 py-1.5 rounded-lg text-xs font-bold transition bg-burgundy text-white';
-        rankBtn.className = 'px-4 py-1.5 rounded-lg text-xs font-bold transition text-gray-400 hover:text-white';
-      }
+      localStorage.setItem('mawi_active_player', JSON.stringify(AppState.activePlayer));
+      updatePlayerUI();
       renderProducts();
+    }
+
+    function updatePlayerUI() {
+      const p = AppState.activePlayer;
+      const cleanNick = p.nick ? p.nick.replace(/^_+|_+$/g, '') : 'Steve';
+      const headAvatar = `https://mc-heads.net/avatar/${encodeURIComponent(cleanNick)}/48`;
+
+      // Header Button Profil
+      const userHeaderArea = document.getElementById('userHeaderArea');
+      userHeaderArea.innerHTML = `
+        <div onclick="openPlayerIdentifyModal()" class="flex items-center gap-1.5 sm:gap-2 bg-clean-panel border border-glassBorder hover:border-accent px-2 sm:px-2.5 py-1 rounded-full text-xs cursor-pointer transition active:scale-95">
+          <img src="${headAvatar}" class="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-void border border-glassBorder object-cover shrink-0" onerror="this.src='https://mc-heads.net/avatar/Steve/48'">
+          <div class="flex flex-col">
+            <span class="font-bold text-white leading-none max-w-[65px] sm:max-w-[120px] truncate text-[11px] sm:text-xs">${p.nick || 'Set Nick'}</span>
+            <span class="text-[8px] sm:text-[9px] text-accent font-mono font-bold leading-tight mt-0.5">${p.rank || 'DEFAULT'}</span>
+          </div>
+        </div>
+      `;
+
+      // Store Notice Banner
+      document.getElementById('noticeSkinHead').src = headAvatar;
+      document.getElementById('noticePlayerNick').innerText = `Pemain: ${p.nick || 'Belum diatur'}`;
+      document.getElementById('noticeCurrentRankBadge').innerText = `RANK: ${p.rank || 'DEFAULT'}`;
+
+      // Checkout Head Avatar
+      document.getElementById('checkoutSkinHead').src = headAvatar;
+      document.getElementById('checkoutNickDisplay').innerText = p.nick || 'Steve';
+      document.getElementById('checkoutPlatformDisplay').innerText = `${p.platform || 'Java'} (Rank: ${p.rank || 'DEFAULT'})`;
+
+      lucide.createIcons();
+    }
+
+    // MODAL IDENTIFIKASI PLAYER
+    function openPlayerIdentifyModal() {
+      document.getElementById('modalPlayerNickInput').value = AppState.activePlayer.nick || '';
+      selectModalPlatform(AppState.activePlayer.platform || 'Java');
+      document.getElementById('playerIdentifyModal').classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closePlayerIdentifyModal() {
+      document.getElementById('playerIdentifyModal').classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function selectModalPlatform(plat) {
+      AppState.selectedModalPlatform = plat;
+      const javaBtn = document.getElementById('modalPlatformBtnJava');
+      const bedrockBtn = document.getElementById('modalPlatformBtnBedrock');
+      const notice = document.getElementById('mcpePrefixNotice');
+
+      if (plat === 'Java') {
+        javaBtn.className = 'flex-1 py-2.5 rounded-xl transition orange-btn text-white shadow font-bold';
+        bedrockBtn.className = 'flex-1 py-2.5 rounded-xl transition text-gray-400 hover:text-white font-bold';
+        notice.classList.add('hidden');
+      } else {
+        bedrockBtn.className = 'flex-1 py-2.5 rounded-xl transition orange-btn text-white shadow font-bold';
+        javaBtn.className = 'flex-1 py-2.5 rounded-xl transition text-gray-400 hover:text-white font-bold';
+        notice.classList.remove('hidden');
+      }
+    }
+
+    function toggleReferralInput() {
+      const wrapper = document.getElementById('referralInputWrapper');
+      wrapper.classList.toggle('hidden');
+    }
+
+    async function checkPlayerRankOnBlur() {
+      const nick = document.getElementById('modalPlayerNickInput').value.trim();
+      const alertBox = document.getElementById('playerRankStatusAlert');
+      if (!nick) { alertBox.classList.add('hidden'); return; }
+
+      await fetchPlayerRankFromBackend(nick, AppState.selectedModalPlatform);
+      const p = AppState.activePlayer;
+
+      alertBox.classList.remove('hidden');
+      if (!p.isRegistered) {
+        alertBox.className = 'p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs space-y-1';
+        alertBox.innerHTML = `
+          <div class="flex items-center gap-1.5 font-bold"><i data-lucide="alert-triangle" class="w-4 h-4 text-amber-400"></i> Player Belum Pernah Join Server</div>
+          <p class="text-[11px] text-gray-300">Nickname <strong class="text-white">${nick}</strong> belum terdaftar di database server. Kamu tetap bisa checkout, tapi disarankan login ke <strong>mawi.my.id</strong> minimal 1x.</p>
+        `;
+      } else {
+        alertBox.className = 'p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs space-y-1';
+        alertBox.innerHTML = `
+          <div class="flex items-center justify-between font-bold">
+            <span class="flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i> Akun Server Terdaftar!</span>
+            <span class="bg-emerald-500/20 text-emerald-400 font-mono text-[10px] px-2 py-0.5 rounded-full">RANK: ${p.rank}</span>
+          </div>
+        `;
+      }
+      lucide.createIcons();
+    }
+
+    async function savePlayerIdentificationAndProceed() {
+      const nick = document.getElementById('modalPlayerNickInput').value.trim();
+      if (!nick) return showToast('Masukkan Nickname Minecraft Anda!', 'error');
+
+      await fetchPlayerRankFromBackend(nick, AppState.selectedModalPlatform);
+      closePlayerIdentifyModal();
+      showToast(`Pemain diset sebagai ${AppState.activePlayer.nick} (${AppState.activePlayer.platform})`);
+    }
+
+    // KATALOG & DYNAMIC CATEGORIES
+    function renderCategoryTabs() {
+      const container = document.getElementById('storeCategoryTabs');
+      if (!container) return;
+      container.innerHTML = '';
+
+      AppState.categories.forEach(cat => {
+        const isActive = AppState.currentCategory === cat;
+        const btn = document.createElement('button');
+        btn.className = `px-3.5 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap ${isActive ? 'orange-btn text-white' : 'text-gray-400 hover:text-white'}`;
+        btn.innerText = cat;
+        btn.onclick = () => { AppState.currentCategory = cat; renderCategoryTabs(); renderProducts(); };
+        container.appendChild(btn);
+      });
     }
 
     function renderProducts() {
@@ -988,35 +1047,61 @@
       if (AppState.currentCategory === 'Ranks') list.sort((a, b) => Number(a.price) - Number(b.price));
 
       if (list.length === 0) {
-        container.innerHTML = `<div class="col-span-full text-center py-8 text-gray-400 text-xs">Tidak ada produk dalam kategori ini.</div>`;
+        container.innerHTML = `<div class="col-span-full text-center py-8 text-gray-400 text-xs">Belum ada produk dalam kategori ini.</div>`;
         return;
       }
 
+      const currentRankPrice = AppState.activePlayer.rankPrice || 0;
+
       list.forEach(item => {
-        const formattedPrice = `Rp ${Number(item.price).toLocaleString('id-ID')}`;
+        const originalPrice = Number(item.price);
+        let finalPrice = originalPrice;
+        let priceTagHTML = '';
+
+        if (item.category === 'Ranks') {
+          if (originalPrice > currentRankPrice && currentRankPrice > 0) {
+            finalPrice = originalPrice - currentRankPrice;
+            priceTagHTML = `
+              <div class="flex items-baseline gap-2">
+                <span class="text-base sm:text-lg font-black text-emerald-400">Rp ${finalPrice.toLocaleString('id-ID')}</span>
+                <span class="text-xs text-gray-400 line-through">Rp ${originalPrice.toLocaleString('id-ID')}</span>
+              </div>
+              <span class="text-[9px] bg-emerald-500/10 text-emerald-400 font-bold px-2 py-0.5 rounded border border-emerald-500/20 inline-block mt-0.5">
+                Hemat Rp ${currentRankPrice.toLocaleString('id-ID')} (Upgrade ${AppState.activePlayer.rank})
+              </span>
+            `;
+          } else if (originalPrice <= currentRankPrice && currentRankPrice > 0) {
+            priceTagHTML = `<span class="text-xs font-bold text-gray-400">Sudah Memiliki Rank Ini</span>`;
+          } else {
+            priceTagHTML = `<p class="text-base sm:text-lg font-black text-accent">Rp ${originalPrice.toLocaleString('id-ID')}</p>`;
+          }
+        } else {
+          priceTagHTML = `<p class="text-base sm:text-lg font-black text-accent">Rp ${originalPrice.toLocaleString('id-ID')}</p>`;
+        }
+
         const featuresArray = Array.isArray(item.features) ? item.features : (item.features ? item.features.split(',') : []);
 
         const card = document.createElement('div');
-        card.className = "clean-card rounded-2xl p-4 flex flex-col justify-between hover:border-burgundy transition";
+        card.className = "clean-card rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between hover:border-accent transition";
         card.innerHTML = `
           <div>
-            <div class="relative w-full h-36 rounded-xl bg-voidLight overflow-hidden mb-3 flex items-center justify-center p-3">
+            <div class="relative w-full h-32 sm:h-36 rounded-xl bg-voidLight overflow-hidden mb-3 flex items-center justify-center p-3">
               <img src="${item.image_url}" alt="${item.name}" class="max-h-full object-contain" onerror="this.src='https://api.dicebear.com/7.x/shapes/svg?seed=${item.name}'">
-              <span class="absolute top-2 left-2 bg-burgundy text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">${item.category}</span>
+              <span class="absolute top-2 left-2 bg-accent text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">${item.category}</span>
             </div>
-            <div class="space-y-2">
+            <div class="space-y-1.5">
               <div class="flex items-center justify-between gap-2">
-                <h3 class="text-base font-bold text-white">${item.name}</h3>
-                <button onclick="openPerkModal('${item.name}', ${JSON.stringify(featuresArray).replace(/"/g, '&quot;')})" class="px-2.5 py-1 rounded-lg bg-burgundy/25 hover:bg-burgundy border border-accent/40 text-accent hover:text-white transition flex items-center gap-1.5 text-xs font-bold shrink-0">
-                  <i data-lucide="sparkles" class="w-3.5 h-3.5"></i><span>Lihat Fitur</span>
+                <h3 class="text-sm sm:text-base font-bold text-white">${item.name}</h3>
+                <button onclick="openPerkModal('${item.name}', ${JSON.stringify(featuresArray).replace(/"/g, '&quot;')})" class="px-2 py-1 rounded-lg bg-accent/20 hover:bg-accent border border-accent/40 text-accent hover:text-white transition flex items-center gap-1 text-[11px] font-bold shrink-0">
+                  <i data-lucide="sparkles" class="w-3 h-3"></i><span>Perks</span>
                 </button>
               </div>
-              <p class="text-lg font-black text-accent">${formattedPrice}</p>
+              <div>${priceTagHTML}</div>
             </div>
           </div>
-          <div class="pt-4 mt-3 border-t border-glassBorder flex items-center gap-2">
-            <button onclick="addToCart('${item.id}')" class="flex-1 py-2.5 rounded-xl bg-voidLight border border-glassBorder text-gray-200 text-xs font-semibold hover:bg-glass transition flex items-center justify-center gap-1.5"><i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i><span>+ Keranjang</span></button>
-            <button onclick="buyNow('${item.id}')" class="flex-1 py-2.5 rounded-xl crimson-btn text-white text-xs font-bold shadow-md">Beli Sekarang</button>
+          <div class="pt-3.5 mt-3 border-t border-glassBorder flex items-center gap-2">
+            <button onclick="addToCart('${item.id}')" class="flex-1 py-2.5 rounded-xl bg-voidLight border border-glassBorder text-gray-200 text-xs font-semibold hover:bg-glass transition flex items-center justify-center gap-1.5 active:scale-95"><i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i><span>+ Keranjang</span></button>
+            <button onclick="buyNow('${item.id}')" class="flex-1 py-2.5 rounded-xl orange-btn text-white text-xs font-bold shadow-md active:scale-95">Beli</button>
           </div>
         `;
         container.appendChild(card);
@@ -1028,10 +1113,10 @@
       document.getElementById('perkModalTitle').innerText = `Perks: ${title}`;
       const listEl = document.getElementById('perkModalList');
       listEl.innerHTML = '';
-      if (!features || features.length === 0) listEl.innerHTML = `<li class="py-2 text-gray-400">Tidak ada detail.</li>`;
+      if (!features || features.length === 0) listEl.innerHTML = `<li class="py-2 text-gray-400">Tidak ada detail perk.</li>`;
       else {
         features.forEach(f => {
-          listEl.innerHTML += `<li class="p-2 rounded-lg bg-voidLight border border-glassBorder flex items-start gap-2.5 text-xs text-gray-200"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i><span>${f.trim()}</span></li>`;
+          listEl.innerHTML += `<li class="p-2 rounded-lg bg-voidLight border border-glassBorder flex items-start gap-2 text-xs text-gray-200"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i><span>${f.trim()}</span></li>`;
         });
       }
       document.getElementById('perkModal').classList.remove('opacity-0', 'pointer-events-none');
@@ -1045,7 +1130,7 @@
       if (!item) return;
       const idx = AppState.cart.findIndex(c => c.id === productId);
       if (idx > -1) AppState.cart[idx].qty += 1;
-      else AppState.cart.push({ id: item.id, name: item.name, price: Number(item.price), qty: 1 });
+      else AppState.cart.push({ id: item.id, name: item.name, category: item.category, price: Number(item.price), qty: 1 });
       localStorage.setItem('mawi_cart', JSON.stringify(AppState.cart));
       updateCartBadge();
       showToast(`${item.name} masuk keranjang!`);
@@ -1060,7 +1145,16 @@
       else badge.classList.add('scale-0');
     }
 
-    function openCartModal() { renderCartItems(); document.getElementById('cartModal').classList.remove('opacity-0', 'pointer-events-none'); }
+    function openCartModal() {
+      if (!AppState.activePlayer.nick) {
+        openPlayerIdentifyModal();
+        return;
+      }
+      updatePlayerUI();
+      renderCartItems();
+      document.getElementById('cartModal').classList.remove('opacity-0', 'pointer-events-none');
+    }
+
     function closeCartModal() { document.getElementById('cartModal').classList.add('opacity-0', 'pointer-events-none'); }
 
     function changeCartQty(index, delta) {
@@ -1078,22 +1172,34 @@
         listContainer.innerHTML = `<div class="text-center py-6 text-gray-400 text-xs">Keranjang kosong.</div>`;
         document.getElementById('cartSubtotalText').innerText = 'Rp 0';
         document.getElementById('cartTotalText').innerText = 'Rp 0';
+        document.getElementById('cartUpgradeDiscountRow').classList.add('hidden');
         document.getElementById('cartDiscountRow').classList.add('hidden');
         return;
       }
 
       let subtotal = 0;
+      let totalRankUpgradeDeduction = 0;
+      const currentRankPrice = AppState.activePlayer.rankPrice || 0;
+
       AppState.cart.forEach((item, idx) => {
         const itemTotal = item.price * item.qty;
         subtotal += itemTotal;
+
+        if (item.category === 'Ranks' && item.price > currentRankPrice && currentRankPrice > 0) {
+          totalRankUpgradeDeduction += (currentRankPrice * item.qty);
+        }
+
         listContainer.innerHTML += `
-          <div class="py-2.5 flex items-center justify-between text-xs">
-            <div><span class="font-bold text-white block">${item.name}</span><span class="text-gray-400">Rp ${item.price.toLocaleString('id-ID')} x ${item.qty}</span></div>
+          <div class="p-2.5 rounded-xl bg-voidLight border border-glassBorder flex items-center justify-between text-xs">
+            <div>
+              <span class="font-bold text-white block">${item.name}</span>
+              <span class="text-gray-400 text-[11px]">Rp ${item.price.toLocaleString('id-ID')}</span>
+            </div>
             <div class="flex items-center gap-2">
-              <div class="flex items-center bg-voidLight border border-glassBorder rounded-lg">
-                <button onclick="changeCartQty(${idx}, -1)" class="w-5 h-5 flex items-center justify-center font-bold">-</button>
+              <div class="flex items-center bg-void border border-glassBorder rounded-lg">
+                <button onclick="changeCartQty(${idx}, -1)" class="w-6 h-6 flex items-center justify-center font-bold text-rose-400">-</button>
                 <span class="w-5 text-center font-bold text-white">${item.qty}</span>
-                <button onclick="changeCartQty(${idx}, 1)" class="w-5 h-5 flex items-center justify-center font-bold">+</button>
+                <button onclick="changeCartQty(${idx}, 1)" class="w-6 h-6 flex items-center justify-center font-bold text-emerald-400">+</button>
               </div>
               <span class="font-bold text-accent min-w-[65px] text-right">Rp ${itemTotal.toLocaleString('id-ID')}</span>
             </div>
@@ -1102,15 +1208,30 @@
       });
 
       document.getElementById('cartSubtotalText').innerText = `Rp ${subtotal.toLocaleString('id-ID')}`;
-      let discount = 0;
+
+      // Upgrade Rank Math
+      if (totalRankUpgradeDeduction > 0) {
+        document.getElementById('cartUpgradeDiscountRow').classList.remove('hidden');
+        document.getElementById('cartUpgradeText').innerText = `- Rp ${totalRankUpgradeDeduction.toLocaleString('id-ID')}`;
+        document.getElementById('cartUpgradeLabel').innerText = `Potongan Upgrade (${AppState.activePlayer.rank})`;
+      } else {
+        document.getElementById('cartUpgradeDiscountRow').classList.add('hidden');
+      }
+
+      const priceAfterUpgrade = Math.max(0, subtotal - totalRankUpgradeDeduction);
+
+      // Voucher Discount Math
+      let voucherDiscount = 0;
       if (AppState.appliedVoucher) {
-        discount = Math.floor(subtotal * (AppState.appliedVoucher.discount_percent / 100));
+        voucherDiscount = Math.floor(priceAfterUpgrade * (AppState.appliedVoucher.discount_percent / 100));
         document.getElementById('cartDiscountRow').classList.remove('hidden');
-        document.getElementById('cartDiscountText').innerText = `- Rp ${discount.toLocaleString('id-ID')} (${AppState.appliedVoucher.discount_percent}%)`;
+        document.getElementById('cartDiscountText').innerText = `- Rp ${voucherDiscount.toLocaleString('id-ID')} (${AppState.appliedVoucher.discount_percent}%)`;
       } else {
         document.getElementById('cartDiscountRow').classList.add('hidden');
       }
-      document.getElementById('cartTotalText').innerText = `Rp ${Math.max(0, subtotal - discount).toLocaleString('id-ID')}`;
+
+      const finalTotal = Math.max(0, priceAfterUpgrade - voucherDiscount);
+      document.getElementById('cartTotalText').innerText = `Rp ${finalTotal.toLocaleString('id-ID')}`;
     }
 
     function applyVoucher() {
@@ -1120,30 +1241,90 @@
 
       if (matched) {
         AppState.appliedVoucher = { code: matched.code, discount_percent: Number(matched.discount_percent) };
-        feedback.className = 'text-[11px] font-medium text-emerald-400 block';
+        feedback.className = 'text-[10px] font-medium text-emerald-400 block';
         feedback.innerText = `Voucher ${matched.code} aktif! Diskon ${matched.discount_percent}%.`;
         renderCartItems();
       } else {
         AppState.appliedVoucher = null;
-        feedback.className = 'text-[11px] font-medium text-rose-400 block';
+        feedback.className = 'text-[10px] font-medium text-rose-400 block';
         feedback.innerText = 'Kode voucher tidak valid / nonaktif!';
         renderCartItems();
       }
     }
 
+    function toggleCheckoutButtonState() {
+      const checkbox = document.getElementById('tosAcceptCheckbox');
+      const payBtn = document.getElementById('payNowBtn');
+      if (checkbox.checked) {
+        payBtn.disabled = false;
+        payBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+      } else {
+        payBtn.disabled = true;
+        payBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      }
+    }
+
     function processWhatsAppCheckout() {
       if (AppState.cart.length === 0) return showToast('Keranjang kosong!', 'error');
-      const nick = AppState.currentUser ? AppState.currentUser.nick : prompt('Masukkan Nickname Minecraft Anda:');
-      if (!nick) return;
+      
+      const p = AppState.activePlayer;
+      if (!p.nick) return openPlayerIdentifyModal();
 
       const itemsSummary = AppState.cart.map(i => `${i.name} (x${i.qty})`).join(', ');
       let subtotal = AppState.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-      let discount = AppState.appliedVoucher ? Math.floor(subtotal * (AppState.appliedVoucher.discount_percent / 100)) : 0;
-      const formattedTotal = `Rp ${(subtotal - discount).toLocaleString('id-ID')}`;
+      
+      let totalRankUpgradeDeduction = 0;
+      const currentRankPrice = p.rankPrice || 0;
+      AppState.cart.forEach(item => {
+        if (item.category === 'Ranks' && item.price > currentRankPrice && currentRankPrice > 0) {
+          totalRankUpgradeDeduction += (currentRankPrice * item.qty);
+        }
+      });
 
-      const message = `Halo CS Mawi saya ingin membeli ${itemsSummary} (Total: ${formattedTotal}), dengan nick ${nick} (${AppState.currentUser ? AppState.currentUser.platform : 'Java'}) di Mawi SMP`;
+      const priceAfterUpgrade = Math.max(0, subtotal - totalRankUpgradeDeduction);
+      let voucherDiscount = AppState.appliedVoucher ? Math.floor(priceAfterUpgrade * (AppState.appliedVoucher.discount_percent / 100)) : 0;
+      const finalTotal = Math.max(0, priceAfterUpgrade - voucherDiscount);
+
+      const formattedTotal = `Rp ${finalTotal.toLocaleString('id-ID')}`;
+
+      let upgradeNote = totalRankUpgradeDeduction > 0 ? `\n🏷️ Potongan Upgrade (${p.rank}): -Rp ${totalRankUpgradeDeduction.toLocaleString('id-ID')}` : '';
+      let voucherNote = voucherDiscount > 0 ? `\n🎟️ Diskon Voucher (${AppState.appliedVoucher.code}): -Rp ${voucherDiscount.toLocaleString('id-ID')}` : '';
+
+      const message = `Halo CS Mawi SMP, saya ingin membeli / upgrade produk:\n\n` +
+                      `🛒 Item: ${itemsSummary}\n` +
+                      `👤 Nickname: ${p.nick}\n` +
+                      `🎮 Platform: ${p.platform}\n` +
+                      `⭐ Rank Terdeteksi: ${p.rank}\n` +
+                      `🖼️ Head Skin: https://mc-heads.net/avatar/${p.nick.replace(/^_+|_+$/g, '')}/100` +
+                      `${upgradeNote}` +
+                      `${voucherNote}\n` +
+                      `💰 Total Pembayaran: ${formattedTotal}\n\n` +
+                      `Saya telah menyetujui Syarat & Ketentuan. Mohon diproses, terima kasih!`;
+
       window.open(`https://wa.me/${CS_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
       closeCartModal();
+    }
+
+    // RULES VIEW
+    function renderRulesView() {
+      const container = document.getElementById('rulesAccordionContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      AppState.rules.forEach((rule, idx) => {
+        container.innerHTML += `
+          <div class="clean-card rounded-xl overflow-hidden">
+            <button onclick="toggleAccordion('rule-${idx}')" class="w-full p-3.5 sm:p-4 text-left font-semibold text-white flex items-center justify-between hover:bg-glass transition text-xs sm:text-sm">
+              <span class="flex items-center gap-2.5"><span class="w-5 h-5 rounded-full bg-accent/20 text-accent text-xs flex items-center justify-center font-bold shrink-0">${idx+1}</span>${rule.title}</span>
+              <i id="rule-${idx}-icon" data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform"></i>
+            </button>
+            <div id="rule-${idx}-content" class="hidden px-4 pb-3.5 text-xs text-gray-300 space-y-2 border-t border-glassBorder pt-3">
+              <p>${rule.body}</p>
+            </div>
+          </div>
+        `;
+      });
+      lucide.createIcons();
     }
 
     function toggleAccordion(id) {
@@ -1162,19 +1343,13 @@
     }
 
     function triggerUploadAction() {
-      if (!AppState.currentUser) {
-        showToast('Silakan login dengan akun Gmail Anda terlebih dahulu!');
-        openAuthModal('register');
-        return;
-      }
-      document.getElementById('uploadAccName').innerText = AppState.currentUser.name;
-      document.getElementById('uploadAccGmail').innerText = AppState.currentUser.email;
       initCaptcha();
       document.getElementById('uploadModal').classList.remove('opacity-0', 'pointer-events-none');
     }
 
     function closeUploadModal() { document.getElementById('uploadModal').classList.add('opacity-0', 'pointer-events-none'); }
 
+    // GALERI KOMUNITAS (DENGAN CAPTION)
     function renderGallery() {
       const container = document.getElementById('galleryGrid');
       if (!container) return;
@@ -1183,16 +1358,12 @@
       let list = AppState.gallery.filter(g => g.status === 'APPROVED');
       const sortVal = document.getElementById('gallerySortSelect')?.value || 'newest';
 
-      if (sortVal === 'newest') {
-        list.sort((a, b) => Number(b.timestamp || 0) - Number(a.timestamp || 0));
-      } else if (sortVal === 'oldest') {
-        list.sort((a, b) => Number(a.timestamp || 0) - Number(b.timestamp || 0));
-      } else if (sortVal === 'popular') {
-        list.sort((a, b) => Number(b.likes || 0) - Number(a.likes || 0));
-      }
+      if (sortVal === 'newest') list.sort((a, b) => Number(b.timestamp || 0) - Number(a.timestamp || 0));
+      else if (sortVal === 'oldest') list.sort((a, b) => Number(a.timestamp || 0) - Number(b.timestamp || 0));
+      else if (sortVal === 'popular') list.sort((a, b) => Number(b.likes || 0) - Number(a.likes || 0));
 
       if (list.length === 0) {
-        container.innerHTML = `<div class="col-span-full text-center py-8 text-gray-400 text-xs"> Belum ada screenshot yang disetujui.</div>`;
+        container.innerHTML = `<div class="col-span-full text-center py-8 text-gray-400 text-xs">Belum ada screenshot yang disetujui.</div>`;
         return;
       }
 
@@ -1201,13 +1372,16 @@
           <div class="clean-card rounded-xl overflow-hidden flex flex-col justify-between">
             <div class="relative aspect-video bg-voidLight">
               <img src="${item.image_drive_url}" alt="Screenshot" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500'">
-              <div class="absolute bottom-0 inset-x-0 bg-black/70 p-2 text-[11px] text-white font-medium flex items-center justify-between">
-                <span>👤 ${item.username}</span>
+            </div>
+            <div class="p-3 space-y-1.5">
+              <div class="flex items-center justify-between text-[11px] text-gray-400">
+                <span class="font-bold text-white flex items-center gap-1">👤 ${item.username}</span>
                 <button onclick="likePhoto('${item.id}')" class="flex items-center gap-1 text-accent hover:text-white transition">
                   <i data-lucide="heart" class="w-3.5 h-3.5 fill-accent"></i>
                   <span class="font-bold">${item.likes || 0}</span>
                 </button>
               </div>
+              <p class="text-xs text-gray-300 line-clamp-2">${item.caption || 'Screenshot Mawi SMP'}</p>
             </div>
           </div>
         `;
@@ -1227,7 +1401,9 @@
 
     function submitGalleryUpload() {
       const fileInput = document.getElementById('uploadFileInput');
+      const caption = document.getElementById('uploadCaptionInput').value.trim();
       const ans = Number(document.getElementById('galleryCaptchaAns').value);
+      
       if (!fileInput.files.length) return showToast('Pilih file gambar!', 'error');
       if (ans !== AppState.captchaAns) { showToast('Verifikasi captcha salah!', 'error'); initCaptcha(); return; }
 
@@ -1235,28 +1411,147 @@
       reader.onload = function(e) {
         const newPhoto = {
           id: 'G-' + Date.now(),
-          username: AppState.currentUser.nick,
+          username: AppState.activePlayer.nick || 'Steve',
+          caption: caption || 'Screenshot Mawi SMP',
           image_drive_url: e.target.result,
-          status: 'PENDING',
+          status: 'APPROVED',
           likes: 0,
           timestamp: Date.now()
         };
         AppState.gallery.push(newPhoto);
         syncToSheets({ action: 'uploadGallery', photo: newPhoto });
         closeUploadModal();
-        showToast('Screenshot terkirim! Menunggu persetujuan admin.');
+        showToast('Screenshot berhasil diunggah ke galeri!');
         renderGallery();
       };
       reader.readAsDataURL(fileInput.files[0]);
     }
 
+    // NAVIGASI & ROUTING
+    function navigate(viewId) {
+      if (viewId === 'admin') {
+        if (!AppState.currentUser || !AppState.currentUser.isAdmin) {
+          showToast('Akses ditolak: Menu khusus Admin/Staff!');
+          openAuthModal();
+          return;
+        }
+      }
+
+      toggleDrawer(false);
+      ['home', 'store', 'rules', 'gallery', 'community', 'admin'].forEach(v => {
+        document.getElementById(`section-${v}`).classList.add('hidden');
+      });
+
+      const target = document.getElementById(`section-${viewId}`);
+      if (target) {
+        target.classList.remove('hidden');
+        target.classList.add('fade-in');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      if (viewId === 'store') { renderCategoryTabs(); renderProducts(); }
+      if (viewId === 'gallery') renderGallery();
+      if (viewId === 'rules') renderRulesView();
+      if (viewId === 'admin') {
+        renderAdminProducts();
+        renderAdminVouchers();
+        renderAdminGallery();
+        renderAdminRulesEditor();
+        document.getElementById('settingBrandName').value = AppState.brandName;
+        document.getElementById('settingLogoUrl').value = AppState.logoUrl;
+        document.getElementById('settingHeroText').value = AppState.heroText;
+      }
+      lucide.createIcons();
+    }
+
+    function toggleDrawer(open) {
+      const overlay = document.getElementById('drawerOverlay');
+      const panel = document.getElementById('drawerPanel');
+      if (open) { overlay.classList.remove('opacity-0', 'pointer-events-none'); panel.classList.remove('translate-x-full'); }
+      else { overlay.classList.add('opacity-0', 'pointer-events-none'); panel.classList.add('translate-x-full'); }
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `${type === 'error' ? 'bg-rose-950 border-rose-600' : 'bg-accent border-amber-400'} text-white border px-3.5 py-2.5 rounded-xl text-xs font-medium shadow-xl flex items-center gap-2 pointer-events-auto fade-in`;
+      toast.innerHTML = `<i data-lucide="${type === 'error' ? 'alert-circle' : 'check'}" class="w-4 h-4 shrink-0"></i><span>${message}</span>`;
+      container.appendChild(toast);
+      lucide.createIcons();
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 200);
+      }, 3000);
+    }
+
+    function copyToClipboard(text, msg = 'Tersalin!') {
+      const input = document.createElement('input');
+      input.value = text;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+      showToast(msg);
+    }
+
+    // AUTH STAFF
+    function openAuthModal() { document.getElementById('userAuthModal').classList.remove('opacity-0', 'pointer-events-none'); }
+    function closeAuthModal() { document.getElementById('userAuthModal').classList.add('opacity-0', 'pointer-events-none'); }
+
+    function handleUserLogin() {
+      const emailInput = document.getElementById('loginEmail').value.trim().toLowerCase();
+      const passInput = document.getElementById('loginPass').value.trim();
+
+      if ((emailInput === 'admin' || emailInput === 'admin@mawi.com') && passInput === 'mawi2026') {
+        AppState.currentUser = { name: "Owner Mawi", email: "admin@mawi.com", nick: "AdminMawi", isAdmin: true };
+        localStorage.setItem('mawi_auth_user', JSON.stringify(AppState.currentUser));
+        updateUserHeaderUI();
+        closeAuthModal();
+        navigate('admin');
+        showToast('Login berhasil sebagai ADMIN!');
+      } else {
+        showToast('Username/Email atau Password salah!', 'error');
+      }
+    }
+
+    function handleUserLogout() {
+      AppState.currentUser = null;
+      localStorage.removeItem('mawi_auth_user');
+      updateUserHeaderUI();
+      navigate('home');
+      showToast('Anda telah keluar.');
+    }
+
+    function updateUserHeaderUI() {
+      const drawerInfo = document.getElementById('drawerAccountInfo');
+      const adminDrawerSection = document.getElementById('adminDrawerSection');
+
+      if (AppState.currentUser && AppState.currentUser.isAdmin) {
+        adminDrawerSection.classList.remove('hidden');
+        drawerInfo.innerHTML = `
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <div><span class="text-white font-bold">${AppState.currentUser.name}</span><span class="text-[10px] text-accent block">STAFF ADMIN</span></div>
+              <button onclick="navigate('admin'); toggleDrawer(false);" class="px-2 py-1 bg-accent border border-amber-400 text-white rounded text-[10px] font-semibold">Dashboard</button>
+            </div>
+            <button onclick="handleUserLogout()" class="w-full py-1.5 bg-rose-950/40 border border-rose-500/30 text-rose-300 rounded text-[10px] font-bold">Logout Staff</button>
+          </div>
+        `;
+      } else {
+        adminDrawerSection.classList.add('hidden');
+        drawerInfo.innerHTML = `<button onclick="openAuthModal(); toggleDrawer(false);" class="w-full py-2 bg-clean-panel border border-glassBorder hover:border-accent text-gray-300 rounded-xl font-bold text-xs">Login Staff / Admin</button>`;
+      }
+      lucide.createIcons();
+    }
+
+    // ADMIN PANEL MANAGEMENT
     function switchAdminTab(tab) {
-      ['products', 'vouchers', 'gallery', 'settings'].forEach(t => {
+      ['products', 'vouchers', 'gallery', 'rules', 'settings'].forEach(t => {
         document.getElementById(`adminPanel-${t}`).classList.add('hidden');
-        document.getElementById(`adminTabBtn-${t}`).className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white';
+        document.getElementById(`adminTabBtn-${t}`).className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white whitespace-nowrap';
       });
       document.getElementById(`adminPanel-${tab}`).classList.remove('hidden');
-      document.getElementById(`adminTabBtn-${tab}`).className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-burgundy text-white';
+      document.getElementById(`adminTabBtn-${tab}`).className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold orange-btn text-white whitespace-nowrap';
       lucide.createIcons();
     }
 
@@ -1279,7 +1574,16 @@
       });
     }
 
+    function populateCategoryDropdown() {
+      const select = document.getElementById('crudProductCategory');
+      select.innerHTML = '';
+      AppState.categories.forEach(c => {
+        select.innerHTML += `<option value="${c}">${c}</option>`;
+      });
+    }
+
     function openProductModal() {
+      populateCategoryDropdown();
       document.getElementById('productCrudTitle').innerText = 'Tambah Produk Baru';
       document.getElementById('crudProductId').value = '';
       document.getElementById('crudProductName').value = '';
@@ -1291,7 +1595,21 @@
 
     function closeProductCrudModal() { document.getElementById('productCrudModal').classList.add('opacity-0', 'pointer-events-none'); }
 
+    function openCategoryModal() { document.getElementById('categoryCrudModal').classList.remove('opacity-0', 'pointer-events-none'); }
+    function closeCategoryModal() { document.getElementById('categoryCrudModal').classList.add('opacity-0', 'pointer-events-none'); }
+
+    function saveNewCategory() {
+      const cat = document.getElementById('newCategoryName').value.trim();
+      if (!cat) return showToast('Masukkan nama kategori!', 'error');
+      if (!AppState.categories.includes(cat)) AppState.categories.push(cat);
+      syncToSheets({ action: 'saveCategories', categories: AppState.categories });
+      closeCategoryModal();
+      renderCategoryTabs();
+      showToast(`Kategori ${cat} ditambahkan!`);
+    }
+
     function editProduct(id) {
+      populateCategoryDropdown();
       const p = AppState.products.find(x => x.id === id);
       if (!p) return;
       document.getElementById('productCrudTitle').innerText = 'Edit: ' + p.name;
@@ -1323,7 +1641,7 @@
       closeProductCrudModal();
       renderAdminProducts();
       renderProducts();
-      showToast('Produk berhasil disimpan & disync!');
+      showToast('Produk berhasil disimpan!');
     }
 
     function deleteProduct(id) {
@@ -1333,6 +1651,79 @@
       renderAdminProducts();
       renderProducts();
       showToast('Produk dihapus.');
+    }
+
+    // MODERASI GALERI RINGKAS (HANYA HAPUS FOTO)
+    function renderAdminGallery() {
+      const grid = document.getElementById('adminGalleryGrid');
+      grid.innerHTML = '';
+      if (AppState.gallery.length === 0) { grid.innerHTML = `<div class="col-span-full py-4 text-gray-400 text-xs">Belum ada foto di galeri.</div>`; return; }
+
+      AppState.gallery.forEach(item => {
+        grid.innerHTML += `
+          <div class="p-2.5 rounded-xl bg-voidLight border border-glassBorder space-y-2">
+            <img src="${item.image_drive_url}" class="w-full h-28 object-cover rounded-lg">
+            <div class="text-xs">
+              <span class="font-bold text-white block truncate">👤 ${item.username}</span>
+              <span class="text-[10px] text-gray-400 line-clamp-1">${item.caption || '-'}</span>
+            </div>
+            <button onclick="deleteGalleryItem('${item.id}')" class="w-full py-1.5 rounded-lg bg-rose-900/40 hover:bg-rose-900 text-rose-300 border border-rose-500/30 text-[11px] font-bold transition">
+              🗑️ Hapus Foto
+            </button>
+          </div>
+        `;
+      });
+    }
+
+    function deleteGalleryItem(id) {
+      if (!confirm('Hapus foto ini dari galeri?')) return;
+      AppState.gallery = AppState.gallery.filter(g => g.id !== id);
+      syncToSheets({ action: 'deleteGallery', id: id });
+      renderAdminGallery();
+      renderGallery();
+      showToast('Foto berhasil dihapus.');
+    }
+
+    // CUSTOM RULES EDITOR FOR ADMIN
+    function renderAdminRulesEditor() {
+      const container = document.getElementById('adminRulesEditorList');
+      container.innerHTML = '';
+      AppState.rules.forEach((rule, idx) => {
+        container.innerHTML += `
+          <div class="p-3 bg-voidLight rounded-xl border border-glassBorder space-y-2 text-xs">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-accent">Aturan #${idx+1}</span>
+              <button onclick="removeRuleField(${idx})" class="text-rose-400 font-bold text-[10px]">Hapus</button>
+            </div>
+            <input type="text" id="ruleTitle-${idx}" value="${rule.title}" placeholder="Judul Aturan" class="w-full bg-void border border-glassBorder rounded-lg p-2 text-white">
+            <textarea id="ruleBody-${idx}" rows="2" placeholder="Penjelasan Aturan" class="w-full bg-void border border-glassBorder rounded-lg p-2 text-white">${rule.body}</textarea>
+          </div>
+        `;
+      });
+    }
+
+    function addRuleField() {
+      AppState.rules.push({ title: "Aturan Baru", body: "Deskripsi aturan bermain." });
+      renderAdminRulesEditor();
+    }
+
+    function removeRuleField(idx) {
+      AppState.rules.splice(idx, 1);
+      renderAdminRulesEditor();
+    }
+
+    function saveServerRules() {
+      const updatedRules = [];
+      AppState.rules.forEach((_, idx) => {
+        const title = document.getElementById(`ruleTitle-${idx}`).value.trim();
+        const body = document.getElementById(`ruleBody-${idx}`).value.trim();
+        if (title && body) updatedRules.push({ title, body });
+      });
+
+      AppState.rules = updatedRules;
+      syncToSheets({ action: 'saveRules', rules: AppState.rules });
+      renderRulesView();
+      showToast('Aturan server berhasil diperbarui!');
     }
 
     function renderAdminVouchers() {
@@ -1406,45 +1797,6 @@
       showToast('Voucher terhapus.');
     }
 
-    function renderAdminGallery() {
-      const grid = document.getElementById('adminGalleryGrid');
-      grid.innerHTML = '';
-      AppState.gallery.forEach(item => {
-        grid.innerHTML += `
-          <div class="p-2.5 rounded-xl bg-voidLight border border-glassBorder space-y-2">
-            <img src="${item.image_drive_url}" class="w-full h-24 object-cover rounded-lg">
-            <div class="flex justify-between items-center text-xs">
-              <span class="font-bold text-white">${item.username}</span>
-              <span class="text-[10px] px-1.5 py-0.5 rounded ${item.status === 'APPROVED' ? 'text-emerald-400 bg-emerald-500/10' : 'text-amber-400 bg-amber-500/10'}">${item.status}</span>
-            </div>
-            <div class="flex gap-1">
-              <button onclick="approveGallery('${item.id}')" class="flex-1 py-1 rounded bg-emerald-700 text-white text-[10px] font-bold">Setujui</button>
-              <button onclick="deleteGalleryItem('${item.id}')" class="flex-1 py-1 rounded bg-rose-900 text-rose-200 text-[10px] font-bold">Hapus</button>
-            </div>
-          </div>
-        `;
-      });
-    }
-
-    function approveGallery(id) {
-      const item = AppState.gallery.find(g => g.id === id);
-      if (item) {
-        item.status = 'APPROVED';
-        syncToSheets({ action: 'updateGalleryStatus', id: id, status: 'APPROVED' });
-        renderAdminGallery();
-        renderGallery();
-        showToast('Disetujui.');
-      }
-    }
-
-    function deleteGalleryItem(id) {
-      AppState.gallery = AppState.gallery.filter(g => g.id !== id);
-      syncToSheets({ action: 'deleteGallery', id: id });
-      renderAdminGallery();
-      renderGallery();
-      showToast('Dihapus.');
-    }
-
     function saveWebSettings() {
       AppState.brandName = document.getElementById('settingBrandName').value.trim() || 'MAWI SMP';
       AppState.logoUrl = document.getElementById('settingLogoUrl').value.trim() || AppState.logoUrl;
@@ -1456,7 +1808,7 @@
       });
 
       applyBrandingUI();
-      showToast('Pengaturan web tersimpan & disync ke database!');
+      showToast('Pengaturan web tersimpan!');
     }
   </script>
 </body>
