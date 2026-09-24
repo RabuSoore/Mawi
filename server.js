@@ -24,11 +24,11 @@ app.use(express.static(__dirname));
 const DEFAULT_RANK_PRICES = {
   'DEFAULT': 0,
   'MEMBER': 0,
-  'VIP': 25000,
-  'MVP': 50000,
-  'SULTAN': 100000,
-  'OVERLORD': 200000,
-  'LORD': 390000
+  'NIKE': 25000,
+  'DIOR': 75000,
+  'ROLEX': 135000,
+  'GUCCI': 250000,
+  'MAWI': 400000
 };
 
 // ==========================================
