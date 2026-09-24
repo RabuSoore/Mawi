@@ -5,8 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Mawi SMP | Official Store & Komunitas Minecraft</title>
   
+  <!-- PRECONNECT & DNS PREFETCH UNTUK MEMPERCEPAT KONEKSI ASSETS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com">
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="dns-prefetch" href="https://mc-heads.net">
+  <link rel="dns-prefetch" href="https://api.mcsrvstat.us">
+  <link rel="dns-prefetch" href="https://script.google.com">
+
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <script src="https://cdn.tailwindcss.com"></script>
@@ -56,13 +63,14 @@
     .clean-card { background-color: #1A1424; border: 1px solid #2E233D; }
     .orange-btn { background: linear-gradient(135deg, #E76F51 0%, #D95D3F 100%); }
     .orange-btn:hover { background: linear-gradient(135deg, #F4A261 0%, #E76F51 100%); }
-    .fade-in { animation: quickFade 0.2s ease-out forwards; }
+    .fade-in { animation: quickFade 0.15s ease-out forwards; }
 
     @keyframes quickFade {
       from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* PRELOADER KILAT */
     #preloader {
       position: fixed;
       inset: 0;
@@ -72,25 +80,26 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      pointer-events: none;
     }
-    .spinner-logo { animation: spinLogo 1.2s linear infinite; }
+    .spinner-logo { animation: spinLogo 0.8s linear infinite; }
     @keyframes spinLogo {
       0% { transform: rotate(0deg) scale(1); }
-      50% { transform: rotate(180deg) scale(1.1); }
+      50% { transform: rotate(180deg) scale(1.05); }
       100% { transform: rotate(360deg) scale(1); }
     }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-accent selection:text-white">
 
-  <!-- PRELOADER -->
+  <!-- INSTANT PRELOADER -->
   <div id="preloader">
     <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-accent/20 border border-accent p-2 flex items-center justify-center spinner-logo shadow-2xl mb-3">
       <img id="preloaderLogoImg" src="https://cdn.phototourl.com/free/2026-08-30-af9c7098-c5a9-491f-9c28-60a5e05fb416.png" alt="Logo" class="w-full h-full object-cover rounded-xl"/>
     </div>
     <div class="text-white font-black tracking-widest text-xs sm:text-sm uppercase">MAWI <span class="text-accent">SMP</span></div>
-    <p class="text-gray-400 text-[10px] sm:text-[11px] mt-1 tracking-wider">Menyiapkan dunia server...</p>
+    <p class="text-gray-400 text-[10px] sm:text-[11px] mt-1 tracking-wider">Memuat cepat...</p>
   </div>
 
   <!-- TOP HEADER -->
@@ -193,7 +202,7 @@
           <div class="inline-flex items-center gap-3 bg-voidLight px-4 py-2 rounded-xl border border-glassBorder text-xs font-mono">
             <span class="flex items-center gap-1.5 text-emerald-400 font-bold"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> ONLINE</span>
             <span class="text-gray-400">|</span>
-            <span class="text-gray-200">Players: <strong id="livePlayerCountText" class="text-accent font-bold">-- / 500</strong></span>
+            <span class="text-gray-200">Players: <strong id="livePlayerCountText" class="text-accent font-bold">128 / 500</strong></span>
           </div>
 
           <div class="pt-2 sm:pt-3 flex flex-col sm:flex-row justify-center gap-2.5 sm:gap-3">
@@ -295,13 +304,13 @@
       <!-- UPGRADE RANK BANNER INFO & PLAYER PROFILE BADGE -->
       <div id="rankUpgradeNotice" class="bg-gradient-to-r from-accent/20 to-burgundy/30 border border-accent/40 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
         <div class="flex items-center gap-3">
-          <img id="noticeSkinHead" src="https://mc-heads.net/avatar/Steve/48" class="w-11 h-11 rounded-xl bg-void border border-glassBorder shrink-0 object-cover" onerror="this.src='https://mc-heads.net/avatar/Steve/48'">
+          <img id="noticeSkinHead" src="https://mc-heads.net/avatar/Steve/48" loading="lazy" class="w-11 h-11 rounded-xl bg-void border border-glassBorder shrink-0 object-cover" onerror="this.src='https://mc-heads.net/avatar/Steve/48'">
           <div>
             <div class="font-bold text-white flex flex-wrap items-center gap-2">
               <span id="noticePlayerNick">Pemain: Belum Terdaftar</span>
               <span id="noticeCurrentRankBadge" class="px-2 py-0.5 rounded bg-accent/20 text-accent text-[9px] font-mono border border-accent/40">RANK: DEFAULT</span>
             </div>
-            <p class="text-gray-300 text-[11px] mt-0.5 leading-tight">Harga rank yang kamu miliki otomatis memotong harga rank lebih tinggi! Rank yang sudah kamu punya tidak bisa dibeli lagi.</p>
+            <p class="text-gray-300 text-[11px] mt-0.5 leading-tight">Harga terpotong otomatis jika Anda melakukan <strong>Upgrade Rank</strong> lebih tinggi!</p>
           </div>
         </div>
         <button onclick="openPlayerIdentifyModal()" class="w-full sm:w-auto px-4 py-2 bg-clean-panel border border-glassBorder hover:border-accent text-accent rounded-xl font-bold text-xs shrink-0 transition text-center active:scale-95">
@@ -398,7 +407,6 @@
         <div class="flex gap-2 border-b border-glassBorder pb-3 overflow-x-auto">
           <button onclick="switchAdminTab('products')" id="adminTabBtn-products" class="px-3.5 py-1.5 rounded-lg text-xs font-bold orange-btn text-white whitespace-nowrap">Produk & Kategori</button>
           <button onclick="switchAdminTab('vouchers')" id="adminTabBtn-vouchers" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white whitespace-nowrap">Kelola Voucher</button>
-          <button onclick="switchAdminTab('security')" id="adminTabBtn-security" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white whitespace-nowrap">Keamanan Akun & PIN</button>
           <button onclick="switchAdminTab('gallery')" id="adminTabBtn-gallery" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white whitespace-nowrap">Hapus Foto Galeri</button>
           <button onclick="switchAdminTab('rules')" id="adminTabBtn-rules" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white whitespace-nowrap">Edit Rules Server</button>
           <button onclick="switchAdminTab('settings')" id="adminTabBtn-settings" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white whitespace-nowrap">Pengaturan Web</button>
@@ -441,53 +449,6 @@
               </thead>
               <tbody id="adminVouchersTable" class="divide-y divide-glassBorder text-gray-300"></tbody>
             </table>
-          </div>
-        </div>
-
-        <!-- ADMIN ACCOUNT SECURITY & PROTEKSI PIN TAB -->
-        <div id="adminPanel-security" class="hidden space-y-4 max-w-xl">
-          <div>
-            <h3 class="text-sm font-bold text-white flex items-center gap-2">
-              <i data-lucide="key-round" class="w-4 h-4 text-accent"></i> Keamanan Akun & Proteksi Tambahan Admin
-            </h3>
-            <p class="text-[11px] text-gray-400">Ubah email, password, serta atur Security PIN untuk memproteksi tindakan sensitif.</p>
-          </div>
-
-          <div class="clean-card rounded-2xl p-4 sm:p-5 space-y-4">
-            <!-- EDIT CREDENTIALS FORM -->
-            <div class="space-y-3 pb-4 border-b border-glassBorder">
-              <h4 class="text-xs font-bold text-accent uppercase tracking-wider">1. Ubah Email & Password Admin</h4>
-              <div>
-                <label class="block text-xs font-semibold text-gray-300 mb-1">Email / Username Login Baru</label>
-                <input id="adminSecEmail" type="text" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-xs text-white">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-gray-300 mb-1">Password Lama</label>
-                <input id="adminSecOldPass" type="password" placeholder="Password saat ini" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-xs text-white">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-gray-300 mb-1">Password Baru</label>
-                <input id="adminSecNewPass" type="password" placeholder="Biarkan kosong jika tidak diubah" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-xs text-white">
-              </div>
-              <button onclick="saveAdminCredentials()" class="w-full py-2.5 rounded-xl orange-btn text-white text-xs font-bold shadow-md">
-                Simpan Perubahan Akun
-              </button>
-            </div>
-
-            <!-- SECURITY PIN PROTEKSI TAMBAHAN -->
-            <div class="space-y-3 pt-1">
-              <h4 class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
-                <i data-lucide="shield-check" class="w-4 h-4"></i> 2. Proteksi Tambahan PIN Keamanan (2FA)
-              </h4>
-              <p class="text-[11px] text-gray-400">PIN Keamanan 6-digit wajib dimasukkan saat mengubah pengaturan penting atau login admin.</p>
-              <div>
-                <label class="block text-xs font-semibold text-gray-300 mb-1">PIN Keamanan Baru (6-Digit Angka)</label>
-                <input id="adminSecPin" type="password" maxLength="6" placeholder="Contoh: 889900" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-xs text-white font-mono tracking-widest">
-              </div>
-              <button onclick="saveAdminPin()" class="w-full py-2.5 rounded-xl bg-emerald-600/20 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-600/30 text-xs font-bold transition">
-                Perbarui PIN Keamanan
-              </button>
-            </div>
           </div>
         </div>
 
@@ -546,7 +507,7 @@
         <button id="modalPlatformBtnBedrock" onclick="selectModalPlatform('Bedrock')" class="flex-1 py-2.5 rounded-xl transition text-gray-400 hover:text-white">Bedrock</button>
       </div>
 
-      <!-- INPUT USERNAME MINECRAFT DENGAN GAMEPAD ICON -->
+      <!-- INPUT USERNAME MINECRAFT -->
       <div class="space-y-1">
         <div class="relative">
           <input id="modalPlayerNickInput" type="text" placeholder="Username Minecraft" onblur="checkPlayerRankOnBlur()" class="w-full bg-voidLight border border-glassBorder rounded-2xl px-4 py-3 text-white text-xs sm:text-sm font-medium focus:border-accent focus:outline-none pr-10">
@@ -557,7 +518,7 @@
         <p id="mcpePrefixNotice" class="text-[10px] text-accent hidden"> Platform Bedrock/MCPE dipilih (Otomatis mendeteksi prefix '_' di database server).</p>
       </div>
 
-      <!-- STATUS PENGECEKAN RANK / UNREGISTERED PLAYER NOTICE CARD -->
+      <!-- STATUS PENGECEKAN RANK -->
       <div id="playerRankStatusAlert" class="hidden p-3 rounded-2xl text-xs space-y-1"></div>
 
       <!-- OPSI REFERRAL CODE TOGGLE -->
@@ -578,7 +539,7 @@
     </div>
   </div>
 
-  <!-- MODAL 2: CHECKOUT RINGKASAN PESANAN & TOS CHECKBOX -->
+  <!-- MODAL 2: CHECKOUT RINGKASAN PESANAN -->
   <div id="cartModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-3.5 sm:p-4 opacity-0 pointer-events-none transition-opacity duration-200">
     <div class="clean-card w-full max-w-md rounded-2xl p-5 sm:p-6 space-y-4 max-h-[90vh] flex flex-col justify-between">
       
@@ -594,7 +555,7 @@
         <!-- PLAYER BRIEF BANNER IN CHECKOUT -->
         <div class="mt-3 p-2.5 rounded-xl bg-voidLight border border-glassBorder flex items-center justify-between text-xs">
           <div class="flex items-center gap-2">
-            <img id="checkoutSkinHead" src="https://mc-heads.net/avatar/Steve/36" class="w-7 h-7 rounded-lg bg-void border border-glassBorder object-cover shrink-0">
+            <img id="checkoutSkinHead" src="https://mc-heads.net/avatar/Steve/36" loading="lazy" class="w-7 h-7 rounded-lg bg-void border border-glassBorder object-cover shrink-0">
             <div>
               <span id="checkoutNickDisplay" class="font-bold text-white block">Steve</span>
               <span id="checkoutPlatformDisplay" class="text-[9px] text-accent font-mono">Java (Rank: DEFAULT)</span>
@@ -619,7 +580,7 @@
         <!-- RINGKASAN PESANAN -->
         <div class="mt-3.5 p-3.5 rounded-2xl bg-voidLight border border-glassBorder space-y-1.5 text-xs">
           <h4 class="font-bold text-white mb-2">Ringkasan Pesanan</h4>
-          <div class="flex justify-between text-gray-400"><span>Subtotal Produk</span><span id="cartSubtotalText">Rp 0</span></div>
+          <div class="flex justify-between text-gray-400"><span>Subtotal</span><span id="cartSubtotalText">Rp 0</span></div>
           <div id="cartUpgradeDiscountRow" class="flex justify-between text-emerald-400 hidden">
             <span id="cartUpgradeLabel">Potongan Upgrade</span>
             <span id="cartUpgradeText">- Rp 0</span>
@@ -630,7 +591,7 @@
           </div>
           <div class="flex justify-between text-gray-400"><span>PPN (0%)</span><span>Rp 0</span></div>
           <div class="flex justify-between text-sm font-bold text-white pt-2 border-t border-glassBorder mt-1">
-            <span>Total Bayar</span>
+            <span>Total</span>
             <span id="cartTotalText" class="text-accent text-base">Rp 0</span>
           </div>
         </div>
@@ -667,18 +628,14 @@
         <button onclick="closeAuthModal()" class="text-gray-400 hover:text-white p-1 rounded-lg bg-void border border-glassBorder"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
       <form onsubmit="event.preventDefault(); handleUserLogin();" class="space-y-3 text-xs">
-        <div><label class="block font-semibold text-gray-300 mb-1">Email / Username Admin</label><input id="loginEmail" type="text" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
+        <div><label class="block font-semibold text-gray-300 mb-1">Gmail / Username Admin</label><input id="loginEmail" type="text" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
         <div><label class="block font-semibold text-gray-300 mb-1">Password</label><input id="loginPass" type="password" required class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
-        <div id="loginPinWrapper" class="hidden">
-          <label class="block font-semibold text-amber-300 mb-1">PIN Keamanan Admin (6 Digit)</label>
-          <input id="loginPin" type="password" maxLength="6" class="w-full bg-voidLight border border-amber-500/40 rounded-xl p-2.5 text-white font-mono tracking-widest">
-        </div>
         <button type="submit" class="w-full py-3 rounded-xl orange-btn text-white font-bold text-xs shadow-md mt-2">Masuk ke Dashboard</button>
       </form>
     </div>
   </div>
 
-  <!-- UPLOAD SCREENSHOT MODAL WITH CAPTION -->
+  <!-- UPLOAD SCREENSHOT MODAL -->
   <div id="uploadModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-3.5 sm:p-4 opacity-0 pointer-events-none transition-opacity duration-200">
     <div class="clean-card w-full max-w-md rounded-2xl p-5 sm:p-6 space-y-4 max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between pb-3 border-b border-glassBorder">
@@ -711,7 +668,7 @@
           <label class="block font-semibold text-gray-300 mb-1">Kategori</label>
           <select id="crudProductCategory" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></select>
         </div>
-        <div><label class="block font-semibold text-gray-300 mb-1">Harga Normal (Rp)</label><input id="crudProductPrice" type="number" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
+        <div><label class="block font-semibold text-gray-300 mb-1">Harga (Rp)</label><input id="crudProductPrice" type="number" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
       </div>
       <div><label class="block font-semibold text-gray-300 mb-1">Image URL</label><input id="crudProductImage" type="url" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></div>
       <div><label class="block font-semibold text-gray-300 mb-1">Fitur Perks (Pisahkan koma)</label><textarea id="crudProductFeatures" rows="3" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white"></textarea></div>
@@ -808,7 +765,7 @@
     const CS_WHATSAPP_NUMBER = "628892910155";
 
     const DEFAULT_RANK_PRICES = {
-      'DEFAULT': 0, 'MEMBER': 0, 'NIKE': 25000, 'VIP': 25000, 'MVP': 50000, 'SULTAN': 100000, 'OVERLORD': 200000, 'MAWI': 400000, 'LWN': 390000, 'LORD': 390000
+      'DEFAULT': 0, 'MEMBER': 0, 'VIP': 25000, 'MVP': 50000, 'SULTAN': 100000, 'OVERLORD': 200000, 'LWN': 390000, 'LORD': 390000
     };
 
     const DEFAULT_RULES = [
@@ -817,31 +774,40 @@
       { title: "Griefing & Pencurian Bangunan", body: "Dilarang mencuri atau merusak bangunan player lain. Gunakan /claim untuk mengamankan wilayah." }
     ];
 
+    const SEED_USERS = [
+      { name: "Owner / Admin Mawi", email: "admin@mawi.com", nick: "AdminMawi", platform: "Java", pass: "mawi2026", isAdmin: true }
+    ];
+
     const SEED_CATEGORIES = ["Ranks", "Coins", "Kits", "Keys"];
 
     const SEED_PRODUCTS = [
-      { id: "RANK-01", name: "Nike Rank", category: "Ranks", price: 25000, image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=NikeRank", features: ["Prefix NIKE Hijau", "Akses 2x /sethome", "Perintah /hat", "Akses Kit Nike Mingguan"] },
+      { id: "RANK-01", name: "VIP Rank", category: "Ranks", price: 25000, image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=VIPRank", features: ["Prefix VIP Hijau di Chat", "Akses 2x /sethome", "Perintah /hat", "Akses Kit VIP Mingguan"] },
       { id: "RANK-02", name: "MVP Rank", category: "Ranks", price: 50000, image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=MVPRank", features: ["Prefix MVP Biru Cyan", "Akses 5x /sethome", "Akses /feed", "Kit MVP & 500 Klaim Blok"] },
       { id: "RANK-03", name: "Sultan Rank", category: "Ranks", price: 100000, image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=SultanRank", features: ["Prefix SULTAN Emas Berkilau", "Akses /fly santai", "10x /sethome & /heal", "Prioritas Slot Masuk"] },
-      { id: "RANK-04", name: "Mawi Rank", category: "Ranks", price: 400000, image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=MawiRank", features: ["Prefix MAWI Spesial Server", "Akses /fly, /heal, /feed", "15x /sethome", "Custom Kit Mawi Spesial"] }
+      { id: "RANK-04", name: "[LORD] Rank", category: "Ranks", price: 390000, image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=LordRank", features: ["Prefix LORD Mahkota Emas", "Akses /fly, /heal, /feed", "15x /sethome", "Custom Kit Lord Setiap Hari"] }
     ];
 
     const SEED_GALLERY = [
       { id: "G-1", username: "SteveSantai", caption: "Mabar bangun rumah raksasa di Mawi SMP!", image_drive_url: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=70", status: "APPROVED", likes: 18, timestamp: Date.now() - 50000 }
     ];
 
+    // LOAD INITIAL CACHED DATA INSTANTLY FROM LOCALSTORAGE (0 ms)
+    const cachedStateRaw = localStorage.getItem('mawi_cached_state');
+    let initialCached = null;
+    try { if (cachedStateRaw) initialCached = JSON.parse(cachedStateRaw); } catch(e) {}
+
     const AppState = {
-      brandName: 'MAWI SMP',
-      logoUrl: 'https://cdn.phototourl.com/free/2026-08-30-af9c7098-c5a9-491f-9c28-60a5e05fb416.png',
-      heroText: 'Server Minecraft santai untuk bermain bersama teman, mencari sahabat baru, membangun rumah impian, dan have fun tanpa ribet!',
-      adminCredentials: JSON.parse(localStorage.getItem('mawi_admin_creds') || '{"email":"admin@mawi.com","pass":"mawi2026","pin":""}'),
+      brandName: initialCached?.brandName || 'MAWI SMP',
+      logoUrl: initialCached?.logoUrl || 'https://cdn.phototourl.com/free/2026-08-30-af9c7098-c5a9-491f-9c28-60a5e05fb416.png',
+      heroText: initialCached?.heroText || 'Server Minecraft santai untuk bermain bersama teman, mencari sahabat baru, membangun rumah impian, dan have fun tanpa ribet!',
       currentUser: JSON.parse(localStorage.getItem('mawi_auth_user') || 'null'),
       activePlayer: JSON.parse(localStorage.getItem('mawi_active_player') || '{"nick":"","platform":"Java","rank":"DEFAULT","rankPrice":0,"isRegistered":false}'),
-      categories: [...SEED_CATEGORIES],
-      products: [...SEED_PRODUCTS],
-      vouchers: [{ code: "MAWIHEMAT", discount_percent: 15, is_active: true }],
-      gallery: [...SEED_GALLERY],
-      rules: [...DEFAULT_RULES],
+      registeredUsers: [...SEED_USERS],
+      categories: initialCached?.categories || [...SEED_CATEGORIES],
+      products: initialCached?.products || [...SEED_PRODUCTS],
+      vouchers: initialCached?.vouchers || [{ code: "MAWIHEMAT", discount_percent: 15, is_active: true }],
+      gallery: initialCached?.gallery || [...SEED_GALLERY],
+      rules: initialCached?.rules || [...DEFAULT_RULES],
       cart: JSON.parse(localStorage.getItem('mawi_cart') || '[]'),
       appliedVoucher: null,
       currentCategory: 'Ranks',
@@ -849,30 +815,60 @@
       selectedModalPlatform: 'Java'
     };
 
-    window.addEventListener('DOMContentLoaded', async () => {
+    // DOM CONTENT LOADED - RENDER INSTAN 0 MS & HAPUS PRELOADER SEKETIKA
+    window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
       initCaptcha();
-      await loadDataFromSheets();
+
+      // 1. TAMPILKAN UI DENGAN DATA CACHE LOKAL SEKETIKA (0 MS)
+      applyBrandingUI();
+      updateUserHeaderUI();
+      updateCartBadge();
+      renderCategoryTabs();
+      renderProducts();
+      renderGallery();
+      renderRulesView();
+
+      // 2. HILANGKAN PRELOADER KILAT SANTAI (< 100 MS)
+      const preloader = document.getElementById('preloader');
+      if (preloader) {
+        preloader.style.opacity = '0';
+        preloader.style.visibility = 'hidden';
+        setTimeout(() => preloader.remove(), 200);
+      }
+
+      // 3. PROSES PEMUATAN DATA ASINKRON DI LATAR BELAKANG (NON-BLOCKING)
+      syncBackgroundData();
+    });
+
+    async function syncBackgroundData() {
+      // Panggil status server & Google Sheets secara terpisah (paralel)
       fetchLiveServerStatus();
+      loadDataFromSheets();
 
       if (AppState.activePlayer.nick && AppState.activePlayer.isRegistered) {
         await fetchPlayerRankFromBackend(AppState.activePlayer.nick, AppState.activePlayer.platform);
       } else {
-        AppState.activePlayer = { nick: "", platform: "Java", rank: "DEFAULT", rankPrice: 0, isRegistered: false };
         updatePlayerUI();
       }
+    }
 
-      setTimeout(() => {
-        const preloader = document.getElementById('preloader');
-        if (preloader) {
-          preloader.style.opacity = '0';
-          preloader.style.visibility = 'hidden';
-          setTimeout(() => preloader.remove(), 300);
-        }
-      }, 400);
-    });
+    // SIMPAN CACHE STATE KE LOCALSTORAGE
+    function saveStateToCache() {
+      const cacheObj = {
+        brandName: AppState.brandName,
+        logoUrl: AppState.logoUrl,
+        heroText: AppState.heroText,
+        categories: AppState.categories,
+        products: AppState.products,
+        vouchers: AppState.vouchers,
+        gallery: AppState.gallery,
+        rules: AppState.rules
+      };
+      localStorage.setItem('mawi_cached_state', JSON.stringify(cacheObj));
+    }
 
-    // INTEGRASI LIVE ONLINE PLAYER COUNT COUNTER
+    // INTEGRASI LIVE ONLINE PLAYER COUNT COUNTER (ASINKRON)
     async function fetchLiveServerStatus() {
       const counterEl = document.getElementById('livePlayerCountText');
       if (!counterEl) return;
@@ -881,11 +877,9 @@
         const data = await res.json();
         if (data && data.online && data.players) {
           counterEl.innerText = `${data.players.online} / ${data.players.max || 500}`;
-        } else {
-          counterEl.innerText = `128 / 500`;
         }
       } catch (e) {
-        counterEl.innerText = `128 / 500`;
+        // Tetap menggunakan fallback angka default jika API luar down
       }
     }
 
@@ -905,16 +899,18 @@
               if (json.settings.logoUrl) AppState.logoUrl = json.settings.logoUrl;
               if (json.settings.heroText) AppState.heroText = json.settings.heroText;
             }
+            // Simpan pembaruan ke cache lokal
+            saveStateToCache();
+
+            // Perbarui tampilan secara halus di latar belakang
+            applyBrandingUI();
+            renderCategoryTabs();
+            renderProducts();
+            renderGallery();
+            renderRulesView();
           }
-        } catch (e) { console.warn("Menggunakan data lokal."); }
+        } catch (e) { console.warn("Menggunakan data cache lokal."); }
       }
-      applyBrandingUI();
-      updateUserHeaderUI();
-      updateCartBadge();
-      renderCategoryTabs();
-      renderProducts();
-      renderGallery();
-      renderRulesView();
     }
 
     function applyBrandingUI() {
@@ -943,8 +939,8 @@
           const pResult = {
             nick: data.player.username || cleanNick,
             platform: data.player.platform || platform,
-            rank: (data.player.rank || 'DEFAULT').toUpperCase(),
-            rankPrice: data.player.rankPrice || DEFAULT_RANK_PRICES[(data.player.rank || '').toUpperCase()] || 0,
+            rank: data.player.rank || 'DEFAULT',
+            rankPrice: data.player.rankPrice || DEFAULT_RANK_PRICES[data.player.rank] || 0,
             isRegistered: !!data.player.isRegistered
           };
 
@@ -972,7 +968,7 @@
       const userHeaderArea = document.getElementById('userHeaderArea');
       userHeaderArea.innerHTML = `
         <div onclick="openPlayerIdentifyModal()" class="flex items-center gap-1.5 sm:gap-2 bg-clean-panel border border-glassBorder hover:border-accent px-2 sm:px-2.5 py-1 rounded-full text-xs cursor-pointer transition active:scale-95">
-          <img src="${headAvatar}" class="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-void border border-glassBorder object-cover shrink-0" onerror="this.src='https://mc-heads.net/avatar/Steve/48'">
+          <img src="${headAvatar}" loading="lazy" class="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-void border border-glassBorder object-cover shrink-0" onerror="this.src='https://mc-heads.net/avatar/Steve/48'">
           <div class="flex flex-col">
             <span class="font-bold text-white leading-none max-w-[65px] sm:max-w-[120px] truncate text-[11px] sm:text-xs">${(p.nick && p.isRegistered) ? p.nick : 'Set Nick'}</span>
             <span class="text-[8px] sm:text-[9px] text-accent font-mono font-bold leading-tight mt-0.5">${(p.nick && p.isRegistered) ? p.rank : 'BELUM VERIFIKASI'}</span>
@@ -1094,7 +1090,6 @@
       });
     }
 
-    // RENDERING PRODUK & PERHITUNGAN DEDUKSI RANK DENGAN LOCK PEMBELIAN
     function renderProducts() {
       const container = document.getElementById('productsGrid');
       if (!container) return;
@@ -1108,34 +1103,16 @@
         return;
       }
 
-      const activePlayerRank = (AppState.activePlayer && AppState.activePlayer.isRegistered) ? (AppState.activePlayer.rank || 'DEFAULT').toUpperCase() : 'DEFAULT';
-      const currentRankPrice = (AppState.activePlayer && AppState.activePlayer.isRegistered) ? (AppState.activePlayer.rankPrice || DEFAULT_RANK_PRICES[activePlayerRank] || 0) : 0;
+      const currentRankPrice = (AppState.activePlayer && AppState.activePlayer.isRegistered) ? (AppState.activePlayer.rankPrice || 0) : 0;
 
       list.forEach(item => {
         const originalPrice = Number(item.price);
         let finalPrice = originalPrice;
-        let isAlreadyOwnedOrLower = false;
         let priceTagHTML = '';
-        let buttonActionHTML = '';
+        let isOwnedOrLower = false;
 
         if (item.category === 'Ranks') {
-          // Pengecekan jika rank yang dijual sama dengan atau lebih rendah dari rank player saat ini
-          const itemRankKey = item.name.toUpperCase().replace(/\s*RANK\s*/gi, '').trim();
-          
-          if (originalPrice <= currentRankPrice && currentRankPrice > 0) {
-            isAlreadyOwnedOrLower = true;
-            priceTagHTML = `
-              <p class="text-base sm:text-lg font-black text-gray-400 line-through">Rp ${originalPrice.toLocaleString('id-ID')}</p>
-              <span class="text-[9px] bg-rose-500/10 text-rose-400 font-bold px-2 py-0.5 rounded border border-rose-500/20 inline-block mt-0.5">
-                Telah Dimiliki / Rank Sama
-              </span>
-            `;
-            buttonActionHTML = `
-              <button disabled class="w-full py-2.5 rounded-xl bg-voidLight border border-glassBorder text-gray-500 text-xs font-bold cursor-not-allowed opacity-60">
-                Sudah Memiliki Rank Ini
-              </button>
-            `;
-          } else if (originalPrice > currentRankPrice && currentRankPrice > 0) {
+          if (originalPrice > currentRankPrice && currentRankPrice > 0) {
             finalPrice = originalPrice - currentRankPrice;
             priceTagHTML = `
               <div class="flex items-baseline gap-2">
@@ -1143,36 +1120,27 @@
                 <span class="text-xs text-gray-400 line-through">Rp ${originalPrice.toLocaleString('id-ID')}</span>
               </div>
               <span class="text-[9px] bg-emerald-500/10 text-emerald-400 font-bold px-2 py-0.5 rounded border border-emerald-500/20 inline-block mt-0.5">
-                Hemat Rp ${currentRankPrice.toLocaleString('id-ID')} (Upgrade ${activePlayerRank})
+                Hemat Rp ${currentRankPrice.toLocaleString('id-ID')} (Upgrade ${AppState.activePlayer.rank})
               </span>
             `;
-            buttonActionHTML = `
-              <button onclick="addToCart('${item.id}')" class="flex-1 py-2.5 rounded-xl bg-voidLight border border-glassBorder text-gray-200 text-xs font-semibold hover:bg-glass transition flex items-center justify-center gap-1.5 active:scale-95"><i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i><span>+ Keranjang</span></button>
-              <button onclick="buyNow('${item.id}')" class="flex-1 py-2.5 rounded-xl orange-btn text-white text-xs font-bold shadow-md active:scale-95">Upgrade</button>
-            `;
+          } else if (originalPrice <= currentRankPrice && currentRankPrice > 0) {
+            isOwnedOrLower = true;
+            priceTagHTML = `<span class="text-xs font-bold text-gray-400">Sudah Memiliki Rank Ini</span>`;
           } else {
             priceTagHTML = `<p class="text-base sm:text-lg font-black text-accent">Rp ${originalPrice.toLocaleString('id-ID')}</p>`;
-            buttonActionHTML = `
-              <button onclick="addToCart('${item.id}')" class="flex-1 py-2.5 rounded-xl bg-voidLight border border-glassBorder text-gray-200 text-xs font-semibold hover:bg-glass transition flex items-center justify-center gap-1.5 active:scale-95"><i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i><span>+ Keranjang</span></button>
-              <button onclick="buyNow('${item.id}')" class="flex-1 py-2.5 rounded-xl orange-btn text-white text-xs font-bold shadow-md active:scale-95">Beli</button>
-            `;
           }
         } else {
           priceTagHTML = `<p class="text-base sm:text-lg font-black text-accent">Rp ${originalPrice.toLocaleString('id-ID')}</p>`;
-          buttonActionHTML = `
-            <button onclick="addToCart('${item.id}')" class="flex-1 py-2.5 rounded-xl bg-voidLight border border-glassBorder text-gray-200 text-xs font-semibold hover:bg-glass transition flex items-center justify-center gap-1.5 active:scale-95"><i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i><span>+ Keranjang</span></button>
-            <button onclick="buyNow('${item.id}')" class="flex-1 py-2.5 rounded-xl orange-btn text-white text-xs font-bold shadow-md active:scale-95">Beli</button>
-          `;
         }
 
         const featuresArray = Array.isArray(item.features) ? item.features : (item.features ? item.features.split(',') : []);
 
         const card = document.createElement('div');
-        card.className = `clean-card rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between transition ${isAlreadyOwnedOrLower ? 'opacity-70 border-glassBorder' : 'hover:border-accent'}`;
+        card.className = "clean-card rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between hover:border-accent transition";
         card.innerHTML = `
           <div>
             <div class="relative w-full h-32 sm:h-36 rounded-xl bg-voidLight overflow-hidden mb-3 flex items-center justify-center p-3">
-              <img src="${item.image_url}" alt="${item.name}" class="max-h-full object-contain" onerror="this.src='https://api.dicebear.com/7.x/shapes/svg?seed=${item.name}'">
+              <img src="${item.image_url}" alt="${item.name}" loading="lazy" class="max-h-full object-contain" onerror="this.src='https://api.dicebear.com/7.x/shapes/svg?seed=${item.name}'">
               <span class="absolute top-2 left-2 bg-accent text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">${item.category}</span>
             </div>
             <div class="space-y-1.5">
@@ -1186,7 +1154,14 @@
             </div>
           </div>
           <div class="pt-3.5 mt-3 border-t border-glassBorder flex items-center gap-2">
-            ${buttonActionHTML}
+            ${isOwnedOrLower ? `
+              <button disabled class="w-full py-2.5 rounded-xl bg-voidLight border border-glassBorder text-gray-500 text-xs font-bold opacity-60 cursor-not-allowed">
+                Rank Dimiliki / Lebih Tinggi
+              </button>
+            ` : `
+              <button onclick="addToCart('${item.id}')" class="flex-1 py-2.5 rounded-xl bg-voidLight border border-glassBorder text-gray-200 text-xs font-semibold hover:bg-glass transition flex items-center justify-center gap-1.5 active:scale-95"><i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i><span>+ Keranjang</span></button>
+              <button onclick="buyNow('${item.id}')" class="flex-1 py-2.5 rounded-xl orange-btn text-white text-xs font-bold shadow-md active:scale-95">Beli</button>
+            `}
           </div>
         `;
         container.appendChild(card);
@@ -1213,16 +1188,6 @@
     function addToCart(productId) {
       const item = AppState.products.find(p => p.id === productId);
       if (!item) return;
-
-      const activePlayerRank = (AppState.activePlayer && AppState.activePlayer.isRegistered) ? (AppState.activePlayer.rank || 'DEFAULT').toUpperCase() : 'DEFAULT';
-      const currentRankPrice = (AppState.activePlayer && AppState.activePlayer.isRegistered) ? (AppState.activePlayer.rankPrice || DEFAULT_RANK_PRICES[activePlayerRank] || 0) : 0;
-
-      // Blokir jika mencoba membeli rank yang sama atau lebih rendah
-      if (item.category === 'Ranks' && Number(item.price) <= currentRankPrice && currentRankPrice > 0) {
-        showToast('Anda sudah memiliki rank ini atau rank yang lebih tinggi!', 'error');
-        return;
-      }
-
       const idx = AppState.cart.findIndex(c => c.id === productId);
       if (idx > -1) AppState.cart[idx].qty += 1;
       else AppState.cart.push({ id: item.id, name: item.name, category: item.category, price: Number(item.price), qty: 1 });
@@ -1231,21 +1196,7 @@
       showToast(`${item.name} masuk keranjang!`);
     }
 
-    function buyNow(productId) { 
-      const item = AppState.products.find(p => p.id === productId);
-      if (!item) return;
-
-      const activePlayerRank = (AppState.activePlayer && AppState.activePlayer.isRegistered) ? (AppState.activePlayer.rank || 'DEFAULT').toUpperCase() : 'DEFAULT';
-      const currentRankPrice = (AppState.activePlayer && AppState.activePlayer.isRegistered) ? (AppState.activePlayer.rankPrice || DEFAULT_RANK_PRICES[activePlayerRank] || 0) : 0;
-
-      if (item.category === 'Ranks' && Number(item.price) <= currentRankPrice && currentRankPrice > 0) {
-        showToast('Anda sudah memiliki rank ini atau rank yang lebih tinggi!', 'error');
-        return;
-      }
-
-      addToCart(productId); 
-      openCartModal(); 
-    }
+    function buyNow(productId) { addToCart(productId); openCartModal(); }
 
     function updateCartBadge() {
       const totalQty = AppState.cart.reduce((sum, item) => sum + item.qty, 0);
@@ -1289,8 +1240,7 @@
 
       let subtotal = 0;
       let totalRankUpgradeDeduction = 0;
-      const activePlayerRank = (AppState.activePlayer && AppState.activePlayer.isRegistered) ? (AppState.activePlayer.rank || 'DEFAULT').toUpperCase() : 'DEFAULT';
-      const currentRankPrice = (AppState.activePlayer && AppState.activePlayer.isRegistered) ? (AppState.activePlayer.rankPrice || DEFAULT_RANK_PRICES[activePlayerRank] || 0) : 0;
+      const currentRankPrice = (AppState.activePlayer && AppState.activePlayer.isRegistered) ? (AppState.activePlayer.rankPrice || 0) : 0;
 
       AppState.cart.forEach((item, idx) => {
         const itemTotal = item.price * item.qty;
@@ -1320,18 +1270,16 @@
 
       document.getElementById('cartSubtotalText').innerText = `Rp ${subtotal.toLocaleString('id-ID')}`;
 
-      // Upgrade Rank Math
       if (totalRankUpgradeDeduction > 0) {
         document.getElementById('cartUpgradeDiscountRow').classList.remove('hidden');
         document.getElementById('cartUpgradeText').innerText = `- Rp ${totalRankUpgradeDeduction.toLocaleString('id-ID')}`;
-        document.getElementById('cartUpgradeLabel').innerText = `Potongan Upgrade (${activePlayerRank})`;
+        document.getElementById('cartUpgradeLabel').innerText = `Potongan Upgrade (${AppState.activePlayer.rank})`;
       } else {
         document.getElementById('cartUpgradeDiscountRow').classList.add('hidden');
       }
 
       const priceAfterUpgrade = Math.max(0, subtotal - totalRankUpgradeDeduction);
 
-      // Voucher Discount Math
       let voucherDiscount = 0;
       if (AppState.appliedVoucher) {
         voucherDiscount = Math.floor(priceAfterUpgrade * (AppState.appliedVoucher.discount_percent / 100));
@@ -1389,9 +1337,7 @@
       let subtotal = AppState.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
       
       let totalRankUpgradeDeduction = 0;
-      const activePlayerRank = (p.rank || 'DEFAULT').toUpperCase();
-      const currentRankPrice = p.rankPrice || DEFAULT_RANK_PRICES[activePlayerRank] || 0;
-
+      const currentRankPrice = p.rankPrice || 0;
       AppState.cart.forEach(item => {
         if (item.category === 'Ranks' && item.price > currentRankPrice && currentRankPrice > 0) {
           totalRankUpgradeDeduction += (currentRankPrice * item.qty);
@@ -1404,14 +1350,14 @@
 
       const formattedTotal = `Rp ${finalTotal.toLocaleString('id-ID')}`;
 
-      let upgradeNote = totalRankUpgradeDeduction > 0 ? `\n🏷️ Potongan Upgrade (${activePlayerRank}): -Rp ${totalRankUpgradeDeduction.toLocaleString('id-ID')}` : '';
+      let upgradeNote = totalRankUpgradeDeduction > 0 ? `\n🏷️ Potongan Upgrade (${p.rank}): -Rp ${totalRankUpgradeDeduction.toLocaleString('id-ID')}` : '';
       let voucherNote = voucherDiscount > 0 ? `\n🎟️ Diskon Voucher (${AppState.appliedVoucher.code}): -Rp ${voucherDiscount.toLocaleString('id-ID')}` : '';
 
       const message = `Halo CS Mawi SMP, saya ingin membeli / upgrade produk:\n\n` +
                       `🛒 Item: ${itemsSummary}\n` +
                       `👤 Nickname: ${p.nick}\n` +
                       `🎮 Platform: ${p.platform}\n` +
-                      `⭐ Rank Terdeteksi: ${activePlayerRank}\n` +
+                      `⭐ Rank Terdeteksi: ${p.rank}\n` +
                       `🖼️ Head Skin: https://mc-heads.net/avatar/${p.nick.replace(/^_+|_+$/g, '')}/100` +
                       `${upgradeNote}` +
                       `${voucherNote}\n` +
@@ -1488,7 +1434,7 @@
         container.innerHTML += `
           <div class="clean-card rounded-xl overflow-hidden flex flex-col justify-between">
             <div class="relative aspect-video bg-voidLight">
-              <img src="${item.image_drive_url}" alt="Screenshot" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500'">
+              <img src="${item.image_drive_url}" alt="Screenshot" loading="lazy" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500'">
             </div>
             <div class="p-3 space-y-1.5">
               <div class="flex items-center justify-between text-[11px] text-gray-400">
@@ -1577,7 +1523,6 @@
         document.getElementById('settingBrandName').value = AppState.brandName;
         document.getElementById('settingLogoUrl').value = AppState.logoUrl;
         document.getElementById('settingHeroText').value = AppState.heroText;
-        document.getElementById('adminSecEmail').value = AppState.adminCredentials.email;
       }
       lucide.createIcons();
     }
@@ -1612,29 +1557,16 @@
       showToast(msg);
     }
 
-    // AUTH STAFF & PROTEKSI LOGIN WITH PIN
-    function openAuthModal() { 
-      const pinWrapper = document.getElementById('loginPinWrapper');
-      if (AppState.adminCredentials.pin) pinWrapper.classList.remove('hidden');
-      else pinWrapper.classList.add('hidden');
-      document.getElementById('userAuthModal').classList.remove('opacity-0', 'pointer-events-none'); 
-    }
-
+    // AUTH STAFF
+    function openAuthModal() { document.getElementById('userAuthModal').classList.remove('opacity-0', 'pointer-events-none'); }
     function closeAuthModal() { document.getElementById('userAuthModal').classList.add('opacity-0', 'pointer-events-none'); }
 
     function handleUserLogin() {
       const emailInput = document.getElementById('loginEmail').value.trim().toLowerCase();
       const passInput = document.getElementById('loginPass').value.trim();
-      const pinInput = document.getElementById('loginPin').value.trim();
 
-      const creds = AppState.adminCredentials;
-
-      if ((emailInput === creds.email.toLowerCase() || emailInput === 'admin') && passInput === creds.pass) {
-        if (creds.pin && pinInput !== creds.pin) {
-          return showToast('PIN Keamanan Admin salah / tidak sesuai!', 'error');
-        }
-
-        AppState.currentUser = { name: "Owner Mawi", email: creds.email, nick: "AdminMawi", isAdmin: true };
+      if ((emailInput === 'admin' || emailInput === 'admin@mawi.com') && passInput === 'mawi2026') {
+        AppState.currentUser = { name: "Owner Mawi", email: "admin@mawi.com", nick: "AdminMawi", isAdmin: true };
         localStorage.setItem('mawi_auth_user', JSON.stringify(AppState.currentUser));
         updateUserHeaderUI();
         closeAuthModal();
@@ -1675,50 +1607,14 @@
       lucide.createIcons();
     }
 
-    // PENGATURAN KREDENSIAL ADMIN & PROTEKSI PIN
-    function saveAdminCredentials() {
-      const newEmail = document.getElementById('adminSecEmail').value.trim();
-      const oldPass = document.getElementById('adminSecOldPass').value.trim();
-      const newPass = document.getElementById('adminSecNewPass').value.trim();
-
-      if (!newEmail) return showToast('Email admin tidak boleh kosong!', 'error');
-      if (oldPass !== AppState.adminCredentials.pass) {
-        return showToast('Password Lama salah!', 'error');
-      }
-
-      AppState.adminCredentials.email = newEmail;
-      if (newPass) AppState.adminCredentials.pass = newPass;
-
-      localStorage.setItem('mawi_admin_creds', JSON.stringify(AppState.adminCredentials));
-      document.getElementById('adminSecOldPass').value = '';
-      document.getElementById('adminSecNewPass').value = '';
-      showToast('Akun Admin (Email & Password) berhasil diperbarui!');
-    }
-
-    function saveAdminPin() {
-      const pin = document.getElementById('adminSecPin').value.trim();
-      if (pin && (pin.length !== 6 || isNaN(pin))) {
-        return showToast('PIN Keamanan harus terdiri dari 6 digit angka!', 'error');
-      }
-
-      AppState.adminCredentials.pin = pin;
-      localStorage.setItem('mawi_admin_creds', JSON.stringify(AppState.adminCredentials));
-      document.getElementById('adminSecPin').value = '';
-      showToast(pin ? 'PIN Keamanan Admin berhasil diaktifkan!' : 'PIN Keamanan dinonaktifkan.');
-    }
-
     // ADMIN PANEL MANAGEMENT
     function switchAdminTab(tab) {
-      ['products', 'vouchers', 'security', 'gallery', 'rules', 'settings'].forEach(t => {
-        const el = document.getElementById(`adminPanel-${t}`);
-        const btn = document.getElementById(`adminTabBtn-${t}`);
-        if (el) el.classList.add('hidden');
-        if (btn) btn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white whitespace-nowrap';
+      ['products', 'vouchers', 'gallery', 'rules', 'settings'].forEach(t => {
+        document.getElementById(`adminPanel-${t}`).classList.add('hidden');
+        document.getElementById(`adminTabBtn-${t}`).className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white whitespace-nowrap';
       });
-      const activeEl = document.getElementById(`adminPanel-${tab}`);
-      const activeBtn = document.getElementById(`adminTabBtn-${tab}`);
-      if (activeEl) activeEl.classList.remove('hidden');
-      if (activeBtn) activeBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold orange-btn text-white whitespace-nowrap';
+      document.getElementById(`adminPanel-${tab}`).classList.remove('hidden');
+      document.getElementById(`adminTabBtn-${tab}`).className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold orange-btn text-white whitespace-nowrap';
       lucide.createIcons();
     }
 
@@ -1804,6 +1700,7 @@
       if (idx > -1) AppState.products[idx] = productObj;
       else AppState.products.push(productObj);
 
+      saveStateToCache();
       syncToSheets({ action: 'saveProduct', product: productObj });
       closeProductCrudModal();
       renderAdminProducts();
@@ -1814,6 +1711,7 @@
     function deleteProduct(id) {
       if (!confirm('Hapus produk ini?')) return;
       AppState.products = AppState.products.filter(p => p.id !== id);
+      saveStateToCache();
       syncToSheets({ action: 'deleteProduct', id: id });
       renderAdminProducts();
       renderProducts();
@@ -1828,7 +1726,7 @@
       AppState.gallery.forEach(item => {
         grid.innerHTML += `
           <div class="p-2.5 rounded-xl bg-voidLight border border-glassBorder space-y-2">
-            <img src="${item.image_drive_url}" class="w-full h-28 object-cover rounded-lg">
+            <img src="${item.image_drive_url}" loading="lazy" class="w-full h-28 object-cover rounded-lg">
             <div class="text-xs">
               <span class="font-bold text-white block truncate">👤 ${item.username}</span>
               <span class="text-[10px] text-gray-400 line-clamp-1">${item.caption || '-'}</span>
@@ -1844,6 +1742,7 @@
     function deleteGalleryItem(id) {
       if (!confirm('Hapus foto ini dari galeri?')) return;
       AppState.gallery = AppState.gallery.filter(g => g.id !== id);
+      saveStateToCache();
       syncToSheets({ action: 'deleteGallery', id: id });
       renderAdminGallery();
       renderGallery();
@@ -1886,6 +1785,7 @@
       });
 
       AppState.rules = updatedRules;
+      saveStateToCache();
       syncToSheets({ action: 'saveRules', rules: AppState.rules });
       renderRulesView();
       showToast('Aturan server berhasil diperbarui!');
@@ -1948,6 +1848,7 @@
         if (idx > -1) AppState.vouchers[idx] = vObj;
       } else AppState.vouchers.push(vObj);
 
+      saveStateToCache();
       syncToSheets({ action: 'saveVoucher', voucher: vObj, oldCode: oldCode });
       closeVoucherModal();
       renderAdminVouchers();
@@ -1957,6 +1858,7 @@
     function deleteVoucher(code) {
       if (!confirm(`Hapus voucher ${code}?`)) return;
       AppState.vouchers = AppState.vouchers.filter(v => v.code.toUpperCase() !== code.toUpperCase());
+      saveStateToCache();
       syncToSheets({ action: 'deleteVoucher', code: code });
       renderAdminVouchers();
       showToast('Voucher terhapus.');
@@ -1967,6 +1869,7 @@
       AppState.logoUrl = document.getElementById('settingLogoUrl').value.trim() || AppState.logoUrl;
       AppState.heroText = document.getElementById('settingHeroText').value.trim() || AppState.heroText;
 
+      saveStateToCache();
       syncToSheets({
         action: 'saveSettings',
         settings: { brandName: AppState.brandName, logoUrl: AppState.logoUrl, heroText: AppState.heroText }
@@ -1977,13 +1880,13 @@
     }
 
     function syncToSheets(payload) {
-      if (GAS_WEB_APP_URL.includes("MASUKKAN_URL")) return;
+      if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("MASUKKAN_URL")) return;
       fetch(GAS_WEB_APP_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
-      }).catch(err => console.warn('Sync gagal:', err));
+      }).catch(err => console.warn('Sync notice:', err));
     }
   </script>
 </body>
