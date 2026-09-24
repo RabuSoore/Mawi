@@ -1,7 +1,7 @@
 /**
  * MAWI SMP - UNIFIED BACKEND & FRONTEND SERVER
  * Menjalankan Backend API Express + Menyajikan Website index.html dalam 1 Aplikasi
- * MENDUKUNG DUAL DATABASE: LUCKPERMS & LIBRELOGIN TERPISAH
+ * MENDUKUNG DUAL DATABASE: LUCKPERMS & LIBRELOGIN TERPISAH (FAST-TIMEOUT PROTECTED)
  */
 
 const express = require('express');
@@ -24,78 +24,105 @@ app.use(express.static(__dirname));
 const DEFAULT_RANK_PRICES = {
   'DEFAULT': 0,
   'MEMBER': 0,
-  'NIKE': 25000,
-  'DIOR': 75000,
-  'ROLEX': 135000,
-  'GUCCI': 250000,
-  'MAWI': 400000
+  'VIP': 25000,
+  'MVP': 50000,
+  'SULTAN': 100000,
+  'OVERLORD': 200000,
+  'LORD': 390000
 };
 
 // ==========================================
-// 1. ANTI-BOT & RATE LIMITER MIDDLEWARE
+// CONFIG DUAL MYSQL DATABASE POOLS (STRICT SHORT TIMEOUT)
 // ==========================================
-const requestRateMap = new Map();
-const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 Menit
-const MAX_REQUESTS_PER_WINDOW = 20;
 
-const antiBotRateLimiter = (req, res, next) => {
-  const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown_ip';
-  const now = Date.now();
+const createFastPool = (host, user, password, database, port) => {
+  return mysql.createPool({
+    host: host || 'localhost',
+    user: user || 'root',
+    password: password || '',
+    database: database || 'minecraft_db',
+    port: Number(port) || 3306,
+    waitForConnections: true,
+    connectionLimit: 3,
+    queueLimit: 0,
+    connectTimeout: 4000 // Timeout cepat 4 detik
+  });
+};
 
-  if (!requestRateMap.has(clientIp)) {
-    requestRateMap.set(clientIp, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
-  } else {
-    const ipData = requestRateMap.get(clientIp);
-    if (now > ipData.resetTime) {
-      ipData.count = 1;
-      ipData.resetTime = now + RATE_LIMIT_WINDOW_MS;
-    } else {
-      ipData.count++;
-      if (ipData.count > MAX_REQUESTS_PER_WINDOW) {
-        console.warn(`[ANTI-BOT PROTECT] Rate limit exceeded for IP: ${clientIp}`);
-        return res.status(429).json({
-          success: false,
-          message: 'Terlalu banyak permintaan. Silakan tunggu 1 menit!'
-        });
-      }
-    }
+// Pool 1: LuckPerms
+const luckpermsPool = createFastPool(
+  process.env.LP_DB_HOST || process.env.DB_HOST,
+  process.env.LP_DB_USER || process.env.DB_USER,
+  process.env.LP_DB_PASS || process.env.DB_PASSWORD,
+  process.env.LP_DB_NAME || process.env.DB_NAME_LUCKPERMS || process.env.DB_NAME,
+  process.env.LP_DB_PORT || process.env.DB_PORT
+);
+
+// Pool 2: LibreLogin
+const libreloginPool = createFastPool(
+  process.env.LOGIN_DB_HOST || process.env.DB_HOST,
+  process.env.LOGIN_DB_USER || process.env.DB_USER,
+  process.env.LOGIN_DB_PASS || process.env.DB_PASSWORD,
+  process.env.LOGIN_DB_NAME || process.env.DB_NAME_LIBRELOGIN || process.env.DB_NAME,
+  process.env.LOGIN_DB_PORT || process.env.DB_PORT
+);
+
+// Helper Query dengan Timeout Keras (Max 4 detik)
+async function queryWithTimeout(pool, sql, params) {
+  return Promise.race([
+    pool.query(sql, params),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('TIMEOUT_EXCEEDED: Database server hosting memblokir port 3306 atau tidak merespon')), 4000)
+    )
+  ]);
+}
+
+// ==========================================
+// BACKEND API ENDPOINTS
+// ==========================================
+
+// Endpoint Tes Koneksi Database Langsung
+app.get('/api/test-db', async (req, res) => {
+  const testResults = {
+    timestamp: new Date().toISOString(),
+    luckperms: { status: 'PENDING', message: '' },
+    librelogin: { status: 'PENDING', message: '' }
+  };
+
+  // Tes 1: Database LuckPerms
+  try {
+    const [lpRows] = await queryWithTimeout(luckpermsPool, 'SELECT COUNT(*) as total FROM luckperms_players');
+    testResults.luckperms = {
+      status: 'SUCCESS ✅',
+      message: 'Berhasil terhubung ke database LuckPerms!',
+      total_players: lpRows[0].total
+    };
+  } catch (err) {
+    testResults.luckperms = {
+      status: 'ERROR ❌',
+      code: err.code || 'TIMEOUT_ERROR',
+      message: err.message
+    };
   }
-  next();
-};
 
-app.use('/api/', antiBotRateLimiter);
+  // Tes 2: Database LibreLogin
+  try {
+    const [loginRows] = await queryWithTimeout(libreloginPool, 'SELECT COUNT(*) as total FROM librelogin_users');
+    testResults.librelogin = {
+      status: 'SUCCESS ✅',
+      message: 'Berhasil terhubung ke database LibreLogin!',
+      total_users: loginRows[0].total
+    };
+  } catch (err) {
+    testResults.librelogin = {
+      status: 'ERROR ❌',
+      code: err.code || 'TIMEOUT_ERROR',
+      message: err.message
+    };
+  }
 
-// ==========================================
-// CONFIG DUAL MYSQL DATABASE POOLS
-// ==========================================
-
-// Connection Pool 1: LuckPerms
-const luckpermsPool = mysql.createPool({
-  host: process.env.LP_DB_HOST || process.env.DB_HOST || 'localhost',
-  user: process.env.LP_DB_USER || process.env.DB_USER || 'root',
-  password: process.env.LP_DB_PASS || process.env.DB_PASSWORD || '',
-  database: process.env.LP_DB_NAME || process.env.DB_NAME_LUCKPERMS || process.env.DB_NAME || 'minecraft_db',
-  port: Number(process.env.LP_DB_PORT || process.env.DB_PORT) || 3306,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
+  return res.json(testResults);
 });
-
-// Connection Pool 2: LibreLogin
-const libreloginPool = mysql.createPool({
-  host: process.env.LOGIN_DB_HOST || process.env.DB_HOST || 'localhost',
-  user: process.env.LOGIN_DB_USER || process.env.DB_USER || 'root',
-  password: process.env.LOGIN_DB_PASS || process.env.DB_PASSWORD || '',
-  database: process.env.LOGIN_DB_NAME || process.env.DB_NAME_LIBRELOGIN || process.env.DB_NAME || 'minecraft_db',
-  port: Number(process.env.LOGIN_DB_PORT || process.env.DB_PORT) || 3306,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
-
-// ==========================================
-// 2. BACKEND API ENDPOINTS
-// ==========================================
 
 // Pengecekan Rank & Bedrock Prefix
 app.post('/api/player/check-rank', async (req, res) => {
@@ -119,7 +146,6 @@ app.post('/api/player/check-rank', async (req, res) => {
   let rawUsername = username.trim();
   const isBedrock = (platform === 'MCPE' || platform === 'Bedrock');
 
-  // Penanganan otomatis Prefix '_' Bedrock/Geyser
   let possibleUsernames = [rawUsername];
   if (isBedrock) {
     if (!rawUsername.startsWith('_')) possibleUsernames.push(`_${rawUsername}`);
@@ -137,7 +163,8 @@ app.post('/api/player/check-rank', async (req, res) => {
 
     // 1. Query Database LuckPerms
     try {
-      const [lpResult] = await luckpermsPool.query(
+      const [lpResult] = await queryWithTimeout(
+        luckpermsPool,
         `SELECT username, COALESCE(primary_group, 'default') AS primary_group 
          FROM luckperms_players 
          WHERE LOWER(username) IN (${placeholders.toLowerCase()})
@@ -151,7 +178,8 @@ app.post('/api/player/check-rank', async (req, res) => {
 
     // 2. Query Database LibreLogin
     try {
-      const [loginResult] = await libreloginPool.query(
+      const [loginResult] = await queryWithTimeout(
+        libreloginPool,
         `SELECT uuid, username 
          FROM librelogin_users 
          WHERE LOWER(username) IN (${placeholders.toLowerCase()})
@@ -184,8 +212,7 @@ app.post('/api/player/check-rank', async (req, res) => {
     });
 
   } catch (error) {
-    console.warn('[DB NOTICE]: Database MySQL offline/tidak terjangkau. Menggunakan fallback rank.');
-    
+    console.warn('[DB NOTICE]: Database MySQL offline/timeout.');
     return res.json({
       success: true,
       fallback: true,
