@@ -64,7 +64,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* PRELOADER PROGRESS BAR STYLING */
     #preloader {
       position: fixed;
       inset: 0;
@@ -78,13 +77,8 @@
       padding: 1.5rem;
     }
     
-    .preloader-glow {
-      box-shadow: 0 0 35px -5px rgba(231, 111, 81, 0.4);
-    }
-
-    .pulse-logo {
-      animation: logoPulse 2s ease-in-out infinite;
-    }
+    .preloader-glow { box-shadow: 0 0 35px -5px rgba(231, 111, 81, 0.4); }
+    .pulse-logo { animation: logoPulse 2s ease-in-out infinite; }
 
     @keyframes logoPulse {
       0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(231,111,81,0.3)); }
@@ -105,7 +99,6 @@
     </div>
     <div class="text-gray-400 text-xs font-medium tracking-wide mb-6">Server Minecraft Crossplay Indonesia</div>
 
-    <!-- PROGRESS BAR CONTAINER -->
     <div class="w-full max-w-xs sm:max-w-md space-y-2">
       <div class="flex items-center justify-between text-xs font-mono">
         <span id="preloaderSignalBadge" class="flex items-center gap-1.5 text-emerald-400 font-bold">
@@ -115,7 +108,6 @@
         <span id="preloaderPercentage" class="text-accent font-black">0%</span>
       </div>
 
-      <!-- PROGRESS TRACK -->
       <div class="w-full bg-voidLight border border-glassBorder rounded-full h-3 sm:h-4 overflow-hidden p-0.5 relative shadow-inner">
         <div id="preloaderBar" class="h-full rounded-full bg-gradient-to-r from-accent via-accentLight to-amber-400 w-0 transition-all duration-100 ease-out shadow-lg"></div>
       </div>
@@ -320,7 +312,8 @@
         <div id="storeCategoryTabs" class="flex items-center gap-1.5 bg-voidLight p-1 rounded-xl border border-glassBorder overflow-x-auto w-full sm:w-auto"></div>
       </div>
 
-      <div id="rankUpgradeNotice" class="bg-gradient-to-r from-accent/20 to-burgundy/30 border border-accent/40 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+      <!-- RANK UPGRADE DYNAMIC FORMULA NOTICE BANNER -->
+      <div id="rankUpgradeNotice" class="bg-gradient-to-r from-accent/20 via-burgundy/30 to-voidLight border border-accent/40 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
         <div class="flex items-center gap-3">
           <img id="noticeSkinHead" src="https://mc-heads.net/avatar/Steve/48" class="w-11 h-11 rounded-xl bg-void border border-glassBorder shrink-0 object-cover" onerror="this.src='https://mc-heads.net/avatar/Steve/48'">
           <div>
@@ -328,7 +321,9 @@
               <span id="noticePlayerNick">Pemain: Belum Terdaftar</span>
               <span id="noticeCurrentRankBadge" class="px-2 py-0.5 rounded bg-accent/20 text-accent text-[9px] font-mono border border-accent/40">RANK: DEFAULT</span>
             </div>
-            <p class="text-gray-300 text-[11px] mt-0.5 leading-tight">Harga terpotong otomatis jika Anda melakukan <strong>Upgrade Rank</strong> lebih tinggi!</p>
+            <p id="noticeFormulaText" class="text-gray-300 text-[11px] mt-0.5 leading-tight">
+              Sistem Potongan Otomatis Upgrade: <strong class="text-emerald-400 font-mono">(Harga Rank Dituju) - (Harga Rank Sekarang) = Harga Bayar</strong>
+            </p>
           </div>
         </div>
         <button onclick="openPlayerIdentifyModal()" class="w-full sm:w-auto px-4 py-2 bg-clean-panel border border-glassBorder hover:border-accent text-accent rounded-xl font-bold text-xs shrink-0 transition text-center active:scale-95">
@@ -500,7 +495,7 @@
 
               <div>
                 <label class="block text-[11px] text-gray-300 mb-1">2FA Security PIN Baru (6 Angka)</label>
-                <input id="adminNewPin" type="password" maxlength="6" placeholder="Contoh: 889900 (Kosongkan jika tidak diubah)" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white font-mono tracking-widest">
+                <input id="adminNewPin" type="password" maxlength="6" placeholder="Contoh: 123456 (Kosongkan jika tidak diubah)" class="w-full bg-voidLight border border-glassBorder rounded-xl p-2.5 text-white font-mono tracking-widest">
               </div>
             </div>
 
@@ -728,9 +723,9 @@
         <div id="voucherFeedback" class="text-[10px] font-medium hidden mt-1"></div>
 
         <div class="mt-3.5 p-3.5 rounded-2xl bg-voidLight border border-glassBorder space-y-1.5 text-xs">
-          <div class="flex justify-between text-gray-400"><span>Subtotal</span><span id="cartSubtotalText">Rp 0</span></div>
+          <div class="flex justify-between text-gray-400"><span>Subtotal Produk</span><span id="cartSubtotalText">Rp 0</span></div>
           <div id="cartUpgradeDiscountRow" class="flex justify-between text-emerald-400 hidden">
-            <span id="cartUpgradeLabel">Potongan Upgrade</span>
+            <span id="cartUpgradeLabel">Potongan Upgrade Rank</span>
             <span id="cartUpgradeText">- Rp 0</span>
           </div>
           <div id="cartDiscountRow" class="flex justify-between text-emerald-400 hidden">
@@ -738,8 +733,8 @@
             <span id="cartDiscountText">- Rp 0</span>
           </div>
           <div class="flex justify-between text-sm font-bold text-white pt-2 border-t border-glassBorder mt-1">
-            <span>Total</span>
-            <span id="cartTotalText" class="text-accent text-base">Rp 0</span>
+            <span>Total Akhir</span>
+            <span id="cartTotalText" class="text-accent text-base font-black">Rp 0</span>
           </div>
         </div>
 
@@ -879,7 +874,7 @@
 
   <!-- SCRIPT UTAMA -->
   <script>
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzKko-aiNINx_Ehr0nrL6CSQsE9vofKF3qjVavYhr9G2WbVATWjTfoX5jUowHiWHi87Kg/exec";
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbywUKYkFS7QtcGrFT7UqLS3g3WIhjOPg4C6w9MRdw9BaPFqpGXk55gSLA4dEgyWzxrdIQ/exec";
     const EXPRESS_BACKEND_URL = "/api";
     const CS_WHATSAPP_NUMBER = "628892910155";
 
@@ -892,7 +887,7 @@
         id: "UPD-101",
         title: "Perbaikan Sistem Database & Performa Website v2.5",
         category: "SERVER UPDATE",
-        content: "Kami telah meningkatkan kecepatan memuat website dengan Preloader Progress Bar Sinyal, menambahkan proteksi 2FA PIN Admin, serta integrasi changelog real-time.",
+        content: "Kami telah meningkatkan kecepatan memuat website dengan Preloader Progress Bar Sinyal, menambahkan proteksi 2FA PIN Admin, serta integrasi kalkulasi upgrade rank otomatis.",
         author: "Admin Mawi",
         date: "2026-09-24",
         time: "14:30 WIB",
@@ -915,14 +910,6 @@
       { title: "Tata Krama & Larangan SARA", body: "Hormati sesama pemain dan staf. Ucapan rasis, SARA, atau spam berlebihan berujung mute/ban." },
       { title: "Griefing & Pencurian Bangunan", body: "Dilarang mencuri atau merusak bangunan player lain. Gunakan /claim untuk mengamankan wilayah." }
     ];
-
-    const DEFAULT_ADMIN_USER = {
-      name: "Owner Mawi",
-      email: "admin@mawi.com",
-      username: "admin",
-      isAdmin: true,
-      token: sessionStorage.getItem('mawi_admin_token') || null
-    };
 
     const AppState = {
       brandName: 'MAWI SMP',
@@ -950,16 +937,25 @@
       captchaAns: 0,
       selectedModalPlatform: 'Java',
       measuredPing: 45,
-      signalSpeedMultiplier: 1.0,
       adminLockoutTimer: null
     };
+
+    // Helper to calculate exact price of a given rank name
+    function getRankPrice(rankName) {
+      if (!rankName) return 0;
+      const upper = String(rankName).trim().toUpperCase();
+      if (DEFAULT_RANK_PRICES[upper] !== undefined) {
+        return DEFAULT_RANK_PRICES[upper];
+      }
+      const matchedProd = AppState.products.find(p => p.category === 'Ranks' && p.name.toUpperCase().includes(upper));
+      return matchedProd ? Number(matchedProd.price) : 0;
+    }
 
     window.addEventListener('DOMContentLoaded', async () => {
       lucide.createIcons();
       initCaptcha();
       setupInactivityTimer();
 
-      // RUN SIGNAL & PROGRESS BAR PRELOADER
       await executeSignalBasedPreloader();
 
       fetchLiveServerStatus();
@@ -972,9 +968,7 @@
       }
     });
 
-    // ----------------------------------------------------
-    // SIGNAL-BASED PROGRESS BAR PRELOADER ENGINE
-    // ----------------------------------------------------
+    // PROGRESS BAR PRELOADER
     async function executeSignalBasedPreloader() {
       const progressBar = document.getElementById('preloaderBar');
       const percentageText = document.getElementById('preloaderPercentage');
@@ -993,16 +987,13 @@
 
       setProgress(10, "Mengukur latency sinyal koneksi...");
 
-      // Measure Ping to Backend / Ping API
       const pingStartTime = performance.now();
-      let measuredPing = 50; // default assumption
+      let measuredPing = 45;
 
       try {
         const pingRes = await fetch(`${EXPRESS_BACKEND_URL}/ping`, { method: 'GET', cache: 'no-store' });
         const pingEndTime = performance.now();
-        if (pingRes.ok) {
-          measuredPing = Math.round(pingEndTime - pingStartTime);
-        }
+        if (pingRes.ok) measuredPing = Math.round(pingEndTime - pingStartTime);
       } catch (err) {
         measuredPing = Math.round(performance.now() - pingStartTime);
       }
@@ -1010,42 +1001,32 @@
       AppState.measuredPing = measuredPing;
       if (latencyText) latencyText.innerText = `${measuredPing} ms`;
 
-      // Determine signal quality and calculate progress step speed
-      // Faster ping / signal = bigger step increments = faster completion!
-      let signalCategory = "SUPER FAST";
-      let incrementMultiplier = 2.5; // High speed internet
+      let incrementMultiplier = 2.5;
       let badgeHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span><span>🟢 Sinyal Cepat (${measuredPing}ms)</span>`;
 
       if (measuredPing < 60) {
-        signalCategory = "Sangat Cepat (Fiber/4G)";
         incrementMultiplier = 3.0;
-        badgeHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span><span>⚡ Sinyal Cepat (${measuredPing}ms)</span>`;
+        badgeHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span><span>⚡ Sinyal Sangat Cepat (${measuredPing}ms)</span>`;
       } else if (measuredPing >= 60 && measuredPing < 150) {
-        signalCategory = "Sedang";
         incrementMultiplier = 1.6;
         badgeHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span><span>🟡 Sinyal Sedang (${measuredPing}ms)</span>`;
       } else {
-        signalCategory = "Lambat";
         incrementMultiplier = 0.9;
         badgeHTML = `<span class="w-2 h-2 rounded-full bg-rose-400"></span><span>🔴 Sinyal Lambat (${measuredPing}ms)</span>`;
       }
 
       if (signalBadge) signalBadge.innerHTML = badgeHTML;
-      AppState.signalSpeedMultiplier = incrementMultiplier;
 
       setProgress(25, "Menghubungkan ke Database & Spreadsheet...");
 
-      // Parallel data fetching while animating progress bar smoothly based on signal speed
       const loadDataPromise = Promise.allSettled([
         loadDataFromSheets(),
         checkExpressBackendHealth()
       ]);
 
-      // Dynamic Progress Smooth Interval
       await new Promise(resolve => {
         const interval = setInterval(() => {
           if (currentProgress < 85) {
-            // Speed up progress proportionally to signal multiplier
             const step = (Math.random() * 8 + 4) * incrementMultiplier;
             setProgress(currentProgress + step, currentProgress > 50 ? "Memuat Katalog Toko & Update Server..." : "Mengunduh konfigurasi server...");
           } else {
@@ -1056,10 +1037,8 @@
       });
 
       await loadDataPromise;
-
       setProgress(100, "Selesai! Membuka Website Mawi SMP...");
 
-      // Smooth Fade Out Preloader
       await new Promise(r => setTimeout(r, 200));
       const preloader = document.getElementById('preloader');
       if (preloader) {
@@ -1084,12 +1063,8 @@
         const data = await res.json();
         if (data && data.online && data.players) {
           counterEl.innerText = `${data.players.online} / ${data.players.max || 500}`;
-        } else {
-          counterEl.innerText = `128 / 500`;
-        }
-      } catch (e) {
-        counterEl.innerText = `128 / 500`;
-      }
+        } else counterEl.innerText = `128 / 500`;
+      } catch (e) { counterEl.innerText = `128 / 500`; }
     }
 
     async function loadDataFromSheets() {
@@ -1142,7 +1117,6 @@
       document.getElementById('heroAnnouncementText').innerText = AppState.heroText;
     }
 
-    // RENDER UPDATES VIEW
     function renderUpdatesView() {
       const container = document.getElementById('updatesListContainer');
       if (!container) return;
@@ -1152,7 +1126,6 @@
       if (AppState.currentUpdateFilter !== 'ALL') {
         list = list.filter(u => u.category === AppState.currentUpdateFilter);
       }
-
       list.sort((a, b) => Number(b.timestamp || 0) - Number(a.timestamp || 0));
 
       if (list.length === 0) {
@@ -1179,7 +1152,6 @@
                 <i data-lucide="user-check" class="w-3.5 h-3.5 text-emerald-400"></i> Oleh: ${upd.author || 'Admin Mawi'}
               </span>
             </div>
-
             <div>
               <h3 class="text-base sm:text-lg font-bold text-white">${upd.title}</h3>
               <p class="text-xs sm:text-sm text-gray-300 leading-relaxed mt-1.5 whitespace-pre-line">${upd.content}</p>
@@ -1299,9 +1271,7 @@
       showToast('Pengumuman update dihapus.');
     }
 
-    // ----------------------------------------------------
-    // ENHANCED SECURITY ADMIN & 2FA FUNCTIONS
-    // ----------------------------------------------------
+    // ADMIN AUTHENTICATION & SECURITY
     async function handleUserLogin() {
       const credential = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPass').value.trim();
@@ -1333,15 +1303,12 @@
           updateUserHeaderUI();
           closeAuthModal();
           navigate('admin');
-          showToast('Akses Admin Diberikan! Terverifikasi dengan 2FA PIN.');
+          showToast('Akses Admin Diberikan! Terverifikasi 2FA.');
         } else {
-          if (data.lockout) {
-            triggerLockoutTimer(data.remainingSec || 60);
-          }
+          if (data.lockout) triggerLockoutTimer(data.remainingSec || 60);
           showToast(data.message || 'Login gagal!', 'error');
         }
       } catch (err) {
-        // Fallback local verification if backend API is not responding
         if (credential.toLowerCase() === 'admin' && password === 'mawi2026' && pin === '123456') {
           AppState.currentUser = { username: 'admin', email: 'admin@mawi.com', name: 'Owner Mawi', isAdmin: true, token: 'local-token-' + Date.now() };
           sessionStorage.setItem('mawi_auth_user', JSON.stringify(AppState.currentUser));
@@ -1364,7 +1331,7 @@
       submitBtn.disabled = true;
 
       let remaining = seconds;
-      alertBox.innerText = `⛔ Percobaan gagal beruntun. Login terkunci selama ${remaining} detik.`;
+      alertBox.innerText = `⛔ Percobaan gagal. Login dikunci selama ${remaining} detik.`;
 
       if (AppState.adminLockoutTimer) clearInterval(AppState.adminLockoutTimer);
       AppState.adminLockoutTimer = setInterval(() => {
@@ -1374,7 +1341,7 @@
           alertBox.classList.add('hidden');
           submitBtn.disabled = false;
         } else {
-          alertBox.innerText = `⛔ Percobaan gagal beruntun. Login terkunci selama ${remaining} detik.`;
+          alertBox.innerText = `⛔ Percobaan gagal. Login dikunci selama ${remaining} detik.`;
         }
       }, 1000);
     }
@@ -1477,11 +1444,12 @@
         const data = await response.json();
 
         if (data.success && data.player) {
+          const detectedRankName = data.player.rank || 'DEFAULT';
           const pResult = {
             nick: data.player.username || cleanNick,
             platform: data.player.platform || platform,
-            rank: data.player.rank || 'DEFAULT',
-            rankPrice: data.player.rankPrice || DEFAULT_RANK_PRICES[data.player.rank] || 0,
+            rank: detectedRankName,
+            rankPrice: getRankPrice(detectedRankName),
             isRegistered: !!data.player.isRegistered
           };
 
@@ -1517,6 +1485,16 @@
       document.getElementById('noticeSkinHead').src = headAvatar;
       document.getElementById('noticePlayerNick').innerText = (p.nick && p.isRegistered) ? `Pemain: ${p.nick}` : 'Pemain: Belum Terdaftar';
       document.getElementById('noticeCurrentRankBadge').innerText = (p.nick && p.isRegistered) ? `RANK: ${p.rank}` : 'RANK: DEFAULT';
+
+      const currentRankPrice = (p.nick && p.isRegistered) ? getRankPrice(p.rank) : 0;
+      const formulaEl = document.getElementById('noticeFormulaText');
+      if (formulaEl) {
+        if (p.nick && p.isRegistered && currentRankPrice > 0) {
+          formulaEl.innerHTML = `Rank Saat Ini: <strong class="text-accent font-bold">${p.rank} (Rp ${currentRankPrice.toLocaleString('id-ID')})</strong>. Formula Upgrade: <strong class="text-emerald-400 font-mono">(Target Rank) - (Rp ${currentRankPrice.toLocaleString('id-ID')}) = Harga Bayar</strong>`;
+        } else {
+          formulaEl.innerHTML = `Sistem Potongan Otomatis Upgrade: <strong class="text-emerald-400 font-mono">(Harga Rank Dituju) - (Harga Rank Sekarang) = Harga Bayar</strong>`;
+        }
+      }
 
       document.getElementById('checkoutSkinHead').src = headAvatar;
       document.getElementById('checkoutNickDisplay').innerText = (p.nick && p.isRegistered) ? p.nick : 'Steve';
@@ -1611,6 +1589,7 @@
       });
     }
 
+    // RENDER PRODUCTS WITH EXACT (TARGET RANK - CURRENT RANK = DISPLAY PRICE) FORMULA
     function renderProducts() {
       const container = document.getElementById('productsGrid');
       if (!container) return;
@@ -1624,34 +1603,48 @@
         return;
       }
 
-      const currentRankPrice = (AppState.activePlayer && AppState.activePlayer.isRegistered) ? (AppState.activePlayer.rankPrice || 0) : 0;
+      const playerRegistered = (AppState.activePlayer && AppState.activePlayer.isRegistered);
+      const currentRankName = playerRegistered ? (AppState.activePlayer.rank || 'DEFAULT') : 'DEFAULT';
+      const currentRankPrice = playerRegistered ? getRankPrice(currentRankName) : 0;
 
       list.forEach(item => {
-        const originalPrice = Number(item.price);
-        let finalPrice = originalPrice;
+        const targetRankPrice = Number(item.price);
+        let finalDisplayPrice = targetRankPrice;
         let priceTagHTML = '';
-        let isOwnedOrLower = false;
+        let isAlreadyOwned = false;
 
         if (item.category === 'Ranks') {
-          if (originalPrice > currentRankPrice && currentRankPrice > 0) {
-            finalPrice = originalPrice - currentRankPrice;
+          // If player owns a rank equal to or higher than this product's rank
+          if (playerRegistered && currentRankPrice > 0 && targetRankPrice <= currentRankPrice) {
+            isAlreadyOwned = true;
             priceTagHTML = `
-              <div class="flex items-baseline gap-2">
-                <span class="text-base sm:text-lg font-black text-emerald-400">Rp ${finalPrice.toLocaleString('id-ID')}</span>
-                <span class="text-xs text-gray-400 line-through">Rp ${originalPrice.toLocaleString('id-ID')}</span>
+              <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-bold text-xs">
+                <i data-lucide="check-circle" class="w-4 h-4"></i>
+                <span>Rank Sudah Dimiliki</span>
               </div>
-              <span class="text-[9px] bg-emerald-500/10 text-emerald-400 font-bold px-2 py-0.5 rounded border border-emerald-500/20 inline-block mt-0.5">
-                Hemat Rp ${currentRankPrice.toLocaleString('id-ID')} (Upgrade ${AppState.activePlayer.rank})
-              </span>
             `;
-          } else if (originalPrice <= currentRankPrice && currentRankPrice > 0) {
-            isOwnedOrLower = true;
-            priceTagHTML = `<span class="text-xs font-bold text-gray-400">Rank Sudah Dimiliki</span>`;
-          } else {
-            priceTagHTML = `<p class="text-base sm:text-lg font-black text-accent">Rp ${originalPrice.toLocaleString('id-ID')}</p>`;
+          } 
+          // If player qualifies for Upgrade: (Target Price) - (Current Price) = Display Price
+          else if (playerRegistered && currentRankPrice > 0 && targetRankPrice > currentRankPrice) {
+            finalDisplayPrice = targetRankPrice - currentRankPrice;
+            priceTagHTML = `
+              <div class="space-y-1">
+                <div class="flex items-baseline gap-2">
+                  <span class="text-base sm:text-xl font-black text-emerald-400">Rp ${finalDisplayPrice.toLocaleString('id-ID')}</span>
+                  <span class="text-xs text-gray-400 line-through">Rp ${targetRankPrice.toLocaleString('id-ID')}</span>
+                </div>
+                <div class="text-[9px] bg-emerald-500/10 text-emerald-300 font-mono font-bold px-2 py-1 rounded border border-emerald-500/30 leading-tight">
+                  Formulir: Rp ${targetRankPrice.toLocaleString('id-ID')} (${item.name}) - Rp ${currentRankPrice.toLocaleString('id-ID')} (${currentRankName}) = <strong class="text-emerald-400">Rp ${finalDisplayPrice.toLocaleString('id-ID')}</strong>
+                </div>
+              </div>
+            `;
+          } 
+          // Default Rank Price Display
+          else {
+            priceTagHTML = `<p class="text-base sm:text-lg font-black text-accent">Rp ${targetRankPrice.toLocaleString('id-ID')}</p>`;
           }
         } else {
-          priceTagHTML = `<p class="text-base sm:text-lg font-black text-accent">Rp ${originalPrice.toLocaleString('id-ID')}</p>`;
+          priceTagHTML = `<p class="text-base sm:text-lg font-black text-accent">Rp ${targetRankPrice.toLocaleString('id-ID')}</p>`;
         }
 
         const featuresArray = Array.isArray(item.features) ? item.features : (item.features ? item.features.split(',') : []);
@@ -1675,8 +1668,11 @@
             </div>
           </div>
           <div class="pt-3.5 mt-3 border-t border-glassBorder flex items-center gap-2">
-            ${isOwnedOrLower ? `
-              <button disabled class="w-full py-2.5 rounded-xl bg-voidLight border border-glassBorder text-gray-500 text-xs font-bold opacity-60 cursor-not-allowed">Rank Dimiliki</button>
+            ${isAlreadyOwned ? `
+              <button disabled class="w-full py-2.5 rounded-xl bg-voidLight border border-glassBorder text-gray-400 text-xs font-bold opacity-75 cursor-not-allowed flex items-center justify-center gap-1.5">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+                <span>Rank Sudah Dimiliki</span>
+              </button>
             ` : `
               <button onclick="addToCart('${item.id}')" class="flex-1 py-2.5 rounded-xl bg-voidLight border border-glassBorder text-gray-200 text-xs font-semibold hover:bg-glass transition flex items-center justify-center gap-1.5 active:scale-95"><i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i><span>+ Keranjang</span></button>
               <button onclick="buyNow('${item.id}')" class="flex-1 py-2.5 rounded-xl orange-btn text-white text-xs font-bold shadow-md active:scale-95">Beli</button>
@@ -1707,9 +1703,20 @@
     function addToCart(productId) {
       const item = AppState.products.find(p => p.id === productId);
       if (!item) return;
+
+      const playerRegistered = (AppState.activePlayer && AppState.activePlayer.isRegistered);
+      const currentRankPrice = playerRegistered ? getRankPrice(AppState.activePlayer.rank) : 0;
+
+      // Check if trying to add an owned or lower rank
+      if (item.category === 'Ranks' && playerRegistered && currentRankPrice > 0 && Number(item.price) <= currentRankPrice) {
+        showToast(`Anda sudah memiliki Rank ${AppState.activePlayer.rank} atau rank lebih tinggi!`, 'error');
+        return;
+      }
+
       const idx = AppState.cart.findIndex(c => c.id === productId);
       if (idx > -1) AppState.cart[idx].qty += 1;
       else AppState.cart.push({ id: item.id, name: item.name, category: item.category, price: Number(item.price), qty: 1 });
+      
       localStorage.setItem('mawi_cart', JSON.stringify(AppState.cart));
       updateCartBadge();
       showToast(`${item.name} masuk keranjang!`);
@@ -1759,7 +1766,7 @@
 
       let subtotal = 0;
       let totalRankUpgradeDeduction = 0;
-      const currentRankPrice = (AppState.activePlayer && AppState.activePlayer.isRegistered) ? (AppState.activePlayer.rankPrice || 0) : 0;
+      const currentRankPrice = (AppState.activePlayer && AppState.activePlayer.isRegistered) ? getRankPrice(AppState.activePlayer.rank) : 0;
 
       AppState.cart.forEach((item, idx) => {
         const itemTotal = item.price * item.qty;
@@ -1856,7 +1863,7 @@
       let subtotal = AppState.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
       
       let totalRankUpgradeDeduction = 0;
-      const currentRankPrice = p.rankPrice || 0;
+      const currentRankPrice = getRankPrice(p.rank);
       AppState.cart.forEach(item => {
         if (item.category === 'Ranks' && item.price > currentRankPrice && currentRankPrice > 0) {
           totalRankUpgradeDeduction += (currentRankPrice * item.qty);
