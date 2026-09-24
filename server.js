@@ -1,7 +1,7 @@
 /**
  * MAWI SMP - UNIFIED BACKEND & FRONTEND SERVER
  * Menjalankan Backend API Express + Menyajikan Website index.html dalam 1 Aplikasi
- * MENDUKUNG DUAL DATABASE: LUCKPERMS & LIBRELOGIN TERPISAH (FAST-TIMEOUT & CACHED)
+ * MENDUKUNG DUAL DATABASE: LUCKPERMS & LIBRELOGIN TERPISAH (FAST-TIMEOUT PROTECTED)
  */
 
 const express = require('express');
@@ -13,31 +13,26 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware Keamanan & Parsing Cepat
+// Middleware Keamanan & Parsing
 app.use(cors());
-app.use(express.json({ limit: '50kb' }));
+app.use(express.json({ limit: '20kb' }));
 
-// Fast Static Asset Serving dengan Cache Control
-app.use(express.static(__dirname, {
-  maxAge: '1d',
-  etag: true
-}));
+// Menyajikan File Statis (index.html, gambar, CSS) langsung dari root folder
+app.use(express.static(__dirname));
 
-// HIRARKI HARGA DEFAULT RANK SERVER
+// HIRARKI & HARGA RANK SERVER (MENDUKUNG MULTI-RANK TERMASUK NIKE, MAWI, VIP, MVP, SULTAN, OVERLORD, LWN, LORD)
 const DEFAULT_RANK_PRICES = {
   'DEFAULT': 0,
   'MEMBER': 0,
+  'NIKE': 25000,
   'VIP': 25000,
   'MVP': 50000,
   'SULTAN': 100000,
   'OVERLORD': 200000,
   'LWN': 390000,
-  'LORD': 390000
+  'LORD': 390000,
+  'MAWI': 400000
 };
-
-// In-Memory Fast Cache untuk mempercepat request berulang (<30ms)
-const rankQueryCache = new Map();
-const CACHE_TTL = 30000; // Cache 30 detik untuk menghemat load DB
 
 // ==========================================
 // CONFIG DUAL MYSQL DATABASE POOLS (STRICT SHORT TIMEOUT)
@@ -51,9 +46,9 @@ const createFastPool = (host, user, password, database, port) => {
     database: database || 'minecraft_db',
     port: Number(port) || 3306,
     waitForConnections: true,
-    connectionLimit: 5,
+    connectionLimit: 3,
     queueLimit: 0,
-    connectTimeout: 3000 // Timeout cepat 3 detik
+    connectTimeout: 4000 // Timeout cepat 4 detik
   });
 };
 
@@ -75,12 +70,12 @@ const libreloginPool = createFastPool(
   process.env.LOGIN_DB_PORT || process.env.DB_PORT
 );
 
-// Helper Query dengan Timeout Cepat (Max 3 detik)
+// Helper Query dengan Timeout Keras (Max 4 detik)
 async function queryWithTimeout(pool, sql, params) {
   return Promise.race([
     pool.query(sql, params),
     new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('TIMEOUT_EXCEEDED: Database server hosting memblokir port 3306 atau tidak merespon')), 3000)
+      setTimeout(() => reject(new Error('TIMEOUT_EXCEEDED: Database server hosting memblokir port 3306 atau tidak merespon')), 4000)
     )
   ]);
 }
@@ -97,6 +92,7 @@ app.get('/api/test-db', async (req, res) => {
     librelogin: { status: 'PENDING', message: '' }
   };
 
+  // Tes 1: Database LuckPerms
   try {
     const [lpRows] = await queryWithTimeout(luckpermsPool, 'SELECT COUNT(*) as total FROM luckperms_players');
     testResults.luckperms = {
@@ -112,6 +108,7 @@ app.get('/api/test-db', async (req, res) => {
     };
   }
 
+  // Tes 2: Database LibreLogin / LibrePremium
   try {
     let loginCount = 0;
     let tableUsed = '';
@@ -148,7 +145,7 @@ app.get('/api/test-db', async (req, res) => {
   return res.json(testResults);
 });
 
-// Pengecekan Rank & Bedrock Prefix (OPTIMIZED & CACHED)
+// Pengecekan Rank & Bedrock Prefix (PINTAR & DUAL-TABLE PERMISSION CHECK)
 app.post('/api/player/check-rank', async (req, res) => {
   const { username, platform } = req.body;
 
@@ -169,15 +166,6 @@ app.post('/api/player/check-rank', async (req, res) => {
 
   let rawUsername = username.trim();
   const isBedrock = (platform === 'MCPE' || platform === 'Bedrock');
-  const cacheKey = `${rawUsername.toLowerCase()}_${isBedrock ? 'bedrock' : 'java'}`;
-
-  // Cek cache in-memory untuk response secepat kilat (<10ms)
-  if (rankQueryCache.has(cacheKey)) {
-    const cached = rankQueryCache.get(cacheKey);
-    if (Date.now() - cached.time < CACHE_TTL) {
-      return res.json(cached.data);
-    }
-  }
 
   let possibleUsernames = [rawUsername];
   if (isBedrock) {
@@ -198,7 +186,7 @@ app.post('/api/player/check-rank', async (req, res) => {
   const lowerUsernames = possibleUsernames.map(u => u.toLowerCase());
 
   try {
-    // 1. Query Database LuckPerms
+    // 1. Query Database LuckPerms (Utama)
     try {
       const [lpResult] = await queryWithTimeout(
         luckpermsPool,
@@ -210,6 +198,7 @@ app.post('/api/player/check-rank', async (req, res) => {
       );
       rankRows = lpResult;
 
+      // PERIKSA TABEL PERMISSIONS JIKA PRIMARY_GROUP MASIH 'DEFAULT'
       if (rankRows.length > 0) {
         const userUuid = rankRows[0].uuid;
         const currentPrimary = (rankRows[0].primary_group || 'default').toLowerCase();
@@ -225,12 +214,12 @@ app.post('/api/player/check-rank', async (req, res) => {
             );
             permRows = permResult;
           } catch (errPerm) {
-            console.warn('[DB WARNING - Permissions]:', errPerm.message);
+            console.warn('[DB WARNING - Permissions]: Gagal query permissions:', errPerm.message);
           }
         }
       }
     } catch (errLP) {
-      console.warn('[DB WARNING - LuckPerms]:', errLP.message);
+      console.warn('[DB WARNING - LuckPerms]: Gagal query LuckPerms DB:', errLP.message);
     }
 
     // 2. Query Database LibreLogin / LibrePremium
@@ -263,6 +252,7 @@ app.post('/api/player/check-rank', async (req, res) => {
       }
     }
 
+    // DETEKSI RANK UTAMA TERBAIK
     let detectedRank = 'DEFAULT';
 
     if (rankRows.length > 0) {
@@ -286,7 +276,7 @@ app.post('/api/player/check-rank', async (req, res) => {
     const isRegistered = rankRows.length > 0 || loginRows.length > 0;
     const currentRankPrice = DEFAULT_RANK_PRICES[detectedRank] || 0;
 
-    const responsePayload = {
+    return res.json({
       success: true,
       player: {
         username: matchedUsername,
@@ -296,15 +286,10 @@ app.post('/api/player/check-rank', async (req, res) => {
         isRegistered: isRegistered,
         headAvatarUrl: headAvatarUrl
       }
-    };
-
-    // Simpan ke Cache
-    rankQueryCache.set(cacheKey, { time: Date.now(), data: responsePayload });
-
-    return res.json(responsePayload);
+    });
 
   } catch (error) {
-    console.warn('[DB NOTICE]: Database MySQL fallback.');
+    console.warn('[DB NOTICE]: Database MySQL offline/timeout.');
     return res.json({
       success: true,
       fallback: true,
@@ -320,29 +305,9 @@ app.post('/api/player/check-rank', async (req, res) => {
   }
 });
 
-// Endpoint Update Profil & Keamanan Admin
-app.post('/api/admin/update-profile', (req, res) => {
-  const { currentEmail, newEmail, newName, currentPass, newPass } = req.body;
-
-  if (!currentPass || !newEmail) {
-    return res.status(400).json({ success: false, message: 'Data tidak lengkap!' });
-  }
-
-  // Verifikasi sederhana untuk server environment
-  return res.json({
-    success: true,
-    message: 'Profil & Keamanan Admin berhasil diperbarui!',
-    user: {
-      email: newEmail,
-      name: newName || 'Owner / Admin Mawi',
-      isAdmin: true
-    }
-  });
-});
-
 // Endpoint Health Check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', server: 'Mawi SMP Express API Running Fast Dual-DB', timestamp: new Date().toISOString() });
+  res.json({ status: 'OK', server: 'Mawi SMP Express API Running Dual-DB' });
 });
 
 // Fallback Route: Mengarahkan semua halaman non-API ke index.html
@@ -353,5 +318,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Mawi SMP Fast Server aktif di http://localhost:${PORT}`);
+  console.log(`🚀 Mawi SMP Server aktif di http://localhost:${PORT}`);
 });
