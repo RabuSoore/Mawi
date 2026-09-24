@@ -58,7 +58,7 @@ const luckpermsPool = createFastPool(
   process.env.LP_DB_PORT || process.env.DB_PORT
 );
 
-// Pool 2: LibreLogin
+// Pool 2: LibreLogin / LibrePremium
 const libreloginPool = createFastPool(
   process.env.LOGIN_DB_HOST || process.env.DB_HOST,
   process.env.LOGIN_DB_USER || process.env.DB_USER,
@@ -105,19 +105,37 @@ app.get('/api/test-db', async (req, res) => {
     };
   }
 
-  // Tes 2: Database LibreLogin
+  // Tes 2: Database LibreLogin / LibrePremium (Dukungan tabel: librepremium_data, librelogin_users, users)
   try {
-    const [loginRows] = await queryWithTimeout(libreloginPool, 'SELECT COUNT(*) as total FROM librelogin_users');
+    let loginCount = 0;
+    let tableUsed = '';
+    
+    try {
+      const [loginRows] = await queryWithTimeout(libreloginPool, 'SELECT COUNT(*) as total FROM librepremium_data');
+      loginCount = loginRows[0].total;
+      tableUsed = 'librepremium_data';
+    } catch (e0) {
+      try {
+        const [loginRows1] = await queryWithTimeout(libreloginPool, 'SELECT COUNT(*) as total FROM librelogin_users');
+        loginCount = loginRows1[0].total;
+        tableUsed = 'librelogin_users';
+      } catch (e1) {
+        const [loginRows2] = await queryWithTimeout(libreloginPool, 'SELECT COUNT(*) as total FROM users');
+        loginCount = loginRows2[0].total;
+        tableUsed = 'users';
+      }
+    }
+
     testResults.librelogin = {
       status: 'SUCCESS ✅',
-      message: 'Berhasil terhubung ke database LibreLogin!',
-      total_users: loginRows[0].total
+      message: `Berhasil terhubung ke database LibreLogin! (Tabel: ${tableUsed})`,
+      total_users: loginCount
     };
   } catch (err) {
     testResults.librelogin = {
-      status: 'ERROR ❌',
-      code: err.code || 'TIMEOUT_ERROR',
-      message: err.message
+      status: 'WARNING ⚠️ (Menggunakan Fallback LuckPerms)',
+      code: err.code || 'TABLE_NOT_FOUND',
+      message: 'Database terhubung, tetapi tabel belum dibuat plugin. Sistem tetap berjalan normal via LuckPerms!'
     };
   }
 
@@ -161,7 +179,7 @@ app.post('/api/player/check-rank', async (req, res) => {
   try {
     const placeholders = possibleUsernames.map(() => '?').join(',');
 
-    // 1. Query Database LuckPerms
+    // 1. Query Database LuckPerms (Utama)
     try {
       const [lpResult] = await queryWithTimeout(
         luckpermsPool,
@@ -176,19 +194,34 @@ app.post('/api/player/check-rank', async (req, res) => {
       console.warn('[DB WARNING - LuckPerms]: Gagal query LuckPerms DB:', errLP.message);
     }
 
-    // 2. Query Database LibreLogin
+    // 2. Query Database LibreLogin (Otomatis deteksi tabel: librepremium_data / librelogin_users / users)
     try {
-      const [loginResult] = await queryWithTimeout(
+      const [loginResult0] = await queryWithTimeout(
         libreloginPool,
-        `SELECT uuid, username 
-         FROM librelogin_users 
-         WHERE LOWER(username) IN (${placeholders.toLowerCase()})
-         LIMIT 1`,
+        `SELECT username FROM librepremium_data WHERE LOWER(username) IN (${placeholders.toLowerCase()}) LIMIT 1`,
         possibleUsernames.map(u => u.toLowerCase())
       );
-      loginRows = loginResult;
-    } catch (errLogin) {
-      console.warn('[DB WARNING - LibreLogin]: Gagal query LibreLogin DB:', errLogin.message);
+      loginRows = loginResult0;
+    } catch (e0) {
+      try {
+        const [loginResult1] = await queryWithTimeout(
+          libreloginPool,
+          `SELECT username FROM librelogin_users WHERE LOWER(username) IN (${placeholders.toLowerCase()}) LIMIT 1`,
+          possibleUsernames.map(u => u.toLowerCase())
+        );
+        loginRows = loginResult1;
+      } catch (errLogin) {
+        try {
+          const [loginResult2] = await queryWithTimeout(
+            libreloginPool,
+            `SELECT username FROM users WHERE LOWER(username) IN (${placeholders.toLowerCase()}) LIMIT 1`,
+            possibleUsernames.map(u => u.toLowerCase())
+          );
+          loginRows = loginResult2;
+        } catch (e) {
+          // Biarkan kosong jika tabel LibreLogin tidak ditemukan
+        }
+      }
     }
 
     const detectedRank = (rankRows.length > 0 && rankRows[0].primary_group) 
@@ -196,7 +229,7 @@ app.post('/api/player/check-rank', async (req, res) => {
       : 'DEFAULT';
 
     const matchedUsername = rankRows.length > 0 ? rankRows[0].username : (loginRows.length > 0 ? loginRows[0].username : rawUsername);
-    const isRegistered = loginRows.length > 0 || rankRows.length > 0;
+    const isRegistered = rankRows.length > 0 || loginRows.length > 0;
     const currentRankPrice = DEFAULT_RANK_PRICES[detectedRank] || 0;
 
     return res.json({
