@@ -20,7 +20,7 @@ app.use(express.json({ limit: '20kb' }));
 // Menyajikan File Statis (index.html, gambar, CSS) langsung dari root folder
 app.use(express.static(__dirname));
 
-// HIRARKI HARGA DEFAULT RANK SERVER
+// HIRARKI HARGA DEFAULT RANK SERVER (MENDUKUNG RANK LWN & LORD)
 const DEFAULT_RANK_PRICES = {
   'DEFAULT': 0,
   'MEMBER': 0,
@@ -28,6 +28,7 @@ const DEFAULT_RANK_PRICES = {
   'MVP': 50000,
   'SULTAN': 100000,
   'OVERLORD': 200000,
+  'LWN': 390000,
   'LORD': 390000
 };
 
@@ -142,7 +143,7 @@ app.get('/api/test-db', async (req, res) => {
   return res.json(testResults);
 });
 
-// Pengecekan Rank & Bedrock Prefix
+// Pengecekan Rank & Bedrock Prefix (PINTAR & DUAL-TABLE PERMISSION CHECK)
 app.post('/api/player/check-rank', async (req, res) => {
   const { username, platform } = req.body;
 
@@ -168,67 +169,109 @@ app.post('/api/player/check-rank', async (req, res) => {
   if (isBedrock) {
     if (!rawUsername.startsWith('_')) possibleUsernames.push(`_${rawUsername}`);
     if (!rawUsername.endsWith('_')) possibleUsernames.push(`${rawUsername}_`);
+  } else {
+    if (rawUsername.startsWith('_')) possibleUsernames.push(rawUsername.replace(/^_/, ''));
   }
 
   let cleanSkinName = rawUsername.replace(/^_+|_+$/g, '') || 'Steve';
   const headAvatarUrl = `https://mc-heads.net/avatar/${encodeURIComponent(cleanSkinName)}/100`;
 
   let rankRows = [];
+  let permRows = [];
   let loginRows = [];
 
-  try {
-    const placeholders = possibleUsernames.map(() => '?').join(',');
+  const placeholders = possibleUsernames.map(() => '?').join(',');
+  const lowerUsernames = possibleUsernames.map(u => u.toLowerCase());
 
+  try {
     // 1. Query Database LuckPerms (Utama)
     try {
       const [lpResult] = await queryWithTimeout(
         luckpermsPool,
-        `SELECT username, COALESCE(primary_group, 'default') AS primary_group 
+        `SELECT uuid, username, COALESCE(primary_group, 'default') AS primary_group 
          FROM luckperms_players 
-         WHERE LOWER(username) IN (${placeholders.toLowerCase()})
+         WHERE LOWER(username) IN (${placeholders})
          LIMIT 1`,
-        possibleUsernames.map(u => u.toLowerCase())
+        lowerUsernames
       );
       rankRows = lpResult;
+
+      // PERIKSA TABEL PERMISSIONS JIKA PRIMARY_GROUP MASIH 'DEFAULT'
+      if (rankRows.length > 0) {
+        const userUuid = rankRows[0].uuid;
+        const currentPrimary = (rankRows[0].primary_group || 'default').toLowerCase();
+
+        if (currentPrimary === 'default') {
+          try {
+            const [permResult] = await queryWithTimeout(
+              luckpermsPool,
+              `SELECT permission FROM luckperms_user_permissions 
+               WHERE uuid = ? AND permission LIKE 'group.%' AND value = 1 
+               LIMIT 5`,
+              [userUuid]
+            );
+            permRows = permResult;
+          } catch (errPerm) {
+            console.warn('[DB WARNING - Permissions]: Gagal query permissions:', errPerm.message);
+          }
+        }
+      }
     } catch (errLP) {
       console.warn('[DB WARNING - LuckPerms]: Gagal query LuckPerms DB:', errLP.message);
     }
 
-    // 2. Query Database LibreLogin (Otomatis deteksi tabel: librepremium_data / librelogin_users / users)
+    // 2. Query Database LibreLogin / LibrePremium
     try {
       const [loginResult0] = await queryWithTimeout(
         libreloginPool,
-        `SELECT username FROM librepremium_data WHERE LOWER(username) IN (${placeholders.toLowerCase()}) LIMIT 1`,
-        possibleUsernames.map(u => u.toLowerCase())
+        `SELECT * FROM librepremium_data WHERE LOWER(username) IN (${placeholders}) OR LOWER(name) IN (${placeholders}) LIMIT 1`,
+        [...lowerUsernames, ...lowerUsernames]
       );
       loginRows = loginResult0;
     } catch (e0) {
       try {
         const [loginResult1] = await queryWithTimeout(
           libreloginPool,
-          `SELECT username FROM librelogin_users WHERE LOWER(username) IN (${placeholders.toLowerCase()}) LIMIT 1`,
-          possibleUsernames.map(u => u.toLowerCase())
+          `SELECT * FROM librelogin_users WHERE LOWER(username) IN (${placeholders}) OR LOWER(name) IN (${placeholders}) LIMIT 1`,
+          [...lowerUsernames, ...lowerUsernames]
         );
         loginRows = loginResult1;
-      } catch (errLogin) {
+      } catch (e1) {
         try {
           const [loginResult2] = await queryWithTimeout(
             libreloginPool,
-            `SELECT username FROM users WHERE LOWER(username) IN (${placeholders.toLowerCase()}) LIMIT 1`,
-            possibleUsernames.map(u => u.toLowerCase())
+            `SELECT * FROM users WHERE LOWER(username) IN (${placeholders}) OR LOWER(name) IN (${placeholders}) LIMIT 1`,
+            [...lowerUsernames, ...lowerUsernames]
           );
           loginRows = loginResult2;
-        } catch (e) {
-          // Biarkan kosong jika tabel LibreLogin tidak ditemukan
+        } catch (e2) {
+          loginRows = [];
         }
       }
     }
 
-    const detectedRank = (rankRows.length > 0 && rankRows[0].primary_group) 
-      ? rankRows[0].primary_group.toUpperCase() 
-      : 'DEFAULT';
+    // DETEKSI RANK UTAMA TERBAIK
+    let detectedRank = 'DEFAULT';
 
-    const matchedUsername = rankRows.length > 0 ? rankRows[0].username : (loginRows.length > 0 ? loginRows[0].username : rawUsername);
+    if (rankRows.length > 0) {
+      const primary = (rankRows[0].primary_group || 'default').toUpperCase();
+      if (primary !== 'DEFAULT') {
+        detectedRank = primary;
+      } else if (permRows.length > 0) {
+        // Ambil group permission non-default (misal group.lwn -> LWN)
+        const customGroup = permRows.find(p => p.permission.toLowerCase() !== 'group.default');
+        if (customGroup) {
+          detectedRank = customGroup.permission.replace(/^group\./i, '').toUpperCase();
+        }
+      }
+    }
+
+    const matchedUsername = rankRows.length > 0 
+      ? rankRows[0].username 
+      : (loginRows.length > 0 
+          ? (loginRows[0].username || loginRows[0].name || loginRows[0].player || rawUsername) 
+          : rawUsername);
+
     const isRegistered = rankRows.length > 0 || loginRows.length > 0;
     const currentRankPrice = DEFAULT_RANK_PRICES[detectedRank] || 0;
 
