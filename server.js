@@ -1,51 +1,76 @@
-/**
- * MAWI SMP - UNIFIED BACKEND & FRONTEND SERVER (HIGH PERFORMANCE & OPTIMIZED)
- * Menjalankan Backend API Express + Menyajikan Website index.html
- * MENDUKUNG DUAL DATABASE: LUCKPERMS & LIBRELOGIN (PARALLEL & MEMORY CACHED)
- */
-
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2/promise');
 const path = require('path');
+const crypto = require('crypto');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware Keamanan & Parsing
+// Security Middlewares & Headers
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  next();
+});
+
 app.use(cors());
 app.use(express.json({ limit: '20kb' }));
-
-// Menyajikan File Statis (index.html, gambar, CSS) dari root folder
 app.use(express.static(__dirname));
 
-// ==========================================
-// IN-MEMORY CACHE SYSTEM (RAM SPEED < 1 ms)
-// ==========================================
+// Cache & Database State
 const rankCache = new Map();
-const CACHE_TTL = 5 * 60 * 1000; // Cache berlaku 5 Menit
-
-// Variabel memori untuk mengingat nama tabel login yang aktif (Mencegah sequential fallback delay)
+const CACHE_TTL = 5 * 60 * 1000;
 let cachedLoginTableName = null;
 
-// HIRARKI & HARGA RANK SERVER
-const DEFAULT_RANK_PRICES = {
-  'DEFAULT': 0,
-  'MEMBER': 0,
-  'NIKE': 25000,
-  'VIP': 25000,
-  'MVP': 50000,
-  'SULTAN': 100000,
-  'OVERLORD': 200000,
-  'LWN': 390000,
-  'LORD': 390000,
-  'MAWI': 400000
+// Default Admin Security State (Override via ENV if available)
+const ADMIN_SECRET = process.env.ADMIN_JWT_SECRET || 'MAWI_SMP_SECURE_TOKEN_SECRET_2026';
+let adminAccount = {
+  username: process.env.ADMIN_USERNAME || 'admin',
+  email: process.env.ADMIN_EMAIL || 'admin@mawi.com',
+  // SHA-256 Hash of default password 'mawi2026'
+  passwordHash: hashText(process.env.ADMIN_PASSWORD || 'mawi2026'),
+  // 2FA Security PIN (6 Digits)
+  securityPinHash: hashText(process.env.ADMIN_PIN || '123456')
 };
 
-// ==========================================
-// CONFIG DUAL MYSQL DATABASE POOLS
-// ==========================================
+// Brute-force & Login Rate Limiting Store
+const failedLoginAttempts = new Map(); // IP -> { count, lockoutUntil }
+
+function hashText(text) {
+  return crypto.createHash('sha256').update(String(text).trim()).digest('hex');
+}
+
+function generateSessionToken(username) {
+  const payload = `${username}:${Date.now()}:${Math.random()}`;
+  const signature = crypto.createHmac('sha256', ADMIN_SECRET).update(payload).digest('hex');
+  return Buffer.from(`${payload}:${signature}`).toString('base64');
+}
+
+function verifySessionToken(token) {
+  if (!token) return false;
+  try {
+    const decoded = Buffer.from(token, 'base64').toString('utf-8');
+    const parts = decoded.split(':');
+    if (parts.length !== 4) return false;
+    const [username, timestamp, rand, signature] = parts;
+    const payload = `${username}:${timestamp}:${rand}`;
+    const expectedSig = crypto.createHmac('sha256', ADMIN_SECRET).update(payload).digest('hex');
+    
+    // Check signature & 24h expiration
+    if (signature !== expectedSig) return false;
+    if (Date.now() - Number(timestamp) > 24 * 60 * 60 * 1000) return false;
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+const DEFAULT_RANK_PRICES = {
+  'DEFAULT': 0, 'MEMBER': 0, 'VIP': 25000, 'MVP': 50000, 'SULTAN': 100000, 'OVERLORD': 200000, 'LWN': 390000, 'LORD': 390000
+};
 
 const createFastPool = (host, user, password, database, port) => {
   return mysql.createPool({
@@ -57,11 +82,10 @@ const createFastPool = (host, user, password, database, port) => {
     waitForConnections: true,
     connectionLimit: 5,
     queueLimit: 0,
-    connectTimeout: 2000 // Timeout diturunkan ke 2 detik untuk fast failover
+    connectTimeout: 2000
   });
 };
 
-// Pool 1: LuckPerms
 const luckpermsPool = createFastPool(
   process.env.LP_DB_HOST || process.env.DB_HOST,
   process.env.LP_DB_USER || process.env.DB_USER,
@@ -70,7 +94,6 @@ const luckpermsPool = createFastPool(
   process.env.LP_DB_PORT || process.env.DB_PORT
 );
 
-// Pool 2: LibreLogin / LibrePremium
 const libreloginPool = createFastPool(
   process.env.LOGIN_DB_HOST || process.env.DB_HOST,
   process.env.LOGIN_DB_USER || process.env.DB_USER,
@@ -79,112 +102,160 @@ const libreloginPool = createFastPool(
   process.env.LOGIN_DB_PORT || process.env.DB_PORT
 );
 
-// Helper Query dengan Timeout Keras (Max 2 detik)
 async function queryWithTimeout(pool, sql, params, timeoutMs = 2000) {
   return Promise.race([
     pool.query(sql, params),
-    new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('TIMEOUT_EXCEEDED: Connection slow or port blocked')), timeoutMs)
-    )
+    new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT_EXCEEDED')), timeoutMs))
   ]);
 }
 
-// Helper untuk menemukan tabel login secara otomatis & menyimpan hasilnya di RAM
 async function detectLoginTable() {
   if (cachedLoginTableName) return cachedLoginTableName;
-
   const candidateTables = ['librepremium_data', 'librelogin_users', 'users'];
   for (const table of candidateTables) {
     try {
       await queryWithTimeout(libreloginPool, `SELECT 1 FROM ${table} LIMIT 1`, [], 1000);
       cachedLoginTableName = table;
-      console.log(`[DB DETECT] Tabel login terdeteksi & dicache di RAM: ${table}`);
       return table;
-    } catch (e) {
-      // Lanjut ke kandidat berikutnya
-    }
+    } catch (e) {}
   }
   return null;
 }
 
-// ==========================================
-// BACKEND API ENDPOINTS
-// ==========================================
+// ----------------------------------------------------
+// API ENDPOINTS
+// ----------------------------------------------------
 
-// Endpoint Tes Koneksi Database Langsung
-app.get('/api/test-db', async (req, res) => {
-  const testResults = {
-    timestamp: new Date().toISOString(),
-    luckperms: { status: 'PENDING', message: '' },
-    librelogin: { status: 'PENDING', message: '' },
-    cache_status: { active_entries: rankCache.size, cached_login_table: cachedLoginTableName || 'Belum terdeteksi' }
-  };
-
-  // Tes 1: Database LuckPerms
-  try {
-    const [lpRows] = await queryWithTimeout(luckpermsPool, 'SELECT COUNT(*) as total FROM luckperms_players', [], 2000);
-    testResults.luckperms = {
-      status: 'SUCCESS ✅',
-      message: 'Berhasil terhubung ke database LuckPerms!',
-      total_players: lpRows[0].total
-    };
-  } catch (err) {
-    testResults.luckperms = {
-      status: 'ERROR ❌',
-      code: err.code || 'TIMEOUT_ERROR',
-      message: err.message
-    };
-  }
-
-  // Tes 2: Database LibreLogin / LibrePremium
-  try {
-    const activeTable = await detectLoginTable();
-    if (activeTable) {
-      const [loginRows] = await queryWithTimeout(libreloginPool, `SELECT COUNT(*) as total FROM ${activeTable}`, [], 2000);
-      testResults.librelogin = {
-        status: 'SUCCESS ✅',
-        message: `Berhasil terhubung ke database LibreLogin! (Tabel: ${activeTable})`,
-        total_users: loginRows[0].total
-      };
-    } else {
-      testResults.librelogin = {
-        status: 'WARNING ⚠️ (Menggunakan Fallback LuckPerms)',
-        message: 'Database terhubung, tetapi tabel login tidak ditemukan. Sistem tetap berjalan normal via LuckPerms!'
-      };
-    }
-  } catch (err) {
-    testResults.librelogin = {
-      status: 'ERROR ❌',
-      code: err.code || 'DB_ERROR',
-      message: err.message
-    };
-  }
-
-  return res.json(testResults);
+// Endpoint for frontend signal & latency preloader testing
+app.get('/api/ping', (req, res) => {
+  res.json({
+    success: true,
+    timestamp: Date.now(),
+    server: 'Mawi SMP Active',
+    version: '2.5.0-SECURE'
+  });
 });
 
-// Pengecekan Rank & Bedrock Prefix (PARALEL + RAM CACHE)
-app.post('/api/player/check-rank', async (req, res) => {
-  const { username, platform } = req.body;
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'OK', server: 'Mawi SMP Backend Running', securityLevel: 'HIGH' });
+});
 
-  if (!username || typeof username !== 'string' || username.trim() === '') {
-    return res.status(400).json({
+// Admin Login Endpoint with 2FA PIN & Brute-force Protection
+app.post('/api/admin/login', (req, res) => {
+  const clientIp = req.ip || req.headers['x-forwarded-for'] || '127.0.0.1';
+  const now = Date.now();
+
+  // Check brute force lockout
+  const attemptInfo = failedLoginAttempts.get(clientIp) || { count: 0, lockoutUntil: 0 };
+  if (attemptInfo.lockoutUntil > now) {
+    const remainingSec = Math.ceil((attemptInfo.lockoutUntil - now) / 1000);
+    return res.status(429).json({
       success: false,
-      message: 'Username parameter tidak valid',
-      player: { 
-        username: '', 
-        platform: platform || 'Java', 
-        rank: 'DEFAULT', 
-        rankPrice: 0, 
-        isRegistered: false,
-        headAvatarUrl: 'https://mc-heads.net/avatar/Steve/100'
+      message: `Akun terkunci sementara karena 3x percobaan gagal. Coba lagi dalam ${remainingSec} detik.`,
+      lockout: true,
+      remainingSec
+    });
+  }
+
+  const { credential, password, pin } = req.body;
+  if (!credential || !password || !pin) {
+    return res.status(400).json({ success: false, message: 'Username/Email, Password, dan 2FA Security PIN wajib diisi!' });
+  }
+
+  const inputCred = String(credential).trim().toLowerCase();
+  const inputPassHash = hashText(password);
+  const inputPinHash = hashText(pin);
+
+  const isUserMatch = (inputCred === adminAccount.username.toLowerCase() || inputCred === adminAccount.email.toLowerCase());
+  const isPassMatch = (inputPassHash === adminAccount.passwordHash);
+  const isPinMatch = (inputPinHash === adminAccount.securityPinHash);
+
+  if (isUserMatch && isPassMatch && isPinMatch) {
+    failedLoginAttempts.delete(clientIp);
+    const sessionToken = generateSessionToken(adminAccount.username);
+    return res.json({
+      success: true,
+      token: sessionToken,
+      user: {
+        username: adminAccount.username,
+        email: adminAccount.email,
+        isAdmin: true,
+        securityLevel: '2FA_PROTECTED'
       }
     });
   }
 
+  // Failed login attempt tracking
+  attemptInfo.count += 1;
+  if (attemptInfo.count >= 3) {
+    attemptInfo.lockoutUntil = now + 60 * 1000; // 60 seconds lockout
+    failedLoginAttempts.set(clientIp, attemptInfo);
+    return res.status(429).json({
+      success: false,
+      message: '3x Salah password/PIN! Akses admin dikunci selama 60 detik.',
+      lockout: true,
+      remainingSec: 60
+    });
+  } else {
+    failedLoginAttempts.set(clientIp, attemptInfo);
+    return res.status(401).json({
+      success: false,
+      message: `Username, Password, atau 2FA PIN Salah! Sisa percobaan: ${3 - attemptInfo.count}`
+    });
+  }
+});
+
+// Admin Verify Token Endpoint
+app.post('/api/admin/verify-token', (req, res) => {
+  const { token } = req.body;
+  const isValid = verifySessionToken(token);
+  if (isValid) {
+    return res.json({ success: true, valid: true, user: { username: adminAccount.username, email: adminAccount.email, isAdmin: true } });
+  }
+  return res.status(401).json({ success: false, valid: false });
+});
+
+// Admin Update Security Credentials
+app.post('/api/admin/update-credentials', (req, res) => {
+  const token = req.headers['authorization']?.replace('Bearer ', '');
+  if (!verifySessionToken(token)) {
+    return res.status(401).json({ success: false, message: 'Sesi admin tidak valid atau telah kadaluarsa.' });
+  }
+
+  const { newUsername, newEmail, currentPassword, newPassword, newPin } = req.body;
+
+  // Verify current password first
+  if (hashText(currentPassword) !== adminAccount.passwordHash) {
+    return res.status(400).json({ success: false, message: 'Password lama saat ini salah!' });
+  }
+
+  if (newUsername) adminAccount.username = String(newUsername).trim();
+  if (newEmail) adminAccount.email = String(newEmail).trim();
+  if (newPassword && newPassword.trim().length >= 6) {
+    adminAccount.passwordHash = hashText(newPassword);
+  }
+  if (newPin && String(newPin).trim().length === 6) {
+    adminAccount.securityPinHash = hashText(newPin);
+  }
+
+  const newSessionToken = generateSessionToken(adminAccount.username);
+  return res.json({
+    success: true,
+    message: 'Kredensial keamanan admin berhasil diperbarui!',
+    token: newSessionToken,
+    user: { username: adminAccount.username, email: adminAccount.email, isAdmin: true }
+  });
+});
+
+// Player Rank Check
+app.post('/api/player/check-rank', async (req, res) => {
+  const { username, platform } = req.body;
+  if (!username || typeof username !== 'string' || username.trim() === '') {
+    return res.status(400).json({ success: false, player: { username: '', platform: platform || 'Java', rank: 'DEFAULT', rankPrice: 0, isRegistered: false } });
+  }
+
   let rawUsername = username.trim();
   const isBedrock = (platform === 'MCPE' || platform === 'Bedrock');
-
   let possibleUsernames = [rawUsername];
   if (isBedrock) {
     if (!rawUsername.startsWith('_')) possibleUsernames.push(`_${rawUsername}`);
@@ -194,14 +265,9 @@ app.post('/api/player/check-rank', async (req, res) => {
   }
 
   const cacheKey = `${rawUsername.toLowerCase()}_${isBedrock ? 'bedrock' : 'java'}`;
-
-  // 1. CEK IN-MEMORY RAM CACHE (0 ms RESPONSE TIME)
   if (rankCache.has(cacheKey)) {
     const cachedData = rankCache.get(cacheKey);
-    if (Date.now() - cachedData.timestamp < CACHE_TTL) {
-      console.log(`[RAM CACHE HIT ⚡] Respon instan untuk ${rawUsername}`);
-      return res.json(cachedData.response);
-    }
+    if (Date.now() - cachedData.timestamp < CACHE_TTL) return res.json(cachedData.response);
   }
 
   let cleanSkinName = rawUsername.replace(/^_+|_+$/g, '') || 'Steve';
@@ -210,116 +276,55 @@ app.post('/api/player/check-rank', async (req, res) => {
   const placeholders = possibleUsernames.map(() => '?').join(',');
   const lowerUsernames = possibleUsernames.map(u => u.toLowerCase());
 
-  // 2. QUERY PARALEL KE DATABASE (Promise.allSettled)
-  const lpPromise = queryWithTimeout(
-    luckpermsPool,
-    `SELECT uuid, username, COALESCE(primary_group, 'default') AS primary_group 
-     FROM luckperms_players 
-     WHERE LOWER(username) IN (${placeholders})
-     LIMIT 1`,
-    lowerUsernames,
-    1500
-  );
-
+  const lpPromise = queryWithTimeout(luckpermsPool, `SELECT uuid, username, COALESCE(primary_group, 'default') AS primary_group FROM luckperms_players WHERE LOWER(username) IN (${placeholders}) LIMIT 1`, lowerUsernames, 1500);
   const loginPromise = (async () => {
     const table = await detectLoginTable();
     if (!table) return [];
-    const [rows] = await queryWithTimeout(
-      libreloginPool,
-      `SELECT * FROM ${table} WHERE LOWER(username) IN (${placeholders}) OR LOWER(name) IN (${placeholders}) LIMIT 1`,
-      [...lowerUsernames, ...lowerUsernames],
-      1500
-    );
+    const [rows] = await queryWithTimeout(libreloginPool, `SELECT * FROM ${table} WHERE LOWER(username) IN (${placeholders}) OR LOWER(name) IN (${placeholders}) LIMIT 1`, [...lowerUsernames, ...lowerUsernames], 1500);
     return rows;
   })();
 
   const [lpResult, loginResult] = await Promise.allSettled([lpPromise, loginPromise]);
-
   let rankRows = (lpResult.status === 'fulfilled' && lpResult.value[0]) ? lpResult.value[0] : [];
   let loginRows = (loginResult.status === 'fulfilled' && loginResult.value) ? loginResult.value : [];
   let permRows = [];
 
-  // PERIKSA TABEL PERMISSIONS JIKA PRIMARY_GROUP MASIH 'DEFAULT'
-  if (rankRows.length > 0) {
-    const userUuid = rankRows[0].uuid;
-    const currentPrimary = (rankRows[0].primary_group || 'default').toLowerCase();
-
-    if (currentPrimary === 'default') {
-      try {
-        const [permRes] = await queryWithTimeout(
-          luckpermsPool,
-          `SELECT permission FROM luckperms_user_permissions 
-           WHERE uuid = ? AND permission LIKE 'group.%' AND value = 1 
-           LIMIT 5`,
-          [userUuid],
-          1000
-        );
-        permRows = permRes;
-      } catch (errPerm) {
-        console.warn('[DB PERMISSION WARN]:', errPerm.message);
-      }
-    }
+  if (rankRows.length > 0 && (rankRows[0].primary_group || 'default').toLowerCase() === 'default') {
+    try {
+      const [permRes] = await queryWithTimeout(luckpermsPool, `SELECT permission FROM luckperms_user_permissions WHERE uuid = ? AND permission LIKE 'group.%' AND value = 1 LIMIT 5`, [rankRows[0].uuid], 1000);
+      permRows = permRes;
+    } catch (err) {}
   }
 
-  // DETEKSI RANK UTAMA TERBAIK
   let detectedRank = 'DEFAULT';
-
   if (rankRows.length > 0) {
     const primary = (rankRows[0].primary_group || 'default').toUpperCase();
-    if (primary !== 'DEFAULT') {
-      detectedRank = primary;
-    } else if (permRows.length > 0) {
+    if (primary !== 'DEFAULT') detectedRank = primary;
+    else if (permRows.length > 0) {
       const customGroup = permRows.find(p => p.permission.toLowerCase() !== 'group.default');
-      if (customGroup) {
-        detectedRank = customGroup.permission.replace(/^group\./i, '').toUpperCase();
-      }
+      if (customGroup) detectedRank = customGroup.permission.replace(/^group\./i, '').toUpperCase();
     }
   }
 
-  const matchedUsername = rankRows.length > 0 
-    ? rankRows[0].username 
-    : (loginRows.length > 0 
-        ? (loginRows[0].username || loginRows[0].name || loginRows[0].player || rawUsername) 
-        : rawUsername);
-
+  const matchedUsername = rankRows.length > 0 ? rankRows[0].username : (loginRows.length > 0 ? (loginRows[0].username || loginRows[0].name || rawUsername) : rawUsername);
   const isRegistered = rankRows.length > 0 || loginRows.length > 0;
   const currentRankPrice = DEFAULT_RANK_PRICES[detectedRank] || 0;
 
   const resultResponse = {
     success: true,
-    player: {
-      username: matchedUsername,
-      platform: isBedrock ? 'Bedrock' : 'Java',
-      rank: detectedRank,
-      rankPrice: currentRankPrice,
-      isRegistered: isRegistered,
-      headAvatarUrl: headAvatarUrl
-    }
+    player: { username: matchedUsername, platform: isBedrock ? 'Bedrock' : 'Java', rank: detectedRank, rankPrice: currentRankPrice, isRegistered, headAvatarUrl }
   };
 
-  // 3. SIMPAN KE RAM CACHE UNTUK QUERY SELANJUTNYA
-  rankCache.set(cacheKey, {
-    timestamp: Date.now(),
-    response: resultResponse
-  });
-
+  rankCache.set(cacheKey, { timestamp: Date.now(), response: resultResponse });
   return res.json(resultResponse);
 });
 
-// Endpoint Health Check
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', server: 'Mawi SMP Express API Running Optimized Dual-DB with RAM Cache' });
-});
-
-// Fallback Route: Mengarahkan semua halaman non-API ke index.html
 app.get('*', (req, res) => {
-  if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, 'index.html'));
-  }
+  if (!req.path.startsWith('/api')) res.sendFile(path.join(__dirname, 'official_store_updates_web_app.html'));
 });
 
 app.listen(PORT, () => {
   console.log(`🚀 Mawi SMP Server aktif di http://localhost:${PORT}`);
-  // Jalankan deteksi tabel di latar belakang saat startup
+  console.log(`🔒 Proteksi Admin 2FA PIN Active`);
   detectLoginTable().catch(() => {});
 });
